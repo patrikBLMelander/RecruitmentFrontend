@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import jobOfferingsTestData from "./testData/jobOfferingsTestData";
 import Animals from "./testData/animals";
 import RecruitmentPage from "./pages/RecruitmentPage";
@@ -15,9 +15,13 @@ import candidateTestData from "./testData/candidateTestData";
 import Main from "./pages/Main";
 import DarkGreen from "./testData/colorSchemas/darkGreen";
 import CandidateSettings from "./pages/CandidateSettings";
+import axios from 'axios';
+import {getAllJobOffers} from "./API/endpoints";
+import requests from "./API/requests";
 
 function App() {
-  const [jobOfferings, setJobOfferings] = useState(jobOfferingsTestData);
+  const [jobOfferings, setJobOfferings] = useState([{}]);
+
   const [activeJob, setActiveJob] = useState({ title: "", id: "" });
   const [activeCandidate, setActiveCandidate] = useState("");
   const [candidateState, setCandidateState] = useState(candidateTestData);
@@ -25,6 +29,15 @@ function App() {
   const [adminLoggedIn, setAdminLoggedIn] = useState(false);
   const [nickName, setNickName] = useState(Animals);
   const [colorScheme, setColorscheme] = useState(DarkGreen);
+
+
+useEffect(() => {
+  axios.get(`${getAllJobOffers}`, {
+  }).then(resp => {
+    setJobOfferings(resp.data)
+    console.log(resp.data)
+}).catch(error => console.error(error));
+}, []);
 
   return (
     <Router>

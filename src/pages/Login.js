@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
+import axios from 'axios';
 import endpoints from "../API/endpoints";
 import requests from "../API/requests";
 

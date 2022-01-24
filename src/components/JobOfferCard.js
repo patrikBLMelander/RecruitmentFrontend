@@ -19,15 +19,6 @@ function JobOfferCard({
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  function totalCandidates(jobOffer) {
-    let totalCandidates = 0;
-    jobOffer.recruitmentSteps.map((recruitmentStepInMap) => {
-      totalCandidates += recruitmentStepInMap.candidateIds.length;
-      return null;
-    });
-    return totalCandidates;
-  }
-
   function openModal() {
     setIsOpen(true);
   }
@@ -115,10 +106,10 @@ function JobOfferCard({
         </BtnContainer>
         <CadnidateInfoDiv>
           <PNew show={adminLoggedIn} inputColor={colorScheme}>
-            New: {jobOfferings[index].recruitmentSteps[0].candidateIds.length}
+            New: {jobOfferings[index].newCandidates}
           </PNew>
           <PTotal show={adminLoggedIn} inputColor={colorScheme}>
-            Total: {totalCandidates(jobOfferings[index])}
+            Total: {jobOfferings[index].totalCandidates}
           </PTotal>
         </CadnidateInfoDiv>
       </CardBody>
@@ -139,6 +130,7 @@ function JobOfferCard({
         contentLabel="JobOffer modal"
       >
         <JobOfferPreview
+          key={jobOfferings[index].id}
           jobOffer={jobOfferings[index]}
           colorScheme={colorScheme}
         />
