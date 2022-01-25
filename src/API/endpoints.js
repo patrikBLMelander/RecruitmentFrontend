@@ -1,5 +1,5 @@
-const START_URL = "https://exjobbrecruitment.herokuapp.com";
- //const START_URL = "http://localhost:7000";
+//const START_URL = "https://exjobbrecruitment.herokuapp.com";
+ const START_URL = "http://localhost:7000";
 
 //export Constants API
  const BASE_API = "/recruitment/v1";
@@ -24,8 +24,8 @@ const START_URL = "https://exjobbrecruitment.herokuapp.com";
 
 //public endpoints
 export const getAllJobOffers = START_URL+BASE_API+PUBLIC+JOB_OFFER;
-export const login = START_URL+BASE_API+"/login";
-export const register = START_URL+PUBLIC+CREATE;
+export const login = START_URL+"/login";
+export const register = START_URL+BASE_API+PUBLIC+CREATE;
 
 // admin endpoints
 export const changNicknamePresentaion = START_URL+ADMIN+UPDATE+NICKNAME;
@@ -40,6 +40,7 @@ export const setRate = START_URL+ADMIN+BASE_API+UPDATE+RATE;
 export const moveCandidate = START_URL+BASE_API+ADMIN+RECRUITMENT+CANDIDATES;
 
 //candidate endpoints
+export const getCandidateInfo = START_URL+BASE_API+CANDIDATES
 export const updatePresentation = START_URL+BASE_API+CANDIDATES+PRESENTATION
 export const addExperience = START_URL+BASE_API+CANDIDATES+EXPERIENCE;
 export const deleteExperience = START_URL+BASE_API+CANDIDATES+EXPERIENCE+DELETE;

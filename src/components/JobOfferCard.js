@@ -130,7 +130,7 @@ function JobOfferCard({
         contentLabel="JobOffer modal"
       >
         <JobOfferPreview
-          key={jobOfferings[index].id}
+          key={`JobOfferPreview`+jobOfferings[index].id}
           jobOffer={jobOfferings[index]}
           colorScheme={colorScheme}
         />

@@ -33,9 +33,9 @@ function App() {
 
 useEffect(() => {
   axios.get(`${getAllJobOffers}`, {
+
   }).then(resp => {
     setJobOfferings(resp.data)
-    console.log(resp.data)
 }).catch(error => console.error(error));
 }, []);
 

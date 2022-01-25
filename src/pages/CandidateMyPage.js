@@ -20,6 +20,7 @@ import Modal from "react-modal";
 
 function CandidateMyPage({ jobOfferings, adminLoggedIn, candidateLoggedIn, activeJob, setActiveJob, activeCandidate, setActiveCandidate, setCandidateState, candidateState, setAdminLoggedIn, setCandidateLoggedIn, colorScheme, nickName }) {
 
+    console.log(activeCandidate);
 
     const [modalIsOpen, setIsOpen] = useState(false);
     const [validated, setValidated] = useState(false);
@@ -75,11 +76,11 @@ function CandidateMyPage({ jobOfferings, adminLoggedIn, candidateLoggedIn, activ
     }
 
     //Personality
-    const [openness, setOpenness] = useState(activeCandidate.personality[0].value)
-    const [conscintiousness, setConscintiousness] = useState(activeCandidate.personality[1].value)
-    const [extroversion, setExtroversion] = useState(activeCandidate.personality[2].value)
-    const [agreableness, setAgreableness] = useState(activeCandidate.personality[3].value)
-    const [neuroticism, setNeuroticism] = useState(activeCandidate.personality[4].value)
+    const [openness, setOpenness] = useState(activeCandidate.personalityList[0].value)
+    const [conscintiousness, setConscintiousness] = useState(activeCandidate.personalityList[1].value)
+    const [extroversion, setExtroversion] = useState(activeCandidate.personalityList[2].value)
+    const [agreableness, setAgreableness] = useState(activeCandidate.personalityList[3].value)
+    const [neuroticism, setNeuroticism] = useState(activeCandidate.personalityList[4].value)
     const handleOpennessChange = (event) => {
         setOpenness(event.target.value);
     }

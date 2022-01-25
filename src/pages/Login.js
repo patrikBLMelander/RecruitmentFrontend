@@ -9,10 +9,11 @@ import Swal from "sweetalert2";
 import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
 import axios from 'axios';
-import endpoints from "../API/endpoints";
-import requests from "../API/requests";
+import {login, getCandidateInfo} from "../API/endpoints";
+import { formLabelClasses } from "@mui/material";
 
 function Login({
+  activeCandidate,
   candidateState,
   setActiveCandidate,
   setCandidateLoggedIn,
@@ -23,25 +24,24 @@ function Login({
 }) {
   const [validated, setValidated] = useState(false);
   const Navigate = useNavigate();
-  let succeessfulLogin = false;
-
-  if (candidateLoggedIn === true || adminLoggedIn === true) {
-    Swal.fire({
-      icon: "info",
-      title: "Already logged in",
-      showDenyButton: false,
-      showCancelButton: true,
-      confirmButtonText: "Home",
-      cancelButtonText: "Log out",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Navigate("/home");
-      } else {
-        setCandidateLoggedIn(false);
-        setAdminLoggedIn(false);
-      }
-    });
-  }
+  
+  // if (candidateLoggedIn === true || adminLoggedIn === true) {
+  //   Swal.fire({
+  //     icon: "info",
+  //     title: "Already logged in",
+  //     showDenyButton: false,
+  //     showCancelButton: true,
+  //     confirmButtonText: "Home",
+  //     cancelButtonText: "Log out",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Navigate("/home");
+  //     } else {
+  //       setCandidateLoggedIn(false);
+  //       setAdminLoggedIn(false);
+  //     }
+  //   });
+  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,58 +49,104 @@ function Login({
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
+      axios.post(`${login}?username=`+form.emailInputGrid.value.toLowerCase()+`&password=`+form.passwordInputGrid.value)
+      .then((responseFromLogin) => {
+        if (responseFromLogin.status !== 200) {
+          Swal.fire({
+            icon: "error",
+            title: "Fel användarnamn eller lösenord",
+            text: "Vi hittade tyvärr inget matchande användarnamn eller lösenord",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Try again",
+          })
+        }else {
+          axios.post(`${getCandidateInfo}`,
+          {
+            "email": `${responseFromLogin.data.username}`,
+            "test": "test"
+          }).then(response => {
+            setActiveCandidate({
+               id:response.data.id,
+               nickName:response.data.nickName,
+               email:response.data.email,
+               presentation:response.data.presentation,
+               isAdmin:response.data.isAdmin,
+               colorChoice:response.data.colorChoice,
+               nickNameChoice:response.data.nickNameChoice,
+              roleList:response.data.roleList,
+              experienceList:response.data.experienceList,
+              educationList:response.data.educationList,
+              competenciesList:response.data.competenciesList,
+              personalityList:response.data.personalityList,
+            })
+            if(response.data.isAdmin===false){
+              console.log("navigate to candidate")
+              Navigate("/candidate/my-page")
+            }else{
+              console.log("navigate to admin")
+              Navigate("/home")
+            }
+          })
+        }
+    })
+    .catch((err) => {
+      console.log(err)
+        alert("Serverfel!");
+    });
+
 
       //check CandidateLogin, this will be done properly in backend later
-      candidateState.map((candidateInMap) => {
-        if (
-          candidateInMap.email.toLowerCase() ===
-            form.emailInputGrid.value.toLowerCase() &&
-          form.passwordInputGrid.value === candidateInMap.password
-        ) {
-          if (candidateInMap.role === "candidate") {
-            setActiveCandidate({
-              id: candidateInMap.id,
-              nickName: candidateInMap.nickName,
-              firstName: candidateInMap.firstName,
-              lastName: candidateInMap.lastName,
-              presentation: candidateInMap.presentation,
-              email: candidateInMap.email,
-              password: candidateInMap.password,
-              phone: candidateInMap.phone,
-              experience: candidateInMap.experience,
-              education: candidateInMap.education,
-              personality: candidateInMap.personality,
-              competencies: candidateInMap.competencies,
-            });
-            setCandidateLoggedIn(true);
-            setAdminLoggedIn(false);
-            setValidated(true);
-            Navigate("/home");
-          } else {
-            setCandidateLoggedIn(false);
-            setAdminLoggedIn(true);
-            setValidated(true);
-            Navigate("/home");
-          }
-          succeessfulLogin = true;
-        }
-        return null;
-      });
-      if (!succeessfulLogin) {
-        Swal.fire({
-          icon: "error",
-          title: "Could not log in...",
-          text: "Did not find a matching email and password",
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: "Register",
-          cancelButtonText: "Try again",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Navigate("/candidate/register");
-          }
-        });
-      }
+    //   candidateState.map((candidateInMap) => {
+    //     if (
+    //       candidateInMap.email.toLowerCase() ===
+    //         form.emailInputGrid.value.toLowerCase() &&
+    //       form.passwordInputGrid.value === candidateInMap.password
+    //     ) {
+    //       if (candidateInMap.role === "candidate") {
+    //         setActiveCandidate({
+    //           id: candidateInMap.id,
+    //           nickName: candidateInMap.nickName,
+    //           firstName: candidateInMap.firstName,
+    //           lastName: candidateInMap.lastName,
+    //           presentation: candidateInMap.presentation,
+    //           email: candidateInMap.email,
+    //           password: candidateInMap.password,
+    //           phone: candidateInMap.phone,
+    //           experience: candidateInMap.experience,
+    //           education: candidateInMap.education,
+    //           personality: candidateInMap.personality,
+    //           competencies: candidateInMap.competencies,
+    //         });
+    //         setCandidateLoggedIn(true);
+    //         setAdminLoggedIn(false);
+    //         setValidated(true);
+    //         Navigate("/home");
+    //       } else {
+    //         setCandidateLoggedIn(false);
+    //         setAdminLoggedIn(true);
+    //         setValidated(true);
+    //         Navigate("/home");
+    //       }
+    //       succeessfulLogin = true;
+    //     }
+    //     return null;
+    //   });
+    //   if (!succeessfulLogin) {
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Could not log in...",
+    //       text: "Did not find a matching email and password",
+    //       showDenyButton: false,
+    //       showCancelButton: true,
+    //       confirmButtonText: "Register",
+    //       cancelButtonText: "Try again",
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         Navigate("/candidate/register");
+    //       }
+    //     });
+    //   }
     }
 
     setValidated(true);

@@ -14,11 +14,9 @@ import {RegisterCandidateRequest} from "../API/requests";
 
 let counter = 9;
 let newId = "candidate-" + counter;
-let emailTaken = false;
+
 
 function Registrer({
-  candidateState,
-  setCandidateState,
   setActiveCandidate,
   setCandidateLoggedIn,
   colorScheme,
@@ -45,13 +43,43 @@ function Registrer({
         email: form.emailInputGrid.value, 
         password: form.passwordInputGrid.value
       }
-      
 
-      axios.post(`${register}`,{
+      axios.post(`${register}`,
         toSend
-      }).then(resp => {
-        console.log(resp.data)
-    }).catch(error => console.error(error));
+     ).then(resp => {
+     
+        if(resp.status === 201){
+          Swal.fire({
+            icon: "success",
+            title: "Created account",
+            text: "You are one step closer to your next job, login and fill your resume to increase your chanses",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Login",
+          });
+          Navigate("/login");
+        }
+        
+    }).catch(error => {
+      console.log(error.response.status)
+      if(error.response.status === 400){
+        Swal.fire({
+          icon: "error",
+          title: "Email alredy registred",
+          text: "This email is already registred in our database, try to login or register whith an other email",
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: "Login",
+          cancelButtonText: "Try again",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Navigate("/login");
+          }
+        });
+      }else{
+        Swal("Något fick fel!", "Vänligen försök igen", "warning");
+    }
+    });
 
 
 
@@ -127,7 +155,7 @@ function Registrer({
     //     });
     //     setCandidateLoggedIn(true);
 
-      Navigate("/home");
+    //  Navigate("/home");
       
     }
     setValidated(true);

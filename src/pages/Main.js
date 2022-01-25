@@ -55,7 +55,7 @@ function Main({setJobOfferings, jobOfferings, adminLoggedIn, candidateLoggedIn, 
           {jobOfferings.map((jobOfferingsInMap, index) => {
             return (
               <JobOfferCard
-                key={jobOfferingsInMap.id}
+                key={`jobofferCard`+jobOfferingsInMap.id}
                 index={index}
                 colorScheme={colorScheme}
                 jobOfferings={jobOfferings}

@@ -16,7 +16,8 @@ function Home({
   setAdminLoggedIn,
   setCandidateLoggedIn,
   colorScheme,
-}) {
+}) 
+{
   return (
     <div>
       <Navbar
