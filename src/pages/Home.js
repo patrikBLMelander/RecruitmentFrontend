@@ -13,8 +13,7 @@ function Home({
   adminLoggedIn,
   candidateLoggedIn,
   activeCandidate,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
+  setActiveCandidate,
   colorScheme,
 }) 
 {
@@ -22,11 +21,9 @@ function Home({
     <div>
       <Navbar
         colorScheme={colorScheme}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
         setActiveJob={setActiveJob}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>

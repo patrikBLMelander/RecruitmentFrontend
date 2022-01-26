@@ -117,58 +117,6 @@ function Login({
 
     });
 
-
-      //check CandidateLogin, this will be done properly in backend later
-    //   candidateState.map((candidateInMap) => {
-    //     if (
-    //       candidateInMap.email.toLowerCase() ===
-    //         form.emailInputGrid.value.toLowerCase() &&
-    //       form.passwordInputGrid.value === candidateInMap.password
-    //     ) {
-    //       if (candidateInMap.role === "candidate") {
-    //         setActiveCandidate({
-    //           id: candidateInMap.id,
-    //           nickName: candidateInMap.nickName,
-    //           firstName: candidateInMap.firstName,
-    //           lastName: candidateInMap.lastName,
-    //           presentation: candidateInMap.presentation,
-    //           email: candidateInMap.email,
-    //           password: candidateInMap.password,
-    //           phone: candidateInMap.phone,
-    //           experience: candidateInMap.experience,
-    //           education: candidateInMap.education,
-    //           personality: candidateInMap.personality,
-    //           competencies: candidateInMap.competencies,
-    //         });
-    //         setCandidateLoggedIn(true);
-    //         setAdminLoggedIn(false);
-    //         setValidated(true);
-    //         Navigate("/home");
-    //       } else {
-    //         setCandidateLoggedIn(false);
-    //         setAdminLoggedIn(true);
-    //         setValidated(true);
-    //         Navigate("/home");
-    //       }
-    //       succeessfulLogin = true;
-    //     }
-    //     return null;
-    //   });
-    //   if (!succeessfulLogin) {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Could not log in...",
-    //       text: "Did not find a matching email and password",
-    //       showDenyButton: false,
-    //       showCancelButton: true,
-    //       confirmButtonText: "Register",
-    //       cancelButtonText: "Try again",
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         Navigate("/candidate/register");
-    //       }
-    //     });
-    //   }
     }
 
     setValidated(true);

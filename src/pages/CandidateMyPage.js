@@ -7,7 +7,6 @@ import {
   addEducation,
   addExperience,
   addCompetence,
-  deleteExperience,
 } from "../API/endpoints";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
@@ -494,11 +493,8 @@ function CandidateMyPage({
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        jobOfferings={jobOfferings}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header activeJob={activeJob} colorScheme={colorScheme} />
 

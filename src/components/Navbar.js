@@ -12,24 +12,24 @@ import { AddressCard } from "@styled-icons/fa-regular/AddressCard";
 import { useNavigate } from "react-router-dom";
 
 function Navbar({
-  adminLoggedIn,
-  setCandidateLoggedIn,
-  setAdminLoggedIn,
+  activeCandidate,
+  setActiveCandidate,
   setActiveJob,
   colorScheme,
 }) {
   const Navigate = useNavigate();
 
   function logOut() {
-    setCandidateLoggedIn(false);
-    setAdminLoggedIn(false);
+    localStorage.clear();
+    setActiveCandidate("");
     setActiveJob("");
     Navigate("/");
+    
   }
 
   let render;
 
-  if (adminLoggedIn === true) {
+  if (activeCandidate.isAdmin) {
     render = (
       <Container inputColor={colorScheme}>
         <Link to="/home">

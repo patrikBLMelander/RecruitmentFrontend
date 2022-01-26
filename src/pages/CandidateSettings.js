@@ -20,16 +20,11 @@ let newId = "candidate-" + counter;
 let emailTaken = false;
 
 function CandidateSettings({
-  jobOfferings,
+  setActiveCandidate,
   activeJob,
-  adminLoggedIn,
-  candidateLoggedIn,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
   candidateState,
   setCandidateState,
   setActiveJob,
-  setNickName,
   setColorscheme,
   colorScheme,
   activeCandidate
@@ -104,34 +99,24 @@ function CandidateSettings({
                 }
             })
 
-
-
-
-
-
-
-
-
-
-
           Navigate("/candidate/register");
         }
       });
 
   }
 
-  function changPassword() {}
+  function changPassword() {
+
+
+  }
 
   return (
     <div>
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        jobOfferings={jobOfferings}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>
@@ -154,7 +139,7 @@ function CandidateSettings({
                     <FloatingLabel controlId="newPassword" label="New Password">
                       <Form.Control required type="password" placeholder='""' />
                       <Form.Control.Feedback type="invalid">
-                        Everyone have a last name, right?
+                      You need a new password to change password!
                       </Form.Control.Feedback>
                     </FloatingLabel>
                   </ChangePasswordCol>
@@ -165,7 +150,7 @@ function CandidateSettings({
                     >
                       <Form.Control required type="password" placeholder='""' />
                       <Form.Control.Feedback type="invalid">
-                        Everyone have a last name, right?
+                        You need to validate the new password
                       </Form.Control.Feedback>
                     </FloatingLabel>
                   </ChangePasswordCol>

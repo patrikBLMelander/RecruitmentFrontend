@@ -14,10 +14,8 @@ function RecruitmentPage({
   setActiveJob,
   candidateState,
   setCandidateState,
-  adminLoggedIn,
-  candidateLoggedIn,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
+  activeCandidate,
+  setActiveCandidate,
   nickName,
   colorScheme,
 }) {
@@ -125,12 +123,10 @@ function RecruitmentPage({
   return (
     <div>
       <Navbar
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
-        setActiveJob={setActiveJob}
         colorScheme={colorScheme}
+        setActiveJob={setActiveJob}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header activeJob={activeJob} colorScheme={colorScheme} />
       <DragDropContext onDragEnd={onDragEnd}>

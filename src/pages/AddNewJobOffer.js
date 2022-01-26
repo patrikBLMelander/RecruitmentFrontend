@@ -14,13 +14,11 @@ let counter = 8;
 let newId = "jobOffering-" + counter;
 
 function AddNewJobOffer({
-  adminLoggedIn,
-  candidateLoggedIn,
+  activeCandidate,
+  setActiveCandidate,
   jobOfferings,
   activeJob,
   setJobOfferings,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
   setActiveJob,
   colorScheme,
 }) {
@@ -152,11 +150,8 @@ function AddNewJobOffer({
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        jobOfferings={jobOfferings}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header activeJob={activeJob} colorScheme={colorScheme} />
       <Container inputColor={colorScheme}>

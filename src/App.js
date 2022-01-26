@@ -25,8 +25,6 @@ function App() {
   const [activeJob, setActiveJob] = useState({ title: "", id: "" });
   const [activeCandidate, setActiveCandidate] = useState("");
   const [candidateState, setCandidateState] = useState(candidateTestData);
-  const [candidateLoggedIn, setCandidateLoggedIn] = useState(false);
-  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
   const [nickName, setNickName] = useState(Animals);
   const [colorScheme, setColorscheme] = useState(DarkGreen);
 
@@ -48,8 +46,6 @@ useEffect(() => {
             element={
               <Main
                 colorScheme={colorScheme}
-                adminLoggedIn={adminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
                 jobOfferings={jobOfferings}
               />
             }
@@ -63,10 +59,6 @@ useEffect(() => {
                 candidateState={candidateState}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
               />
             }
           />
@@ -83,10 +75,6 @@ useEffect(() => {
                 setActiveCandidate={setActiveCandidate}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
               />
             }
           />
@@ -100,10 +88,7 @@ useEffect(() => {
                 activeJob={activeJob}
                 activeCandidate={activeCandidate}
                 setCandidateState={setCandidateState}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -119,10 +104,6 @@ useEffect(() => {
                 setActiveCandidate={setActiveCandidate}
                 setActiveJob={setActiveJob}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
               />
             }
           />
@@ -139,10 +120,7 @@ useEffect(() => {
                 activeCandidate={activeCandidate}
                 candidateState={candidateState}
                 setCandidateState={setCandidateState}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -155,10 +133,7 @@ useEffect(() => {
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -169,12 +144,9 @@ useEffect(() => {
                 colorScheme={colorScheme}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
                 candidateState={candidateState}
                 nickName={nickName}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -189,11 +161,8 @@ useEffect(() => {
                 candidateState={candidateState}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
                 setActiveJob={setActiveJob}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -208,12 +177,9 @@ useEffect(() => {
                 candidateState={candidateState}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
                 setActiveJob={setActiveJob}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
                 activeCandidate={activeCandidate}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -223,10 +189,6 @@ useEffect(() => {
             element={
               <Login
                 colorScheme={colorScheme}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}

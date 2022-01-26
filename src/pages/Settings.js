@@ -17,18 +17,17 @@ import Brown from "../testData/colorSchemas/lightPink";
 import DarkGreen from "../testData/colorSchemas/darkGreen";
 import PinkPurple from "../testData/colorSchemas/pinkPurple";
 import GreenNature from "../testData/colorSchemas/greenNature";
+import axios from "axios";
+import {
+  createAdmin,
+} from "../API/endpoints";
 
 let counter = 9;
-let newId = "candidate-" + counter;
-let emailTaken = false;
 
 function Settings({
-  jobOfferings,
+  activeCandidate,
   activeJob,
-  adminLoggedIn,
-  candidateLoggedIn,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
+  setActiveCandidate,
   candidateState,
   setCandidateState,
   setActiveJob,
@@ -94,67 +93,47 @@ function Settings({
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
+      setValidated(true);
       event.stopPropagation();
     } else {
-      candidateState.map((candidateInMap) => {
-        if (
-          candidateInMap.email.toLowerCase() ===
-          form.adminMail.value.toLowerCase()
-        ) {
-          emailTaken = true;
-        }
-        return null;
-      });
-      if (emailTaken) {
-        Swal.fire({
-          icon: "error",
-          title: "Email alredy registred",
-          text: "This email is already registred in our database, try register whith an other email",
-          showConfirmButton: false,
-          showDenyButton: false,
-          showCancelButton: true,
-          cancelButtonText: "Try again",
-        });
-        event.stopPropagation();
-        emailTaken = false;
-      } else {
-        counter = counter + 1;
-        newId = "admin-" + counter;
-
-        const newCandidateState = [
-          ...candidateState,
-          {
-            id: newId,
-            nickName: "",
-            firstName: form.addRecruiterFirstName.value,
-            lastName: form.addRecruiterLastName.value,
-            presentation: "",
-            email: form.adminMail.value,
-            password: form.adminDefaultPassword.value,
-            phone: "",
-            experience: [],
-            rate: [],
-            education: [],
-            competencies: [],
-            personality: [],
-            role: "admin",
-          },
-        ];
-        setCandidateState(newCandidateState);
-        Swal.fire({
-          icon: "success",
-          title: "Recruiter added",
-          text:
-            "Choosen password is: " +
-            form.adminDefaultPassword.value +
-            " Dont forget to tell the new recruiter to change it",
-          showConfirmButton: true,
-          showDenyButton: false,
-          showCancelButton: false,
-        });
+      const toSend = {
+        firstName: form.firstNameInputGrid.value, 
+        lastName: form.lastNameInputGrid.value,
+        email: form.emailInputGrid.value, 
+        password: form.passwordInputGrid.value
       }
+      axios.post(`${createAdmin}`,
+        toSend
+     ).then(resp => {
+     
+        if(resp.status === 201){
+          Swal.fire({
+            icon: "success",
+            title: "Created account",
+            text: "Just got a college? Nice for you :)",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Nice",
+          });
+        }
+      }).catch(error => {
+        console.log(error.response.status)
+        if(error.response.status === 400){
+          Swal.fire({
+            icon: "error",
+            title: "Email alredy registred",
+            text: "This email is already registred in our database, try to an other",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Try again",
+          })
+        }else{
+          Swal("Något fick fel!", "Vänligen försök igen", "warning");
+        }
+      });
+      setValidated(false);
     }
-    setValidated(true);
+    
   };
 
   function removeAdmin(indexToRemove) {
@@ -173,18 +152,17 @@ function Settings({
     });
   }
 
-  function changPassword() {}
+  function changPassword() {
+
+  }
 
   return (
     <div>
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        jobOfferings={jobOfferings}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>

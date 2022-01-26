@@ -11,8 +11,7 @@ function CandidateProcesses({
   setActiveJob,
   adminLoggedIn,
   candidateLoggedIn,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
+  setActiveCandidate,
   activeCandidate,
   colorScheme,
 }) {
@@ -21,10 +20,8 @@ function CandidateProcesses({
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header activeJob={activeJob} colorScheme={colorScheme} />
       <Container inputColor={colorScheme}>

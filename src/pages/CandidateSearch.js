@@ -11,16 +11,13 @@ import Swal from "sweetalert2";
 
 function CandidateSearch({
   activeJob,
-  adminLoggedIn,
-  candidateLoggedIn,
+  activeCandidate,
+  setActiveCandidate,
   setCandidateState,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
   candidateState,
   setActiveJob,
   nickName,
   colorScheme,
-  jobOfferings,
 }) {
   const [validated, setValidated] = useState(false);
 
@@ -68,11 +65,8 @@ function CandidateSearch({
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        jobOfferings={jobOfferings}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>
