@@ -120,7 +120,7 @@ function Resume({
           </AboutMe>
           <Skills>
             <H5>Competencies</H5>
-            {activeCandidate.competencies.map((competenceInMap) => {
+            {activeCandidate.competenciesList.map((competenceInMap) => {
               return (
                 <CompetenceDiv key={competenceInMap.id}>
                   <P>
@@ -138,7 +138,7 @@ function Resume({
           <H3>{nickName[activeCandidate.nickName + 0]}</H3>
           <Experience>
             <H5>Job Experience</H5>
-            {activeCandidate.experience.map((experienceInMap) => {
+            {activeCandidate.experienceList.map((experienceInMap) => {
               return (
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
@@ -157,7 +157,7 @@ function Resume({
           </Experience>
           <Experience>
             <H5>Education</H5>
-            {activeCandidate.education.map((educationsInMap) => {
+            {activeCandidate.educationList.map((educationsInMap) => {
               return (
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
@@ -184,7 +184,7 @@ function Resume({
               <Slider
                 key={`openness`}
                 disabled
-                defaultValue={activeCandidate.personality[0].value}
+                defaultValue={activeCandidate.personalityList[0].value}
               />
             </TraitDiv>
             <TraitDiv>
@@ -194,7 +194,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`conscintiousness`}
-                defaultValue={activeCandidate.personality[1].value}
+                defaultValue={activeCandidate.personalityList[1].value}
                 disabled
               />
             </TraitDiv>
@@ -205,7 +205,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`extroversion`}
-                defaultValue={activeCandidate.personality[2].value}
+                defaultValue={activeCandidate.personalityList[2].value}
                 disabled
               />
             </TraitDiv>
@@ -216,7 +216,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`agreableness`}
-                defaultValue={activeCandidate.personality[3].value}
+                defaultValue={activeCandidate.personalityList[3].value}
                 disabled
               />
             </TraitDiv>
@@ -227,7 +227,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`neuroticism`}
-                defaultValue={activeCandidate.personality[4].value}
+                defaultValue={activeCandidate.personalityList[4].value}
                 disabled
               />
             </TraitDiv>
@@ -246,7 +246,7 @@ function Resume({
           </AboutMe>
           <Skills>
             <H5>Competencies</H5>
-            {activeCandidate.competencies.map((competenceInMap) => {
+            {activeCandidate.competenciesList.map((competenceInMap) => {
               return (
                 <CompetenceDiv key={competenceInMap.id}>
                   <P>
@@ -261,7 +261,7 @@ function Resume({
           <H3>{nickName[activeCandidate.nickName + 0]}</H3>
           <Experience inputColor={colorScheme}>
             <H5>Job Experience</H5>
-            {activeCandidate.experience.map((experienceInMap) => {
+            {activeCandidate.experienceList.map((experienceInMap) => {
               return (
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
@@ -277,7 +277,7 @@ function Resume({
           </Experience>
           <Experience inputColor={colorScheme}>
             <H5>Education</H5>
-            {activeCandidate.education.map((educationsInMap) => {
+            {activeCandidate.educationList.map((educationsInMap) => {
               return (
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
@@ -301,7 +301,7 @@ function Resume({
               <Slider
                 key={`openness`}
                 disabled
-                defaultValue={activeCandidate.personality[0].value}
+                defaultValue={activeCandidate.personalityList[0].value}
               />
             </TraitDiv>
             <TraitDiv>
@@ -311,7 +311,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`conscintiousness`}
-                defaultValue={activeCandidate.personality[1].value}
+                defaultValue={activeCandidate.personalityList[1].value}
                 disabled
               />
             </TraitDiv>
@@ -322,7 +322,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`extroversion`}
-                defaultValue={activeCandidate.personality[2].value}
+                defaultValue={activeCandidate.personalityList[2].value}
                 disabled
               />
             </TraitDiv>
@@ -333,7 +333,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`agreableness`}
-                defaultValue={activeCandidate.personality[3].value}
+                defaultValue={activeCandidate.personalityList[3].value}
                 disabled
               />
             </TraitDiv>
@@ -344,7 +344,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`neuroticism`}
-                defaultValue={activeCandidate.personality[4].value}
+                defaultValue={activeCandidate.personalityList[4].value}
                 disabled
               />
             </TraitDiv>

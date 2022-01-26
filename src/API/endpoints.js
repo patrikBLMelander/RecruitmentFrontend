@@ -41,7 +41,7 @@ export const moveCandidate = START_URL+BASE_API+ADMIN+RECRUITMENT+CANDIDATES;
 
 //candidate endpoints
 export const getCandidateInfo = START_URL+BASE_API+CANDIDATES
-export const updatePresentation = START_URL+BASE_API+CANDIDATES+PRESENTATION
+export const updatePresentation = START_URL+BASE_API+CANDIDATES+UPDATE+PRESENTATION
 export const addExperience = START_URL+BASE_API+CANDIDATES+EXPERIENCE;
 export const deleteExperience = START_URL+BASE_API+CANDIDATES+EXPERIENCE+DELETE;
 export const addEducation = START_URL+BASE_API+CANDIDATES+EDUCATION;

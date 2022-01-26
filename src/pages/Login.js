@@ -65,7 +65,9 @@ function Login({
           {
             "email": `${responseFromLogin.data.username}`,
             "test": "test"
-          }).then(response => {
+          },
+          {headers: { Authorization: localStorage.getItem("jwtToken") }}).then(response => {
+            
             setActiveCandidate({
                id:response.data.id,
                nickName:response.data.nickName,
@@ -80,11 +82,13 @@ function Login({
               competenciesList:response.data.competenciesList,
               personalityList:response.data.personalityList,
             })
+            localStorage.setItem("activeUser", response.data.email)
+            localStorage.setItem("jwtToken", responseFromLogin.data.jwtToken)
             if(response.data.isAdmin===false){
-              console.log("navigate to candidate")
+
               Navigate("/candidate/my-page")
             }else{
-              console.log("navigate to admin")
+             
               Navigate("/home")
             }
           })
