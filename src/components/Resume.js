@@ -3,6 +3,13 @@ import styled from "styled-components";
 import { CloseO } from "@styled-icons/evil/CloseO";
 import Swal from "sweetalert2";
 import Slider from "@mui/material/Slider";
+import axios from "axios";
+import {
+  getCandidateInfo,
+  deleteExperience,
+  deleteEducation,
+  deleteCompetence,
+} from "../API/endpoints";
 
 function Resume({
   activeCandidate,
@@ -23,25 +30,61 @@ function Resume({
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        let test = candidateState;
-        candidateState.map((candidateStateInMap, cIndex) => {
-          if (candidateState[cIndex].id === activeCandidate.id) {
-            candidateState[cIndex].experience.map((experienceToCheck) => {
-              if (experienceToCheck.id === experienceInMap.id) {
-                test[cIndex].experience = [
-                  ...candidateState[cIndex].experience.filter(
-                    (experience) => experience.id !== experienceInMap.id
-                  ),
-                ];
+        axios
+          .delete(
+            `${deleteExperience}`,
+            {
+              data: {
+                candidateId: `${activeCandidate.id}`,
+                toRemove: `${experienceInMap.id}`,
+              },
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwtToken"),
+              },
+            }
+          )
+          .then((response) => {
+            const email = localStorage.getItem("activeUser");
 
-                setCandidateState(test);
-                setActiveCandidate(test[cIndex]);
-              }
-              return null;
+            axios
+              .post(
+                `${getCandidateInfo}`,
+                {
+                  email: `${email}`,
+                  test: "test",
+                },
+                { headers: { Authorization: localStorage.getItem("jwtToken") } }
+              )
+              .then((response) => {
+                setActiveCandidate({
+                  id: response.data.id,
+                  nickName: response.data.nickName,
+                  email: response.data.email,
+                  presentation: response.data.presentation,
+                  isAdmin: response.data.isAdmin,
+                  colorChoice: response.data.colorChoice,
+                  nickNameChoice: response.data.nickNameChoice,
+                  roleList: response.data.roleList,
+                  experienceList: response.data.experienceList,
+                  educationList: response.data.educationList,
+                  competenciesList: response.data.competenciesList,
+                  personalityList: response.data.personalityList,
+                });
+              });
+          })
+          .catch((error) => {
+            console.error(error.response);
+            Swal.fire({
+              icon: "error",
+              title: "Serverfel",
+              text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+              showDenyButton: false,
+              showCancelButton: false,
+              confirmButtonText: "Try again",
             });
-          }
-          return null;
-        });
+          });
       }
     });
   }
@@ -143,7 +186,11 @@ function Resume({
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
                     <H5>{experienceInMap.title}</H5>
-                    <H5>{experienceInMap.startDate + " to " + experienceInMap.endDate}</H5>
+                    <H5>
+                      {experienceInMap.startDate +
+                        " to " +
+                        experienceInMap.endDate}
+                    </H5>
                     <StyledCloseBtn
                       onClick={() => removeExperience(experienceInMap)}
                     />
@@ -162,7 +209,11 @@ function Resume({
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
                     <H5>{educationsInMap.title}</H5>
-                    <H5>{educationsInMap.startDate + " to " + educationsInMap.endDate}</H5>
+                    <H5>
+                      {educationsInMap.startDate +
+                        " to " +
+                        educationsInMap.endDate}
+                    </H5>
                     <StyledCloseBtn
                       onClick={() => removeEducation(educationsInMap)}
                     />
@@ -266,7 +317,11 @@ function Resume({
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
                     <H5>{experienceInMap.title}</H5>
-                    <H5>{experienceInMap.startDate + " to " + experienceInMap.endDate}</H5>
+                    <H5>
+                      {experienceInMap.startDate +
+                        " to " +
+                        experienceInMap.endDate}
+                    </H5>
                   </TitleAndPeriod>
                   <JobDescription>
                     <P>{experienceInMap.description}</P>
@@ -282,7 +337,11 @@ function Resume({
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
                     <H5>{educationsInMap.title}</H5>
-                    <H5>{educationsInMap.startDate + " to " + educationsInMap.endDate}</H5>
+                    <H5>
+                      {educationsInMap.startDate +
+                        " to " +
+                        educationsInMap.endDate}
+                    </H5>
                   </TitleAndPeriod>
                   <JobDescription>
                     <P>{educationsInMap.description}</P>

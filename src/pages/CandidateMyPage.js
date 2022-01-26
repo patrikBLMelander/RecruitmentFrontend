@@ -7,6 +7,7 @@ import {
   addEducation,
   addExperience,
   addCompetence,
+  deleteExperience,
 } from "../API/endpoints";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
@@ -199,21 +200,34 @@ function CandidateMyPage({
           { headers: { Authorization: localStorage.getItem("jwtToken") } }
         )
         .then((response) => {
-          setActiveCandidate({
-            id: response.data.id,
-            nickName: response.data.nickName,
-            email: response.data.email,
-            presentation: response.data.presentation,
-            isAdmin: response.data.isAdmin,
-            colorChoice: response.data.colorChoice,
-            nickNameChoice: response.data.nickNameChoice,
-            roleList: response.data.roleList,
-            experienceList: response.data.experienceList,
-            educationList: response.data.educationList,
-            competenciesList: response.data.competenciesList,
-            personalityList: response.data.personalityList,
+        const email = localStorage.getItem("activeUser");
+
+        axios
+          .post(
+            `${getCandidateInfo}`,
+            {
+              email: `${email}`,
+              test: "test",
+            },
+            { headers: { Authorization: localStorage.getItem("jwtToken") } }
+          )
+          .then((response) => {
+            setActiveCandidate({
+              id: response.data.id,
+              nickName: response.data.nickName,
+              email: response.data.email,
+              presentation: response.data.presentation,
+              isAdmin: response.data.isAdmin,
+              colorChoice: response.data.colorChoice,
+              nickNameChoice: response.data.nickNameChoice,
+              roleList: response.data.roleList,
+              experienceList: response.data.experienceList,
+              educationList: response.data.educationList,
+              competenciesList: response.data.competenciesList,
+              personalityList: response.data.personalityList,
+            });
           });
-        });
+      });
       setCompetenceValue("");
       setYearsValue("");
 
