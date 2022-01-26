@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import {getCandidateInfo, updatePresentation} from "../API/endpoints";
+import {getCandidateInfo, updatePresentation, updatePersonality} from "../API/endpoints";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -34,7 +34,7 @@ function CandidateMyPage({
   if(activeCandidate==""){
     axios.post(`${getCandidateInfo}`,
     {
-      "email": localStorage.getItem("activeCandidate"),
+      "email": `${localStorage.getItem("activeUser")}`,
       "test": "test"
     },
     {headers: 
@@ -57,7 +57,6 @@ function CandidateMyPage({
         })
         }
     )}
-    console.log(activeCandidate);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -117,13 +116,13 @@ function CandidateMyPage({
   const [openness, setOpenness] = useState(
     activeCandidate.personalityList[0].value
   );
-  const [conscintiousness, setConscintiousness] = useState(
+  const [conscientiousness, setConscintiousness] = useState(
     activeCandidate.personalityList[1].value
   );
   const [extroversion, setExtroversion] = useState(
     activeCandidate.personalityList[2].value
   );
-  const [agreableness, setAgreableness] = useState(
+  const [agreeableness, setAgreableness] = useState(
     activeCandidate.personalityList[3].value
   );
   const [neuroticism, setNeuroticism] = useState(
@@ -338,18 +337,49 @@ function CandidateMyPage({
 
   function savePersonality(event) {
     event.preventDefault();
-    let newCandidateState = candidateState;
-    candidateState.map((candidateStateInMap, index) => {
-      if (candidateStateInMap.id === activeCandidate.id) {
-        newCandidateState[index].personality.map((personalityInMap, pIndex) => {
-          console.log(event.target[pIndex].value);
-          newCandidateState[index].personality[pIndex].value =
-            event.target[pIndex].value;
-          return null;
-        });
+    console.log(openness)
 
-        setCandidateState(newCandidateState);
-        setActiveCandidate(newCandidateState[index]);
+    axios.put(`${updatePersonality}`,
+    {
+      "userId": `${activeCandidate.id}`,
+      "openness": openness,
+      "conscientiousness": conscientiousness,
+      "extroversion": extroversion,
+      "agreeableness": agreeableness,
+      "neuroticism": neuroticism,
+
+    },
+    {headers: 
+        { Authorization: localStorage.getItem("jwtToken") }
+    }).then(response => {
+        const email = localStorage.getItem("activeUser")
+
+        axios.post(`${getCandidateInfo}`,
+        {
+          "email": `${email}`,
+          "test": "test"
+        },
+        {headers: 
+            { Authorization: localStorage.getItem("jwtToken") }
+        }).then(response => {
+          
+            setActiveCandidate({
+                id:response.data.id,
+                nickName:response.data.nickName,
+                email:response.data.email,
+                presentation:response.data.presentation,
+                isAdmin:response.data.isAdmin,
+                colorChoice:response.data.colorChoice,
+                nickNameChoice:response.data.nickNameChoice,
+                roleList:response.data.roleList,
+                experienceList:response.data.experienceList,
+                educationList:response.data.educationList,
+                competenciesList:response.data.competenciesList,
+                personalityList:response.data.personalityList,
+            })
+            }
+        )})
+
         Swal.fire({
           title: "Personality Saved",
           text: "Not satifyed? Just change it",
@@ -357,10 +387,8 @@ function CandidateMyPage({
           showConfirmButton: false,
           timer: 3000,
         });
-      }
-      return null;
-    });
-  }
+    }
+    
 
   return (
     <div>
@@ -564,7 +592,7 @@ function CandidateMyPage({
                 </TraitText>
                 <Slider
                   key={`conscintiousness`}
-                  value={conscintiousness}
+                  value={conscientiousness}
                   onChange={handleConscintiousnessChange}
                 />
               </TraitDiv>
@@ -586,7 +614,7 @@ function CandidateMyPage({
                 </TraitText>
                 <Slider
                   key={`agreableness`}
-                  value={agreableness}
+                  value={agreeableness}
                   onChange={handleAgreablenessChange}
                 />
               </TraitDiv>

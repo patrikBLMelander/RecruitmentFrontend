@@ -94,9 +94,27 @@ function Login({
           })
         }
     })
-    .catch((err) => {
-      console.log(err)
-        alert("Serverfel!");
+    .catch((error) => {
+      if (error.response.status === 403) {
+        Swal.fire({
+          icon: "error",
+          title: "Fel användarnamn eller lösenord",
+          text: "Vi hittade tyvärr inget matchande användarnamn eller lösenord,",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Try again",
+        })
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Serverfel",
+          text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Try again",
+        })
+      }
+
     });
 
 
