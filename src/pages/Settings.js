@@ -97,10 +97,10 @@ function Settings({
       event.stopPropagation();
     } else {
       const toSend = {
-        firstName: form.firstNameInputGrid.value, 
-        lastName: form.lastNameInputGrid.value,
-        email: form.emailInputGrid.value, 
-        password: form.passwordInputGrid.value
+        firstName: form.addRecruiterFirstName.value, 
+        lastName: form.addRecruiterLastName.value,
+        email: form.adminMail.value, 
+        password: form.adminDefaultPassword.value
       }
       axios.post(`${createAdmin}`,
         toSend
@@ -109,11 +109,14 @@ function Settings({
         if(resp.status === 201){
           Swal.fire({
             icon: "success",
-            title: "Created account",
-            text: "Just got a college? Nice for you :)",
+            title: "Recruiter added",
+            text:
+              "Choosen password is: < " +
+              form.adminDefaultPassword.value +
+              " > Dont forget to tell the new recruiter to change it",
+            showConfirmButton: true,
             showDenyButton: false,
             showCancelButton: false,
-            confirmButtonText: "Nice",
           });
         }
       }).catch(error => {

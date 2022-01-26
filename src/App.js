@@ -134,6 +134,7 @@ useEffect(() => {
                 setJobOfferings={setJobOfferings}
                 activeJob={activeJob}
                 setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
               />
             }
           />
@@ -147,6 +148,7 @@ useEffect(() => {
                 candidateState={candidateState}
                 nickName={nickName}
                 setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
               />
             }
           />
@@ -163,6 +165,7 @@ useEffect(() => {
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
                 setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
               />
             }
           />
@@ -194,6 +197,7 @@ useEffect(() => {
                 setActiveJob={setActiveJob}
                 candidateState={candidateState}
                 setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
               />
             }
           />
