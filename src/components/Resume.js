@@ -97,28 +97,64 @@ function Resume({
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        let test = candidateState;
-        candidateState.map((candidateStateInMap, cIndex) => {
-          if (candidateState[cIndex].id === activeCandidate.id) {
-            candidateState[cIndex].competencies.map((competenciesToCheck) => {
-              if (competenciesToCheck.id === competenceInMap.id) {
-                test[cIndex].competencies = [
-                  ...candidateState[cIndex].competencies.filter(
-                    (competencies) => competencies.id !== competenceInMap.id
-                  ),
-                ];
-
-                setCandidateState(test);
-                setActiveCandidate(test[cIndex]);
-              }
-              return null;
-            });
+        axios
+        .delete(
+          `${deleteCompetence}`,
+          {
+            data: {
+              candidateId: `${activeCandidate.id}`,
+              toRemove: `${competenceInMap.id}`,
+            },
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwtToken"),
+            },
           }
-          return null;
+        )
+        .then((response) => {
+          const email = localStorage.getItem("activeUser");
+
+          axios
+            .post(
+              `${getCandidateInfo}`,
+              {
+                email: `${email}`,
+                test: "test",
+              },
+              { headers: { Authorization: localStorage.getItem("jwtToken") } }
+            )
+            .then((response) => {
+              setActiveCandidate({
+                id: response.data.id,
+                nickName: response.data.nickName,
+                email: response.data.email,
+                presentation: response.data.presentation,
+                isAdmin: response.data.isAdmin,
+                colorChoice: response.data.colorChoice,
+                nickNameChoice: response.data.nickNameChoice,
+                roleList: response.data.roleList,
+                experienceList: response.data.experienceList,
+                educationList: response.data.educationList,
+                competenciesList: response.data.competenciesList,
+                personalityList: response.data.personalityList,
+              });
+            });
+        })
+        .catch((error) => {
+          console.error(error.response);
+          Swal.fire({
+            icon: "error",
+            title: "Serverfel",
+            text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Try again",
+          });
         });
-      }
-    });
-  }
+    }
+  });
+}
   function removeEducation(educationInMap) {
     Swal.fire({
       title: "Remove Education",
@@ -128,25 +164,61 @@ function Resume({
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        let test = candidateState;
-        candidateState.map((candidateStateInMap, cIndex) => {
-          if (candidateState[cIndex].id === activeCandidate.id) {
-            candidateState[cIndex].education.map((educationToCheck) => {
-              if (educationToCheck.id === educationInMap.id) {
-                test[cIndex].education = [
-                  ...candidateState[cIndex].education.filter(
-                    (education) => education.id !== educationInMap.id
-                  ),
-                ];
+        axios
+          .delete(
+            `${deleteEducation}`,
+            {
+              data: {
+                candidateId: `${activeCandidate.id}`,
+                toRemove: `${educationInMap.id}`,
+              },
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwtToken"),
+              },
+            }
+          )
+          .then((response) => {
+            const email = localStorage.getItem("activeUser");
 
-                setCandidateState(test);
-                setActiveCandidate(test[cIndex]);
-              }
-              return null;
+            axios
+              .post(
+                `${getCandidateInfo}`,
+                {
+                  email: `${email}`,
+                  test: "test",
+                },
+                { headers: { Authorization: localStorage.getItem("jwtToken") } }
+              )
+              .then((response) => {
+                setActiveCandidate({
+                  id: response.data.id,
+                  nickName: response.data.nickName,
+                  email: response.data.email,
+                  presentation: response.data.presentation,
+                  isAdmin: response.data.isAdmin,
+                  colorChoice: response.data.colorChoice,
+                  nickNameChoice: response.data.nickNameChoice,
+                  roleList: response.data.roleList,
+                  experienceList: response.data.experienceList,
+                  educationList: response.data.educationList,
+                  competenciesList: response.data.competenciesList,
+                  personalityList: response.data.personalityList,
+                });
+              });
+          })
+          .catch((error) => {
+            console.error(error.response);
+            Swal.fire({
+              icon: "error",
+              title: "Serverfel",
+              text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+              showDenyButton: false,
+              showCancelButton: false,
+              confirmButtonText: "Try again",
             });
-          }
-          return null;
-        });
+          });
       }
     });
   }
