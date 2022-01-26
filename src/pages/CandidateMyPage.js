@@ -1,6 +1,13 @@
 import React, { useState } from "react";
-import axios from 'axios';
-import {getCandidateInfo, updatePresentation, updatePersonality, addEducation, addExperience} from "../API/endpoints";
+import axios from "axios";
+import {
+  getCandidateInfo,
+  updatePresentation,
+  updatePersonality,
+  addEducation,
+  addExperience,
+  addCompetence,
+} from "../API/endpoints";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -30,47 +37,44 @@ function CandidateMyPage({
   colorScheme,
   nickName,
 }) {
-
-  if(activeCandidate==""){
-    axios.post(`${getCandidateInfo}`,
-    {
-      "email": `${localStorage.getItem("activeUser")}`,
-      "test": "test"
-    },
-    {headers: 
-        { Authorization: localStorage.getItem("jwtToken") }
-    }).then(response => {
-      
+  if (activeCandidate == "") {
+    axios
+      .post(
+        `${getCandidateInfo}`,
+        {
+          email: `${localStorage.getItem("activeUser")}`,
+          test: "test",
+        },
+        { headers: { Authorization: localStorage.getItem("jwtToken") } }
+      )
+      .then((response) => {
         setActiveCandidate({
-            id:response.data.id,
-            nickName:response.data.nickName,
-            email:response.data.email,
-            presentation:response.data.presentation,
-            isAdmin:response.data.isAdmin,
-            colorChoice:response.data.colorChoice,
-            nickNameChoice:response.data.nickNameChoice,
-            roleList:response.data.roleList,
-            experienceList:response.data.experienceList,
-            educationList:response.data.educationList,
-            competenciesList:response.data.competenciesList,
-            personalityList:response.data.personalityList,
-        })
-        }
-    ).catch((error) => {
-        console.error(error.response)
-          Swal.fire({
-            icon: "error",
-            title: "Serverfel",
-            text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
-            showDenyButton: false,
-            showCancelButton: false,
-            confirmButtonText: "Try again",
-          })
-        
-  
+          id: response.data.id,
+          nickName: response.data.nickName,
+          email: response.data.email,
+          presentation: response.data.presentation,
+          isAdmin: response.data.isAdmin,
+          colorChoice: response.data.colorChoice,
+          nickNameChoice: response.data.nickNameChoice,
+          roleList: response.data.roleList,
+          experienceList: response.data.experienceList,
+          educationList: response.data.educationList,
+          competenciesList: response.data.competenciesList,
+          personalityList: response.data.personalityList,
+        });
+      })
+      .catch((error) => {
+        console.error(error.response);
+        Swal.fire({
+          icon: "error",
+          title: "Serverfel",
+          text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Try again",
+        });
       });
-
-}
+  }
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [presentationValidated, setPresentationValidated] = useState(false);
@@ -174,8 +178,6 @@ function CandidateMyPage({
 
   function saveCompetence(event) {
     event.preventDefault();
-    console.log(competenceValue);
-    console.log(yearsValue);
     if (competenceValue === "" || yearsValue === "") {
       Swal.fire({
         title: "Information missing",
@@ -186,38 +188,46 @@ function CandidateMyPage({
       setCompetenceValidated(true);
       event.stopPropagation();
     } else {
-      let newCandidateState = candidateState;
-      candidateState.map((candidateStateInMap, index) => {
-        if (candidateStateInMap.id === activeCandidate.id) {
-          newCandidateState[index].competencies = [
-            ...candidateState[index].competencies,
-            {
-              id: 1,
-              name: competenceValue,
-              years: yearsValue,
-            },
-          ];
-          setCandidateState(newCandidateState);
-          setActiveCandidate(newCandidateState[index]);
-
-          setCompetenceValue("");
-          setYearsValue("");
-
-          Swal.fire({
-            title: "New Competence added!",
-            text: "Your Competence are now updaded and can be seen on the roles you applied for!",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 3000,
+      axios
+        .post(
+          `${addCompetence}`,
+          {
+            userId: `${activeCandidate.id}`,
+            name: `${competenceValue}`,
+            value: yearsValue
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        )
+        .then((response) => {
+          setActiveCandidate({
+            id: response.data.id,
+            nickName: response.data.nickName,
+            email: response.data.email,
+            presentation: response.data.presentation,
+            isAdmin: response.data.isAdmin,
+            colorChoice: response.data.colorChoice,
+            nickNameChoice: response.data.nickNameChoice,
+            roleList: response.data.roleList,
+            experienceList: response.data.experienceList,
+            educationList: response.data.educationList,
+            competenciesList: response.data.competenciesList,
+            personalityList: response.data.personalityList,
           });
-        }
-        return null;
+        });
+      setCompetenceValue("");
+      setYearsValue("");
+
+      Swal.fire({
+        title: "New Competence added!",
+        text: "Your Competence are now updaded and can be seen on the roles you applied for!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 3000,
       });
+      setCompetenceValue("");
+      setYearsValue("");
       setCompetenceValidated(false);
     }
-    
-    setCompetenceValue("");
-    setYearsValue("");
   }
 
   function SavePresentation(event) {
@@ -233,40 +243,39 @@ function CandidateMyPage({
       setPresentationValidated(true);
       event.stopPropagation();
     } else {
-        axios.put(`${updatePresentation}`,
-        {
-          "userId": `${activeCandidate.id}`,
-          "presentation": `${presentation}`
-        },
-        {headers: 
-            { Authorization: localStorage.getItem("jwtToken") }
-        }).then(response => {
-            setActiveCandidate({
-                id:activeCandidate.id,
-                nickName:activeCandidate.nickName,
-                email:activeCandidate.email,
-                presentation: presentation,
-                isAdmin:activeCandidate.isAdmin,
-                colorChoice:activeCandidate.colorChoice,
-                nickNameChoice:activeCandidate.nickNameChoice,
-                roleList:activeCandidate.roleList,
-                experienceList:activeCandidate.experienceList,
-                educationList:activeCandidate.educationList,
-                competenciesList:activeCandidate.competenciesList,
-                personalityList:activeCandidate.personalityList,
-            })
-            }
+      axios
+        .put(
+          `${updatePresentation}`,
+          {
+            userId: `${activeCandidate.id}`,
+            presentation: `${presentation}`,
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
         )
-          Swal.fire({
-            title: "Presentation Saved!",
-            text: "Your presentation are now updaded and can be seen on the roles you applied for!",
-            icon: "success",
-            showConfirmButton: true,
+        .then((response) => {
+          setActiveCandidate({
+            id: activeCandidate.id,
+            nickName: activeCandidate.nickName,
+            email: activeCandidate.email,
+            presentation: presentation,
+            isAdmin: activeCandidate.isAdmin,
+            colorChoice: activeCandidate.colorChoice,
+            nickNameChoice: activeCandidate.nickNameChoice,
+            roleList: activeCandidate.roleList,
+            experienceList: activeCandidate.experienceList,
+            educationList: activeCandidate.educationList,
+            competenciesList: activeCandidate.competenciesList,
+            personalityList: activeCandidate.personalityList,
           });
-          setPresentationValidated(false);
+        });
+      Swal.fire({
+        title: "Presentation Saved!",
+        text: "Your presentation are now updaded and can be seen on the roles you applied for!",
+        icon: "success",
+        showConfirmButton: true,
+      });
+      setPresentationValidated(false);
     }
-
-    
   }
 
   function addEmployment(event) {
@@ -282,63 +291,63 @@ function CandidateMyPage({
       setExperienceValidated(true);
       event.stopPropagation();
     } else {
-        axios.post(`${addExperience}`,
-        {
-          "userId": `${activeCandidate.id}`,
-          "title": `${jobTitle}`,
-          "startDate": `${jobStartDate}`,
-          "endDate": `${jobEndDate}`,
-          "description": `${jobDescription}`,
-        },
-        {headers: 
-            { Authorization: localStorage.getItem("jwtToken") }
-        }).then(response => {
-            const email = localStorage.getItem("activeUser")
-    
-            axios.post(`${getCandidateInfo}`,
-            {
-              "email": `${email}`,
-              "test": "test"
-            },
-            {headers: 
-                { Authorization: localStorage.getItem("jwtToken") }
-            }).then(response => {
-              
-                setActiveCandidate({
-                    id:response.data.id,
-                    nickName:response.data.nickName,
-                    email:response.data.email,
-                    presentation:response.data.presentation,
-                    isAdmin:response.data.isAdmin,
-                    colorChoice:response.data.colorChoice,
-                    nickNameChoice:response.data.nickNameChoice,
-                    roleList:response.data.roleList,
-                    experienceList:response.data.experienceList,
-                    educationList:response.data.educationList,
-                    competenciesList:response.data.competenciesList,
-                    personalityList:response.data.personalityList,
-                })
-                }
-            )})
+      axios
+        .post(
+          `${addExperience}`,
+          {
+            userId: `${activeCandidate.id}`,
+            title: `${jobTitle}`,
+            startDate: `${jobStartDate}`,
+            endDate: `${jobEndDate}`,
+            description: `${jobDescription}`,
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        )
+        .then((response) => {
+          const email = localStorage.getItem("activeUser");
 
+          axios
+            .post(
+              `${getCandidateInfo}`,
+              {
+                email: `${email}`,
+                test: "test",
+              },
+              { headers: { Authorization: localStorage.getItem("jwtToken") } }
+            )
+            .then((response) => {
+              setActiveCandidate({
+                id: response.data.id,
+                nickName: response.data.nickName,
+                email: response.data.email,
+                presentation: response.data.presentation,
+                isAdmin: response.data.isAdmin,
+                colorChoice: response.data.colorChoice,
+                nickNameChoice: response.data.nickNameChoice,
+                roleList: response.data.roleList,
+                experienceList: response.data.experienceList,
+                educationList: response.data.educationList,
+                competenciesList: response.data.competenciesList,
+                personalityList: response.data.personalityList,
+              });
+            });
+        });
 
-            
-          Swal.fire({
-            title: "New Experience added!",
-            text: "Your Experience are now updaded and can be seen on the roles you applied for!",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 3000,
-          });
+      Swal.fire({
+        title: "New Experience added!",
+        text: "Your Experience are now updaded and can be seen on the roles you applied for!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 3000,
+      });
 
-          setJobDescription("")
-          setJobTitle("")
-          setJobStartDate("")
-          setJobEndDate("")
-          setExperienceValidated(false);
-        }
-        
+      setJobDescription("");
+      setJobTitle("");
+      setJobStartDate("");
+      setJobEndDate("");
+      setExperienceValidated(false);
     }
+  }
 
   function addEducationHandler(event) {
     event.preventDefault();
@@ -353,117 +362,118 @@ function CandidateMyPage({
       setEducationValidated(true);
       event.stopPropagation();
     } else {
-        axios.post(`${addEducation}`,
-        {
-          "userId": `${activeCandidate.id}`,
-          "title": `${educationTitle}`,
-          "startDate": `${educationStartDate }`,
-          "endDate": `${educationEndDate}`,
-          "description": `${educationDescription}`,
-        },
-        {headers: 
-            { Authorization: localStorage.getItem("jwtToken") }
-        }).then(response => {
-            const email = localStorage.getItem("activeUser")
-    
-            axios.post(`${getCandidateInfo}`,
-            {
-              "email": `${email}`,
-              "test": "test"
-            },
-            {headers: 
-                { Authorization: localStorage.getItem("jwtToken") }
-            }).then(response => {
-              
-                setActiveCandidate({
-                    id:response.data.id,
-                    nickName:response.data.nickName,
-                    email:response.data.email,
-                    presentation:response.data.presentation,
-                    isAdmin:response.data.isAdmin,
-                    colorChoice:response.data.colorChoice,
-                    nickNameChoice:response.data.nickNameChoice,
-                    roleList:response.data.roleList,
-                    experienceList:response.data.experienceList,
-                    educationList:response.data.educationList,
-                    competenciesList:response.data.competenciesList,
-                    personalityList:response.data.personalityList,
-                })
-                }
-            )})
+      axios
+        .post(
+          `${addEducation}`,
+          {
+            userId: `${activeCandidate.id}`,
+            title: `${educationTitle}`,
+            startDate: `${educationStartDate}`,
+            endDate: `${educationEndDate}`,
+            description: `${educationDescription}`,
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        )
+        .then((response) => {
+          const email = localStorage.getItem("activeUser");
 
+          axios
+            .post(
+              `${getCandidateInfo}`,
+              {
+                email: `${email}`,
+                test: "test",
+              },
+              { headers: { Authorization: localStorage.getItem("jwtToken") } }
+            )
+            .then((response) => {
+              setActiveCandidate({
+                id: response.data.id,
+                nickName: response.data.nickName,
+                email: response.data.email,
+                presentation: response.data.presentation,
+                isAdmin: response.data.isAdmin,
+                colorChoice: response.data.colorChoice,
+                nickNameChoice: response.data.nickNameChoice,
+                roleList: response.data.roleList,
+                experienceList: response.data.experienceList,
+                educationList: response.data.educationList,
+                competenciesList: response.data.competenciesList,
+                personalityList: response.data.personalityList,
+              });
+            });
+        });
 
-            
-          Swal.fire({
-            title: "New Education added!",
-            text: "Your Education are now updaded and can be seen on the roles you applied for!",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 3000,
-          });
+      Swal.fire({
+        title: "New Education added!",
+        text: "Your Education are now updaded and can be seen on the roles you applied for!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 3000,
+      });
 
-          setEducationDescription("");
-          setEducationTitle("");
-          setEducationStartDate("");
-          setEducationEndDate("");
-          setEducationValidated(false);
-        }
-        
+      setEducationDescription("");
+      setEducationTitle("");
+      setEducationStartDate("");
+      setEducationEndDate("");
+      setEducationValidated(false);
     }
+  }
 
   function savePersonality(event) {
     event.preventDefault();
 
-    axios.put(`${updatePersonality}`,
-    {
-      "userId": `${activeCandidate.id}`,
-      "openness": openness,
-      "conscientiousness": conscientiousness,
-      "extroversion": extroversion,
-      "agreeableness": agreeableness,
-      "neuroticism": neuroticism,
-
-    },
-    {headers: 
-        { Authorization: localStorage.getItem("jwtToken") }
-    }).then(response => {
-        const email = localStorage.getItem("activeUser")
-
-        axios.post(`${getCandidateInfo}`,
+    axios
+      .put(
+        `${updatePersonality}`,
         {
-          "email": `${email}`,
-          "test": "test"
+          userId: `${activeCandidate.id}`,
+          openness: openness,
+          conscientiousness: conscientiousness,
+          extroversion: extroversion,
+          agreeableness: agreeableness,
+          neuroticism: neuroticism,
         },
-        {headers: 
-            { Authorization: localStorage.getItem("jwtToken") }
-        }).then(response => {
-          
-            setActiveCandidate({
-                id:response.data.id,
-                nickName:response.data.nickName,
-                email:response.data.email,
-                presentation:response.data.presentation,
-                isAdmin:response.data.isAdmin,
-                colorChoice:response.data.colorChoice,
-                nickNameChoice:response.data.nickNameChoice,
-                roleList:response.data.roleList,
-                experienceList:response.data.experienceList,
-                educationList:response.data.educationList,
-                competenciesList:response.data.competenciesList,
-                personalityList:response.data.personalityList,
-            })
-            }
-        )})
+        { headers: { Authorization: localStorage.getItem("jwtToken") } }
+      )
+      .then((response) => {
+        const email = localStorage.getItem("activeUser");
 
-        Swal.fire({
-          title: "Personality Saved",
-          text: "Not satifyed? Just change it",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-    }
-    
+        axios
+          .post(
+            `${getCandidateInfo}`,
+            {
+              email: `${email}`,
+              test: "test",
+            },
+            { headers: { Authorization: localStorage.getItem("jwtToken") } }
+          )
+          .then((response) => {
+            setActiveCandidate({
+              id: response.data.id,
+              nickName: response.data.nickName,
+              email: response.data.email,
+              presentation: response.data.presentation,
+              isAdmin: response.data.isAdmin,
+              colorChoice: response.data.colorChoice,
+              nickNameChoice: response.data.nickNameChoice,
+              roleList: response.data.roleList,
+              experienceList: response.data.experienceList,
+              educationList: response.data.educationList,
+              competenciesList: response.data.competenciesList,
+              personalityList: response.data.personalityList,
+            });
+          });
+      });
+
+    Swal.fire({
+      title: "Personality Saved",
+      text: "Not satifyed? Just change it",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  }
 
   return (
     <div>
@@ -481,7 +491,11 @@ function CandidateMyPage({
       <Container inputColor={colorScheme}>
         <InnerContainer>
           {/* FORM TO PERSONAL DESCRIPTION*/}
-          <Form noValidate validated={presentationValidated} onSubmit={SavePresentation}>
+          <Form
+            noValidate
+            validated={presentationValidated}
+            onSubmit={SavePresentation}
+          >
             <Form.Group className="mb-3 ms-3 me-5" controlId="presentation">
               <H4>Describe your self and why you are so assume!</H4>
               <Form.Control
@@ -504,7 +518,11 @@ function CandidateMyPage({
             />
           </Form>
           {/* FORM TO JOB EXPERIENCE */}
-          <Form noValidate validated={experienceValidated} onSubmit={addEmployment}>
+          <Form
+            noValidate
+            validated={experienceValidated}
+            onSubmit={addEmployment}
+          >
             <H4>Here is the place to add your job experience!</H4>
             <Row className="g-2 ms-3 me-5 mt-1">
               <Col>
@@ -575,7 +593,11 @@ function CandidateMyPage({
           </Form>
 
           {/* FORM TO EDUCATION */}
-          <Form noValidate validated={educationValidated} onSubmit={addEducationHandler}>
+          <Form
+            noValidate
+            validated={educationValidated}
+            onSubmit={addEducationHandler}
+          >
             <H4>Here is the place to add your education experience!</H4>
             <Row className="g-2 ms-3 me-5 mt-1">
               <Col md>
@@ -712,7 +734,11 @@ function CandidateMyPage({
             </PersonalityDiv>
           </Form>
           <H4>Competence</H4>
-          <Form noValidate validated={competenceValidated} onSubmit={saveCompetence}>
+          <Form
+            noValidate
+            validated={competenceValidated}
+            onSubmit={saveCompetence}
+          >
             <CompetenceDiv>
               <CompetenceCol>
                 <FloatingLabel controlId="TitleInputGrid" label="Competence">

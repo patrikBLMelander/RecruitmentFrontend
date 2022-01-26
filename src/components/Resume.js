@@ -124,7 +124,7 @@ function Resume({
               return (
                 <CompetenceDiv key={competenceInMap.id}>
                   <P>
-                    {competenceInMap.name} - {competenceInMap.years} years
+                    {competenceInMap.name} - {competenceInMap.value} years
                   </P>
                   <StyledCloseBtn
                     onClick={() => removeCompetence(competenceInMap)}
@@ -250,7 +250,7 @@ function Resume({
               return (
                 <CompetenceDiv key={competenceInMap.id}>
                   <P>
-                    {competenceInMap.name} - {competenceInMap.years} years
+                    {competenceInMap.name} - {competenceInMap.value} years
                   </P>
                 </CompetenceDiv>
               );
