@@ -183,6 +183,7 @@ function CandidateMyPage({
         icon: "error",
         showConfirmButton: true,
       });
+      setCompetenceValidated(true);
       event.stopPropagation();
     } else {
       let newCandidateState = candidateState;
@@ -212,8 +213,9 @@ function CandidateMyPage({
         }
         return null;
       });
+      setCompetenceValidated(false);
     }
-    setCompetenceValidated(true);
+    
     setCompetenceValue("");
     setYearsValue("");
   }
@@ -228,6 +230,7 @@ function CandidateMyPage({
         icon: "error",
         showConfirmButton: true,
       });
+      setPresentationValidated(true);
       event.stopPropagation();
     } else {
         axios.put(`${updatePresentation}`,
@@ -260,10 +263,10 @@ function CandidateMyPage({
             icon: "success",
             showConfirmButton: true,
           });
-
+          setPresentationValidated(false);
     }
 
-    setPresentationValidated(true);
+    
   }
 
   function addEmployment(event) {
@@ -276,6 +279,7 @@ function CandidateMyPage({
         icon: "error",
         showConfirmButton: true,
       });
+      setExperienceValidated(true);
       event.stopPropagation();
     } else {
         axios.post(`${addExperience}`,
@@ -331,8 +335,9 @@ function CandidateMyPage({
           setJobTitle("")
           setJobStartDate("")
           setJobEndDate("")
+          setExperienceValidated(false);
         }
-        setExperienceValidated(true);
+        
     }
 
   function addEducationHandler(event) {
@@ -345,6 +350,7 @@ function CandidateMyPage({
         icon: "error",
         showConfirmButton: true,
       });
+      setEducationValidated(true);
       event.stopPropagation();
     } else {
         axios.post(`${addEducation}`,
@@ -400,8 +406,9 @@ function CandidateMyPage({
           setEducationTitle("");
           setEducationStartDate("");
           setEducationEndDate("");
+          setEducationValidated(false);
         }
-        setEducationValidated(true);
+        
     }
 
   function savePersonality(event) {
