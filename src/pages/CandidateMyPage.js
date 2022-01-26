@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import {getCandidateInfo, updatePresentation, updatePersonality, addEducation} from "../API/endpoints";
+import {getCandidateInfo, updatePresentation, updatePersonality, addEducation, addExperience} from "../API/endpoints";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -73,7 +73,11 @@ function CandidateMyPage({
 }
 
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [validated, setValidated] = useState(false);
+  const [presentationValidated, setPresentationValidated] = useState(false);
+  const [experienceValidated, setExperienceValidated] = useState(false);
+  const [educationValidated, setEducationValidated] = useState(false);
+  const [competenceValidated, setCompetenceValidated] = useState(false);
+
   function openModal() {
     setIsOpen(true);
   }
@@ -209,7 +213,7 @@ function CandidateMyPage({
         return null;
       });
     }
-
+    setCompetenceValidated(true);
     setCompetenceValue("");
     setYearsValue("");
   }
@@ -259,7 +263,7 @@ function CandidateMyPage({
 
     }
 
-    setValidated(true);
+    setPresentationValidated(true);
   }
 
   function addEmployment(event) {
@@ -274,19 +278,47 @@ function CandidateMyPage({
       });
       event.stopPropagation();
     } else {
-      let newCandidateState = candidateState;
-      candidateState.map((candidateStateInMap, index) => {
-        if (candidateStateInMap.id === activeCandidate.id) {
-          newCandidateState[index].experience = [
-            ...candidateState[index].experience,
+        axios.post(`${addExperience}`,
+        {
+          "userId": `${activeCandidate.id}`,
+          "title": `${jobTitle}`,
+          "startDate": `${jobStartDate}`,
+          "endDate": `${jobEndDate}`,
+          "description": `${jobDescription}`,
+        },
+        {headers: 
+            { Authorization: localStorage.getItem("jwtToken") }
+        }).then(response => {
+            const email = localStorage.getItem("activeUser")
+    
+            axios.post(`${getCandidateInfo}`,
             {
-              title: jobTitle,
-              period: jobStartDate + " to " + jobEndDate,
-              description: jobDescription,
+              "email": `${email}`,
+              "test": "test"
             },
-          ];
-          setCandidateState(newCandidateState);
-          setActiveCandidate(newCandidateState[index]);
+            {headers: 
+                { Authorization: localStorage.getItem("jwtToken") }
+            }).then(response => {
+              
+                setActiveCandidate({
+                    id:response.data.id,
+                    nickName:response.data.nickName,
+                    email:response.data.email,
+                    presentation:response.data.presentation,
+                    isAdmin:response.data.isAdmin,
+                    colorChoice:response.data.colorChoice,
+                    nickNameChoice:response.data.nickNameChoice,
+                    roleList:response.data.roleList,
+                    experienceList:response.data.experienceList,
+                    educationList:response.data.educationList,
+                    competenciesList:response.data.competenciesList,
+                    personalityList:response.data.personalityList,
+                })
+                }
+            )})
+
+
+            
           Swal.fire({
             title: "New Experience added!",
             text: "Your Experience are now updaded and can be seen on the roles you applied for!",
@@ -294,16 +326,14 @@ function CandidateMyPage({
             showConfirmButton: false,
             timer: 3000,
           });
-          setJobDescription("");
-          setJobTitle("");
-          setJobStartDate("");
-          setJobEndDate("");
+
+          setJobDescription("")
+          setJobTitle("")
+          setJobStartDate("")
+          setJobEndDate("")
         }
-        return null;
-      });
+        setExperienceValidated(true);
     }
-    setValidated(true);
-  }
 
   function addEducationHandler(event) {
     event.preventDefault();
@@ -359,8 +389,8 @@ function CandidateMyPage({
 
             
           Swal.fire({
-            title: "New Experience added!",
-            text: "Your Experience are now updaded and can be seen on the roles you applied for!",
+            title: "New Education added!",
+            text: "Your Education are now updaded and can be seen on the roles you applied for!",
             icon: "success",
             showConfirmButton: false,
             timer: 3000,
@@ -371,6 +401,7 @@ function CandidateMyPage({
           setEducationStartDate("");
           setEducationEndDate("");
         }
+        setEducationValidated(true);
     }
 
   function savePersonality(event) {
@@ -443,7 +474,7 @@ function CandidateMyPage({
       <Container inputColor={colorScheme}>
         <InnerContainer>
           {/* FORM TO PERSONAL DESCRIPTION*/}
-          <Form noValidate validated={validated} onSubmit={SavePresentation}>
+          <Form noValidate validated={presentationValidated} onSubmit={SavePresentation}>
             <Form.Group className="mb-3 ms-3 me-5" controlId="presentation">
               <H4>Describe your self and why you are so assume!</H4>
               <Form.Control
@@ -466,7 +497,7 @@ function CandidateMyPage({
             />
           </Form>
           {/* FORM TO JOB EXPERIENCE */}
-          <Form noValidate validated={validated} onSubmit={addEmployment}>
+          <Form noValidate validated={experienceValidated} onSubmit={addEmployment}>
             <H4>Here is the place to add your job experience!</H4>
             <Row className="g-2 ms-3 me-5 mt-1">
               <Col>
@@ -537,7 +568,7 @@ function CandidateMyPage({
           </Form>
 
           {/* FORM TO EDUCATION */}
-          <Form noValidate validated={validated} onSubmit={addEducationHandler}>
+          <Form noValidate validated={educationValidated} onSubmit={addEducationHandler}>
             <H4>Here is the place to add your education experience!</H4>
             <Row className="g-2 ms-3 me-5 mt-1">
               <Col md>
@@ -674,7 +705,7 @@ function CandidateMyPage({
             </PersonalityDiv>
           </Form>
           <H4>Competence</H4>
-          <Form noValidate validated={validated} onSubmit={saveCompetence}>
+          <Form noValidate validated={competenceValidated} onSubmit={saveCompetence}>
             <CompetenceDiv>
               <CompetenceCol>
                 <FloatingLabel controlId="TitleInputGrid" label="Competence">
