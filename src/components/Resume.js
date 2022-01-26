@@ -143,7 +143,7 @@ function Resume({
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
                     <H5>{experienceInMap.title}</H5>
-                    <H5>{experienceInMap.period}</H5>
+                    <H5>{experienceInMap.startDate + " to " + experienceInMap.endDate}</H5>
                     <StyledCloseBtn
                       onClick={() => removeExperience(experienceInMap)}
                     />
@@ -162,7 +162,7 @@ function Resume({
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
                     <H5>{educationsInMap.title}</H5>
-                    <H5>{educationsInMap.period}</H5>
+                    <H5>{educationsInMap.startDate + " to " + educationsInMap.endDate}</H5>
                     <StyledCloseBtn
                       onClick={() => removeEducation(educationsInMap)}
                     />
@@ -266,7 +266,7 @@ function Resume({
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
                     <H5>{experienceInMap.title}</H5>
-                    <H5>{experienceInMap.period}</H5>
+                    <H5>{experienceInMap.startDate + " to " + experienceInMap.endDate}</H5>
                   </TitleAndPeriod>
                   <JobDescription>
                     <P>{experienceInMap.description}</P>
@@ -282,7 +282,7 @@ function Resume({
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
                     <H5>{educationsInMap.title}</H5>
-                    <H5>{educationsInMap.period}</H5>
+                    <H5>{educationsInMap.startDate + " to " + educationsInMap.endDate}</H5>
                   </TitleAndPeriod>
                   <JobDescription>
                     <P>{educationsInMap.description}</P>

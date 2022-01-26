@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import {getCandidateInfo, updatePresentation, updatePersonality} from "../API/endpoints";
+import {getCandidateInfo, updatePresentation, updatePersonality, addEducation} from "../API/endpoints";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -56,7 +56,21 @@ function CandidateMyPage({
             personalityList:response.data.personalityList,
         })
         }
-    )}
+    ).catch((error) => {
+        console.error(error.response)
+          Swal.fire({
+            icon: "error",
+            title: "Serverfel",
+            text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Try again",
+          })
+        
+  
+      });
+
+}
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -291,7 +305,7 @@ function CandidateMyPage({
     setValidated(true);
   }
 
-  function addEducation(event) {
+  function addEducationHandler(event) {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -303,19 +317,47 @@ function CandidateMyPage({
       });
       event.stopPropagation();
     } else {
-      let newCandidateState = candidateState;
-      candidateState.map((candidateStateInMap, index) => {
-        if (candidateStateInMap.id === activeCandidate.id) {
-          newCandidateState[index].education = [
-            ...candidateState[index].education,
+        axios.post(`${addEducation}`,
+        {
+          "userId": `${activeCandidate.id}`,
+          "title": `${educationTitle}`,
+          "startDate": `${educationStartDate }`,
+          "endDate": `${educationEndDate}`,
+          "description": `${educationDescription}`,
+        },
+        {headers: 
+            { Authorization: localStorage.getItem("jwtToken") }
+        }).then(response => {
+            const email = localStorage.getItem("activeUser")
+    
+            axios.post(`${getCandidateInfo}`,
             {
-              title: educationTitle,
-              period: educationStartDate + " to " + educationEndDate,
-              description: educationDescription,
+              "email": `${email}`,
+              "test": "test"
             },
-          ];
-          setCandidateState(newCandidateState);
-          setActiveCandidate(newCandidateState[index]);
+            {headers: 
+                { Authorization: localStorage.getItem("jwtToken") }
+            }).then(response => {
+              
+                setActiveCandidate({
+                    id:response.data.id,
+                    nickName:response.data.nickName,
+                    email:response.data.email,
+                    presentation:response.data.presentation,
+                    isAdmin:response.data.isAdmin,
+                    colorChoice:response.data.colorChoice,
+                    nickNameChoice:response.data.nickNameChoice,
+                    roleList:response.data.roleList,
+                    experienceList:response.data.experienceList,
+                    educationList:response.data.educationList,
+                    competenciesList:response.data.competenciesList,
+                    personalityList:response.data.personalityList,
+                })
+                }
+            )})
+
+
+            
           Swal.fire({
             title: "New Experience added!",
             text: "Your Experience are now updaded and can be seen on the roles you applied for!",
@@ -329,15 +371,10 @@ function CandidateMyPage({
           setEducationStartDate("");
           setEducationEndDate("");
         }
-        return null;
-      });
     }
-    setValidated(true);
-  }
 
   function savePersonality(event) {
     event.preventDefault();
-    console.log(openness)
 
     axios.put(`${updatePersonality}`,
     {
@@ -500,7 +537,7 @@ function CandidateMyPage({
           </Form>
 
           {/* FORM TO EDUCATION */}
-          <Form noValidate validated={validated} onSubmit={addEducation}>
+          <Form noValidate validated={validated} onSubmit={addEducationHandler}>
             <H4>Here is the place to add your education experience!</H4>
             <Row className="g-2 ms-3 me-5 mt-1">
               <Col md>
