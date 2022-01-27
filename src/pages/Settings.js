@@ -179,8 +179,8 @@ function Settings({
         if(response.status===202){
           Swal.fire({
             icon: "success",
-            title: response.data,
-            text:  "",
+            title: "Lösenord ändrat!",
+            text:  "Ditt lösenord är nu ändrat.",
             showConfirmButton: true,
             showDenyButton: false,
             showCancelButton: false,
