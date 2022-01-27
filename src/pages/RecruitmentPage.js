@@ -8,12 +8,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 function RecruitmentPage({
-  jobOfferings,
-  setJobOfferings,
   activeJob,
   setActiveJob,
-  candidateState,
-  setCandidateState,
   activeCandidate,
   setActiveCandidate,
   nickName,
@@ -138,10 +134,6 @@ function RecruitmentPage({
                       <RecruitmentProcessSteps            
                         key={recruitmentList.id}
                         index={index}
-                        jobOfferings={jobOfferings}
-                        setJobOfferings={setJobOfferings}
-                        candidateState={candidateState}
-                        setCandidateState={setCandidateState}
                         activeJobId={activeJob.id}
                         nickName={nickName}
                         colorScheme={colorScheme}

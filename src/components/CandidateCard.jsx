@@ -6,8 +6,6 @@ import ApplicantCardModal from "./Modal/ApplicantCardModal";
 function CandidateCard({
   index,
   candidate,
-  candidateState,
-  setCandidateState,
   activeJob,
   nickName,
   colorScheme,
@@ -27,8 +25,6 @@ function CandidateCard({
                 <ApplicantCardModal
                   key={candidate.id}
                   candidate={candidate}
-                  candidateState={candidateState}
-                  setCandidateState={setCandidateState}
                   activeJob={activeJob}
                   nickName={nickName}
                   colorScheme={colorScheme}

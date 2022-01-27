@@ -6,10 +6,6 @@ import RemoveBtn from "./RemoveList";
 
 function RecruitmentProcessStep({
   index,
-  jobOfferings,
-  setJobOfferings,
-  candidateState,
-  setCandidateState,
   colorScheme,
   activeJob,
   nickName,
@@ -40,8 +36,6 @@ function RecruitmentProcessStep({
                       candidate={candidate}
                       index={index}
                       key={candidate.id}
-                      candidateState={candidateState}
-                      setCandidateState={setCandidateState}
                       activeJob={activeJob}
                       nickName={nickName}
                       colorScheme={colorScheme}
