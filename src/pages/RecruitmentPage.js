@@ -6,6 +6,12 @@ import AddListBtn from "../components/AddListBtn";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import axios from "axios";
+import {
+  moveRecruitmentStep,
+  moveCandidate,
+  getAllJobOffers,
+} from "../API/endpoints";
 
 function RecruitmentPage({
   activeJob,
@@ -14,12 +20,9 @@ function RecruitmentPage({
   setActiveCandidate,
   nickName,
   colorScheme,
+  setJobOfferings
 }) {
 
-  useEffect(() => {
-    return()=>{//Lägg kod för att spara till databas
-    }
-  })
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
         //If you dop outside dropzone
@@ -55,6 +58,22 @@ function RecruitmentPage({
             RecInfoToPutIn
           );
           setActiveJob(newActiveJob);
+
+          axios
+            .put(
+              `${moveRecruitmentStep}`,
+              {
+                recruitmentId: `${draggableId}`,
+                jobOfferId: `${activeJob.id}`,
+                newIndex: destination.index
+              },
+              { headers: { Authorization: localStorage.getItem("jwtToken") } }
+            ).then(resp => {
+
+              console.log(resp.data)
+          
+            })
+
           return null;
         }
         const home = source.droppableId;
@@ -105,6 +124,20 @@ function RecruitmentPage({
         RecTo.candidateList.splice(destination.index, 0, candidateToMove);
 
         setActiveJob(activeJob);
+        
+        axios
+        .put(
+          `${moveCandidate}`,
+          {
+            candidateId: `${candidateToMove.id}`,
+            oldRecruitmentId: `${RecFrom.id}`,
+            newRecruitmentId: `${RecTo.id}`
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        ).then(resp => {
+
+          console.log(resp.data)
+         })
         return null;
   };
 

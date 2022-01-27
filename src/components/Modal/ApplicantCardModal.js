@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
 import { Rating } from "react-simple-star-rating";
@@ -20,6 +20,11 @@ function ApplicantCardModal({
 }) {
   const [rating, setRating] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    return()=>{//Testa att sätta rating med denna
+    }
+  })
   
   
   const handleRating = (rate) => {
