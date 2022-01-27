@@ -17,6 +17,8 @@ function Home({
   colorScheme,
 }) 
 {
+
+  console.log(activeCandidate)
   return (
     <div>
       <Navbar
