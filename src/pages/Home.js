@@ -43,8 +43,6 @@ function Home({
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
                 setActiveJob={setActiveJob}
-                adminLoggedIn={adminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
                 activeCandidate={activeCandidate}
               />
             );

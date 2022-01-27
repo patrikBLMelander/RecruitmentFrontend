@@ -4,11 +4,8 @@ import JobOfferCard from "../components/JobOfferCard";
 import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import {getAllJobOffers} from "../API/endpoints";
-import requests from "../API/requests";
 
-function Main({jobOfferings, adminLoggedIn, candidateLoggedIn, colorScheme }) {
+function Main({jobOfferings, activeCandidate, colorScheme }) {
   const Navigate = useNavigate();
   function login() {
     Navigate("/login");
@@ -59,8 +56,7 @@ function Main({jobOfferings, adminLoggedIn, candidateLoggedIn, colorScheme }) {
                 index={index}
                 colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
-                adminLoggedIn={adminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
+                activeCandidate={activeCandidate}
               />
             );
           })}

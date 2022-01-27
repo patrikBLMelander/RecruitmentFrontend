@@ -22,7 +22,7 @@ function App() {
   const [jobOfferings, setJobOfferings] = useState([{}]);
 
   const [activeJob, setActiveJob] = useState({ title: "", id: "" });
-  const [activeCandidate, setActiveCandidate] = useState("");
+  const [activeCandidate, setActiveCandidate] = useState({isAdmin:false, id:""});
   const [candidateState, setCandidateState] = useState(candidateTestData);
   const [nickName, setNickName] = useState(Animals);
   const [colorScheme, setColorscheme] = useState(DarkGreen);
@@ -46,6 +46,7 @@ useEffect(() => {
               <Main
                 colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
+                activeCandidate={activeCandidate}
               />
             }
           />

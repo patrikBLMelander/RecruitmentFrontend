@@ -5,6 +5,10 @@ import Swal from "sweetalert2";
 import Modal from "react-modal";
 import JobOfferPreview from "./Modal/JobOfferPreview";
 import StyledButton from "./StyledButton";
+import axios from "axios";
+import {
+  getJobOfferDetails,
+} from "../API/endpoints";
 
 function JobOfferCard({
   index,
@@ -12,7 +16,6 @@ function JobOfferCard({
   setJobOfferings,
   setActiveJob,
   adminLoggedIn,
-  candidateLoggedIn,
   activeCandidate,
   colorScheme,
 }) {
@@ -27,64 +30,64 @@ function JobOfferCard({
   }
 
   let btnText = "Apply";
-  if (adminLoggedIn === true) {
+  if (activeCandidate.isAdmin) {
     btnText = "Candidates";
   }
 
   function setJobToWorkWith(event) {
-    if (candidateLoggedIn === false) {
+    console.log(event)
+    if (activeCandidate === "") {
       navigate("/candidate/register");
     }
-    if (candidateLoggedIn === true) {
-      let alreadyApplied = false;
+    if (!activeCandidate.isAdmin) {
+      Swal.fire({
+        title: "Apply?",
+        text: "Do you want to apply for this role",
+        icon: "question",
+        showConfirmButton: true,
+        confirmButtonText: "Apply",
+        showCancelButton: true,
+        cancelButtonText: "Not now",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //Posta en applyjob, om det lyckas
 
-      jobOfferings[index].recruitmentSteps.map((recruitmentStepsInMap) => {
-        recruitmentStepsInMap.candidateIds.map((candidateIdsInMap) => {
-          if (activeCandidate.id === candidateIdsInMap) {
-            alreadyApplied = true;
-            Swal.fire({
-              title: "Not Applied!",
-              text: "You have already applied for this role.",
-              icon: "warning",
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          }
-          return null;
-        });
-        return null;
-      });
-      if (!alreadyApplied) {
-        Swal.fire({
-          title: "Apply?",
-          text: "Do you want to apply for this role",
-          icon: "question",
-          showConfirmButton: true,
-          confirmButtonText: "Apply",
-          showCancelButton: true,
-          cancelButtonText: "Not now",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            let newJobOffering = jobOfferings;
-            newJobOffering[index].recruitmentSteps[0].candidateIds = [
-              ...jobOfferings[index].recruitmentSteps[0].candidateIds,
-              activeCandidate.id,
-            ];
+          navigate("/candidate/my-page");
 
-            setJobOfferings(newJobOffering);
-            navigate("/candidate/my-page");
-          }
-        });
-      }
-    }
-    if (adminLoggedIn === true) {
-      setActiveJob({
-        title: event.title,
-        id: event.id,
+
+          //Om det inte lyckas gör en catch
+          //       Swal.fire({
+          //         title: "Not Applied!",
+          //         text: "You have already applied for this role.",
+          //         icon: "warning",
+          //         showConfirmButton: false,
+          //         timer: 3000,
+          //       });
+
+        }
       });
-      navigate("/admin/recruitment-page");
     }
+    if (activeCandidate.isAdmin) {
+
+      axios.post(`${getJobOfferDetails}`,
+      { 
+        jobOfferId:`${"test"}`,
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+   ).then(resp => {
+        //sätt active jobb
+        console.log(resp)
+      });
+
+      //navigate("/admin/recruitment-page");
+
+   }
+
+
+
   }
+  
+  
   return (
     <CardDiv key={index} inputColor={colorScheme}>
       <Image src={jobOfferings[index].imageUrl} onClick={openModal} />
@@ -105,10 +108,10 @@ function JobOfferCard({
           />
         </BtnContainer>
         <CadnidateInfoDiv>
-          <PNew show={adminLoggedIn} inputColor={colorScheme}>
+          <PNew show={activeCandidate.isAdmin} inputColor={colorScheme}>
             New: {jobOfferings[index].newCandidates}
           </PNew>
-          <PTotal show={adminLoggedIn} inputColor={colorScheme}>
+          <PTotal show={activeCandidate.isAdmin} inputColor={colorScheme}>
             Total: {jobOfferings[index].totalCandidates}
           </PTotal>
         </CadnidateInfoDiv>
