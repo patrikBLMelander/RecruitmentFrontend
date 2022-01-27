@@ -10,16 +10,11 @@ function Home({
   setJobOfferings,
   setActiveJob,
   activeJob,
-  adminLoggedIn,
-  candidateLoggedIn,
   activeCandidate,
   setActiveCandidate,
   colorScheme,
 }) 
 {
-  console.log(jobOfferings)
-
-
   return (
     <div>
       <Navbar

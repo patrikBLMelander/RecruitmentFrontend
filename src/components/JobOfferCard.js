@@ -15,7 +15,6 @@ function JobOfferCard({
   jobOfferings,
   setJobOfferings,
   setActiveJob,
-  adminLoggedIn,
   activeCandidate,
   colorScheme,
 }) {
@@ -35,7 +34,7 @@ function JobOfferCard({
   }
 
   function setJobToWorkWith(event) {
-    console.log(event)
+    console.log(event.id)
     if (activeCandidate === "") {
       navigate("/candidate/register");
     }
@@ -71,11 +70,11 @@ function JobOfferCard({
 
       axios.post(`${getJobOfferDetails}`,
       { 
-        jobOfferId:`${"test"}`,
+        jobOfferId:`${event.id}`,
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
    ).then(resp => {
-        //sätt active jobb
+        setActiveJob(resp.data)
         console.log(resp)
       });
 

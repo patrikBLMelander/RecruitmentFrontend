@@ -20,14 +20,14 @@ function RecruitmentPage({
   colorScheme,
 }) {
 
+  console.log(activeJob)
+
   useEffect(() => {
     return()=>{//Lägg kod för att spara till databas
     }
   })
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
-    jobOfferings.map((jobOfferingInMap, index) => {
-      if (jobOfferingInMap.id === activeJob.id) {
         //If you dop outside dropzone
         if (!destination) {
           return null;
@@ -43,10 +43,10 @@ function RecruitmentPage({
 
         //If you drag a list
         if (type === "column") {
-          const newJobOfferings = [].concat(jobOfferings);
+          const newActiveJob = activeJob;
 
           let RecInfoToPutIn;
-          newJobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+          newActiveJob.recruitmentList.map((recruitmentStep) => {
             if (recruitmentStep.id === draggableId) {
               RecInfoToPutIn = recruitmentStep;
               return RecInfoToPutIn;
@@ -54,26 +54,22 @@ function RecruitmentPage({
               return null;
             }
           });
-
-          newJobOfferings[index].recruitmentSteps.splice(source.index, 1);
-          newJobOfferings[index].recruitmentSteps.splice(
+          newActiveJob.recruitmentList.splice(source.index, 1);
+          newActiveJob.recruitmentList.splice(
             destination.index,
             0,
             RecInfoToPutIn
           );
-
-          setJobOfferings([...newJobOfferings]);
-
+          setActiveJob(newActiveJob);
           return null;
         }
-
         const home = source.droppableId;
         const foreign = destination.droppableId;
 
         // Om man flyttar kort i samma lista
         if (home === foreign) {
           let RecToReorder;
-          jobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+          activeJob.recruitmentList.map((recruitmentStep) => {
             if (recruitmentStep.id === source.droppableId) {
               RecToReorder = recruitmentStep;
               return RecToReorder;
@@ -82,15 +78,15 @@ function RecruitmentPage({
             }
           });
 
-          RecToReorder.candidateIds.splice(source.index, 1);
-          RecToReorder.candidateIds.splice(destination.index, 0, draggableId);
+          RecToReorder.candidateList.splice(source.index, 1);
+          RecToReorder.candidateList.splice(destination.index, 0, draggableId);
 
-          setJobOfferings([...jobOfferings]);
+          setActiveJob([...activeJob]);
           return null;
         }
         //Flytta kort mellan listor
         let RecFrom;
-        jobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+        activeJob.recruitmentList.map((recruitmentStep) => {
           if (recruitmentStep.id === source.droppableId) {
             RecFrom = recruitmentStep;
             return RecFrom;
@@ -99,7 +95,7 @@ function RecruitmentPage({
           }
         });
         let RecTo;
-        jobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+        activeJob.recruitmentList.map((recruitmentStep) => {
           if (recruitmentStep.id === destination.droppableId) {
             RecTo = recruitmentStep;
             return RecTo;
@@ -108,16 +104,11 @@ function RecruitmentPage({
           }
         });
 
-        RecFrom.candidateIds.splice(source.index, 1);
-        RecTo.candidateIds.splice(destination.index, 0, draggableId);
+        RecFrom.candidateList.splice(source.index, 1);
+        RecTo.candidateList.splice(destination.index, 0, draggableId);
 
-        setJobOfferings([...jobOfferings]);
+        setActiveJob([...activeJob]);
         return null;
-      }
-      return null;
-    });
-
-    return null;
   };
 
   return (
@@ -141,14 +132,12 @@ function RecruitmentPage({
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {jobOfferings.map((jobOfferingsInMap, index) => {
-                if (jobOfferingsInMap.id === activeJob.id) {
-                  return jobOfferingsInMap.recruitmentSteps.map(
+              {activeJob.recruitmentList.map(
                     (recruitmentStepsInMap, index) => (
                       <RecruitmentProcessSteps
                         title={recruitmentStepsInMap.title}
                         id={recruitmentStepsInMap.id}
-                        candidates={recruitmentStepsInMap.candidateIds}
+                        candidates={recruitmentStepsInMap.candidateList}
                         key={recruitmentStepsInMap.id}
                         index={index}
                         jobOfferings={jobOfferings}
@@ -160,10 +149,8 @@ function RecruitmentPage({
                         colorScheme={colorScheme}
                       />
                     )
-                  );
+                  )
                 }
-                return null;
-              })}
 
               {provided.placeholder}
               <AddListBtn
