@@ -8,7 +8,7 @@ import axios from 'axios';
 import {getAllJobOffers} from "../API/endpoints";
 import requests from "../API/requests";
 
-function Main({setJobOfferings, jobOfferings, adminLoggedIn, candidateLoggedIn, colorScheme }) {
+function Main({jobOfferings, adminLoggedIn, candidateLoggedIn, colorScheme }) {
   const Navigate = useNavigate();
   function login() {
     Navigate("/login");
