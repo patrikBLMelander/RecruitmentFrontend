@@ -13,35 +13,11 @@ import {login, getCandidateInfo} from "../API/endpoints";
 import { formLabelClasses } from "@mui/material";
 
 function Login({
-  activeCandidate,
-  candidateState,
   setActiveCandidate,
-  setCandidateLoggedIn,
-  setAdminLoggedIn,
-  candidateLoggedIn,
-  adminLoggedIn,
   colorScheme,
 }) {
   const [validated, setValidated] = useState(false);
   const Navigate = useNavigate();
-  
-  // if (candidateLoggedIn === true || adminLoggedIn === true) {
-  //   Swal.fire({
-  //     icon: "info",
-  //     title: "Already logged in",
-  //     showDenyButton: false,
-  //     showCancelButton: true,
-  //     confirmButtonText: "Home",
-  //     cancelButtonText: "Log out",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Navigate("/home");
-  //     } else {
-  //       setCandidateLoggedIn(false);
-  //       setAdminLoggedIn(false);
-  //     }
-  //   });
-  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
