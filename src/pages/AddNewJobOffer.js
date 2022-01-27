@@ -13,9 +13,12 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import {
   createNewJobOffer,
+  getAllJobOffers,
+
 } from "../API/endpoints";
 
 function AddNewJobOffer({
+  setJobOfferings,
   activeCandidate,
   setActiveCandidate,
   activeJob,
@@ -79,6 +82,14 @@ function AddNewJobOffer({
             showCancelButton: false,
             confirmButtonText: "OK",
           });
+          
+          axios.get(`${getAllJobOffers}`, {
+
+          }).then(resp => {
+            setJobOfferings(resp.data)
+        }).catch(error => console.error(error));
+
+
         }
         
       }).catch(error => {
