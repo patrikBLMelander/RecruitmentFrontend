@@ -20,6 +20,7 @@ import GreenNature from "../testData/colorSchemas/greenNature";
 import axios from "axios";
 import {
   createAdmin,
+  updatePassword,
 } from "../API/endpoints";
 
 let counter = 9;
@@ -36,6 +37,7 @@ function Settings({
   colorScheme,
 }) {
   const [validated, setValidated] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState(false);
 
   //ADJUST NAME
   const [radioButtonsName, setRadioButtonsName] = useState([
@@ -155,8 +157,62 @@ function Settings({
     });
   }
 
-  function changPassword() {
+  function changPassword(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
 
+
+      setPasswordValidation(true)
+      event.stopPropagation();
+     } else {
+      axios
+      .put(
+        `${updatePassword}`,
+        {
+          userId: `${activeCandidate.id}`,
+          newPassword: `${form.newPassword.value}`,
+          oldPassword:`${form.oldPassword.value}`
+        },
+        { headers: { Authorization: localStorage.getItem("jwtToken") } }
+      ).then(response =>{
+        if(response.status===202){
+          Swal.fire({
+            icon: "success",
+            title: response.data,
+            text:  "",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+
+        }
+        console.log(response);
+      }).catch(error =>{
+        if(error.response.status===400){
+          Swal.fire({
+            icon: "error",
+            title: "Old Password and user password dont match",
+            text:  "",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong, please try again later",
+            text:  "",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+
+        }
+
+      })
+
+     }
   }
 
   return (
@@ -212,13 +268,13 @@ function Settings({
             </AdjustCandidateNameDiv>
             <ChangePasswordDiv>
               <H5>Change Password</H5>
-              <Form noValidate validated={validated} onSubmit={changPassword}>
+              <Form noValidate validated={passwordValidation} onSubmit={changPassword}>
                 <ChangePasswordRow>
                   <ChangePasswordCol>
                     <FloatingLabel controlId="oldPassword" label="Old Password">
                       <Form.Control required type="password" placeholder='""' />
                       <Form.Control.Feedback type="invalid">
-                        You need your old password to change password!
+                      You need your old password to change password!
                       </Form.Control.Feedback>
                     </FloatingLabel>
                   </ChangePasswordCol>
@@ -226,7 +282,7 @@ function Settings({
                     <FloatingLabel controlId="newPassword" label="New Password">
                       <Form.Control required type="password" placeholder='""' />
                       <Form.Control.Feedback type="invalid">
-                        Everyone have a last name, right?
+                      You need a new password to change password!
                       </Form.Control.Feedback>
                     </FloatingLabel>
                   </ChangePasswordCol>
@@ -237,7 +293,7 @@ function Settings({
                     >
                       <Form.Control required type="password" placeholder='""' />
                       <Form.Control.Feedback type="invalid">
-                        Everyone have a last name, right?
+                        You need to validate the new password
                       </Form.Control.Feedback>
                     </FloatingLabel>
                   </ChangePasswordCol>
