@@ -17,7 +17,6 @@ import DarkGreen from "./testData/colorSchemas/darkGreen";
 import CandidateSettings from "./pages/CandidateSettings";
 import axios from 'axios';
 import {getAllJobOffers} from "./API/endpoints";
-import requests from "./API/requests";
 
 function App() {
   const [jobOfferings, setJobOfferings] = useState([{}]);
