@@ -8,6 +8,7 @@ import StyledButton from "./StyledButton";
 import axios from "axios";
 import {
   getJobOfferDetails,
+  applyForJob,
 } from "../API/endpoints";
 
 function JobOfferCard({
@@ -41,7 +42,7 @@ function JobOfferCard({
     if (!activeCandidate.isAdmin) {
       Swal.fire({
         title: "Apply?",
-        text: "Do you want to apply for this role",
+        text: "Do you want to apply for this role, dont forget to update your profile",
         icon: "question",
         showConfirmButton: true,
         confirmButtonText: "Apply",
@@ -49,19 +50,39 @@ function JobOfferCard({
         cancelButtonText: "Not now",
       }).then((result) => {
         if (result.isConfirmed) {
-          //Posta en applyjob, om det lyckas
-
+          axios.post(`${applyForJob}`,
+          { 
+            candidateId: activeCandidate.id,
+            jobOfferId:`${event.id}`,
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+       ).then(resp => {
+          console.log(resp.data)
           navigate("/candidate/my-page");
+       }).catch(error => {
+         if(error.response.status===400){
+          Swal.fire({
+            title: "Not Applied!",
+            text: "You have already applied for this role.",
+            icon: "warning",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+         }else{
+          Swal.fire({
+            title: "Something whent wrong",
+            text: "We seems to have problem with the connection to the server, please try again later",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+         }
+       })
+
+          
 
 
-          //Om det inte lyckas gör en catch
-          //       Swal.fire({
-          //         title: "Not Applied!",
-          //         text: "You have already applied for this role.",
-          //         icon: "warning",
-          //         showConfirmButton: false,
-          //         timer: 3000,
-          //       });
+
 
         }
       });
