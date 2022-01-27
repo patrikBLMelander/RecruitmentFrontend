@@ -14,10 +14,10 @@ import DarkGreen from "../testData/colorSchemas/darkGreen";
 import PinkPurple from "../testData/colorSchemas/pinkPurple";
 import GreenNature from "../testData/colorSchemas/greenNature";
 import { useNavigate } from "react-router-dom";
-
-let counter = 9;
-let newId = "candidate-" + counter;
-let emailTaken = false;
+import axios from "axios";
+import {
+  updatePassword,
+} from "../API/endpoints";
 
 function CandidateSettings({
   setActiveCandidate,
@@ -29,7 +29,7 @@ function CandidateSettings({
   colorScheme,
   activeCandidate
 }) {
-  const [validated, setValidated] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState(false);
   const Navigate = useNavigate();
 
   //ADJUST COLOR
@@ -105,9 +105,62 @@ function CandidateSettings({
 
   }
 
-  function changPassword() {
+  function changPassword(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
 
 
+      setPasswordValidation(true)
+      event.stopPropagation();
+     } else {
+      axios
+      .put(
+        `${updatePassword}`,
+        {
+          userId: `${activeCandidate.id}`,
+          newPassword: `${form.newPassword.value}`,
+          oldPassword:`${form.oldPassword.value}`
+        },
+        { headers: { Authorization: localStorage.getItem("jwtToken") } }
+      ).then(response =>{
+        if(response.status===202){
+          Swal.fire({
+            icon: "success",
+            title: "Lösenord ändrat!",
+            text:  "Ditt lösenord är nu ändrat.",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+
+        }
+        console.log(response);
+      }).catch(error =>{
+        if(error.response.status===400){
+          Swal.fire({
+            icon: "error",
+            title: "Old Password and user password dont match",
+            text:  "",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong, please try again later",
+            text:  "",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+
+        }
+
+      })
+
+     }
   }
 
   return (
@@ -125,7 +178,7 @@ function CandidateSettings({
           <LeftDiv>
             <ChangePasswordDiv>
               <H5>Change Password</H5>
-              <Form noValidate validated={validated} onSubmit={changPassword}>
+              <Form noValidate validated={passwordValidation} onSubmit={changPassword}>
                 <ChangePasswordRow>
                   <ChangePasswordCol>
                     <FloatingLabel controlId="oldPassword" label="Old Password">
