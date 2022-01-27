@@ -15,8 +15,6 @@ function Resume({
   activeCandidate,
   setActiveCandidate,
   presentation,
-  candidateState,
-  setCandidateState,
   candidateView,
   colorScheme,
   nickName,

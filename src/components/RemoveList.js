@@ -10,7 +10,7 @@ function RemoveListBtn({
   activeJob,
   jobOfferings,
   setActiveJob,
-  candidates,
+  candidatesAmount,
   id,
   colorScheme,
 }) {
@@ -41,12 +41,12 @@ function RemoveListBtn({
       }
   const [isBtnDisabled, setisBtnDisabled] = useState(true);
   useEffect(() => {
-    if (candidates > 0) {
+    if (candidatesAmount > 0) {
       setisBtnDisabled(true); //button remains disabled
     } else {
       setisBtnDisabled(false); //button is enabled
     }
-  }, [candidates]);
+  }, [candidatesAmount]);
   return (
     <StyledButton
       disabled={isBtnDisabled}

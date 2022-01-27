@@ -35,7 +35,7 @@ function JobOfferCard({
   }
 
   function setJobToWorkWith(event) {
-    console.log(event.id)
+    
     if (activeCandidate === "") {
       navigate("/candidate/register");
     }

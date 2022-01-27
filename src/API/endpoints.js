@@ -36,7 +36,7 @@ export const getJobOfferDetails = START_URL+BASE_API+ADMIN+JOB_OFFER;
 export const addRecruitmentStep = START_URL+BASE_API+ADMIN+RECRUITMENT+UPDATE;
 export const deleteRecruitmentStep = START_URL+BASE_API+ADMIN+RECRUITMENT+DELETE;
 export const moveRecruitmentStep = START_URL+BASE_API+ADMIN+JOB_OFFER+UPDATE;
-export const setRate = START_URL+ADMIN+BASE_API+UPDATE+RATE;
+export const setRate = START_URL+BASE_API+ADMIN+UPDATE+RATE;
 export const moveCandidate = START_URL+BASE_API+ADMIN+RECRUITMENT+CANDIDATES;
 
 //candidate endpoints

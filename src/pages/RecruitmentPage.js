@@ -20,8 +20,6 @@ function RecruitmentPage({
   colorScheme,
 }) {
 
-  console.log(activeJob)
-
   useEffect(() => {
     return()=>{//Lägg kod för att spara till databas
     }
@@ -77,11 +75,12 @@ function RecruitmentPage({
               return null;
             }
           });
+          const candidateToMove = RecToReorder.candidateList[source.index]
 
           RecToReorder.candidateList.splice(source.index, 1);
-          RecToReorder.candidateList.splice(destination.index, 0, draggableId);
+          RecToReorder.candidateList.splice(destination.index, 0, candidateToMove);
 
-          setActiveJob([...activeJob]);
+          setActiveJob(activeJob);
           return null;
         }
         //Flytta kort mellan listor
@@ -104,10 +103,12 @@ function RecruitmentPage({
           }
         });
 
-        RecFrom.candidateList.splice(source.index, 1);
-        RecTo.candidateList.splice(destination.index, 0, draggableId);
+        const candidateToMove = RecFrom.candidateList[source.index]
 
-        setActiveJob([...activeJob]);
+        RecFrom.candidateList.splice(source.index, 1);
+        RecTo.candidateList.splice(destination.index, 0, candidateToMove);
+
+        setActiveJob(activeJob);
         return null;
   };
 
@@ -133,12 +134,9 @@ function RecruitmentPage({
               ref={provided.innerRef}
             >
               {activeJob.recruitmentList.map(
-                    (recruitmentStepsInMap, index) => (
-                      <RecruitmentProcessSteps
-                        title={recruitmentStepsInMap.title}
-                        id={recruitmentStepsInMap.id}
-                        candidates={recruitmentStepsInMap.candidateList}
-                        key={recruitmentStepsInMap.id}
+                    (recruitmentList, index) => (
+                      <RecruitmentProcessSteps            
+                        key={recruitmentList.id}
                         index={index}
                         jobOfferings={jobOfferings}
                         setJobOfferings={setJobOfferings}
@@ -149,6 +147,7 @@ function RecruitmentPage({
                         colorScheme={colorScheme}
                         activeJob={activeJob}
                         setActiveJob={setActiveJob}
+                        recruitmentList={recruitmentList}
 
                       />
                     )

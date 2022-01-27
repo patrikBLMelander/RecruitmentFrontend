@@ -4,63 +4,73 @@ import styled from "styled-components";
 import { Rating } from "react-simple-star-rating";
 import Resume from "../Resume";
 import StyledButton from "../StyledButton";
-
-let newId;
-let counter = 0;
+import axios from "axios";
+import {
+  setRate,
+} from "../../API/endpoints";
 
 Modal.setAppElement("#root");
 
 function ApplicantCardModal({
   candidate,
-  candidateState,
-  setCandidateState,
-  activeJobId,
+  activeJob,
   nickName,
   colorScheme,
+
 }) {
-  const [rating, setRating] = useState(
-    candidate.rate.map((rateInMap) => {
-      if (rateInMap.jobofferId === activeJobId) {
-        return rateInMap.rate;
-      } else {
-        return 0;
-      }
-    })
-  );
+  const [rating, setRating] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   
   
   const handleRating = (rate) => {
     setRating(rate);
-    let newCandidateState = candidateState;
+    axios.put(`${setRate}`,
+    { 
+      candidateId:`${candidate.id}`,
+      jobOfferId:`${activeJob.id}`,
+      rate:rate/20,
+    },
+    { headers: { Authorization: localStorage.getItem("jwtToken") } }
+ ).then(resp => {
 
-    candidateState.map((candidateInMap, candidateIndex) => {
-      if (candidateInMap.id === candidate.id) {
-        let foundRate = false;
-        candidateInMap.rate.map((rateInMap, rateIndex) => {
-          if (rateInMap.jobofferId === activeJobId) {
-            newCandidateState[candidateIndex].rate[rateIndex] = {
-              id: rateInMap.id,
-              rate: rate / 20,
-              jobofferId: rateInMap.jobofferId,
-            };
+  console.log(resp.data)
+ })
+ 
 
-            foundRate = true;
-          }
-          return null;
-        });
-        if (!foundRate) {
-          counter += 1;
-          newId = "rateId" + counter;
-          newCandidateState[candidateIndex].rate = [
-            ...candidateInMap.rate,
-            { id: newId, rate: rate / 20, jobofferId: activeJobId },
-          ];
-        }
-      }
-      return null;
-    });
-    setCandidateState(newCandidateState);
+
+
+
+
+
+    // let newCandidateState = candidateState;
+
+    // candidateState.map((candidateInMap, candidateIndex) => {
+    //   if (candidateInMap.id === candidate.id) {
+    //     let foundRate = false;
+    //     candidateInMap.rate.map((rateInMap, rateIndex) => {
+    //       if (rateInMap.jobofferId === activeJob.id) {
+    //         newCandidateState[candidateIndex].rate[rateIndex] = {
+    //           id: rateInMap.id,
+    //           rate: rate / 20,
+    //           jobofferId: rateInMap.jobofferId,
+    //         };
+
+    //         foundRate = true;
+    //       }
+    //       return null;
+    //     });
+    //     if (!foundRate) {
+    //       counter += 1;
+    //       newId = "rateId" + counter;
+    //       newCandidateState[candidateIndex].rate = [
+    //         ...candidateInMap.rate,
+    //         { id: newId, rate: rate / 20, jobofferId: activeJob.id },
+    //       ];
+    //     }
+    //   }
+    //   return null;
+    // });
+    // setCandidateState(newCandidateState);
   };
 
   function openModal() {
