@@ -16,6 +16,8 @@ function RecruitmentProcessStep({
   setCandidateState,
   nickName,
   colorScheme,
+  activeJob,
+  setActiveJob
 }) {
   return (
     <Draggable draggableId={id} index={index}>

@@ -147,6 +147,9 @@ function RecruitmentPage({
                         activeJobId={activeJob.id}
                         nickName={nickName}
                         colorScheme={colorScheme}
+                        activeJob={activeJob}
+                        setActiveJob={setActiveJob}
+
                       />
                     )
                   )
@@ -154,9 +157,8 @@ function RecruitmentPage({
 
               {provided.placeholder}
               <AddListBtn
-                jobOfferings={jobOfferings}
-                setJobOfferings={setJobOfferings}
-                activeJobId={activeJob.id}
+                activeJob={activeJob}
+                setActiveJob={setActiveJob}
                 colorScheme={colorScheme}
               />
             </Container>
