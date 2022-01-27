@@ -17,8 +17,9 @@ function Home({
   colorScheme,
 }) 
 {
+  console.log(jobOfferings)
 
-  console.log(activeCandidate)
+
   return (
     <div>
       <Navbar

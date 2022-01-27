@@ -5,7 +5,6 @@ function JobOfferPreview({ jobOffer, colorScheme }) {
   let toRender;
 
   if (jobOffer === "") {
-    console.log("Renderar inget");
     toRender = <div></div>;
   } else {
     toRender = (
