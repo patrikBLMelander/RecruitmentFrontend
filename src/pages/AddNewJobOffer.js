@@ -41,20 +41,20 @@ function AddNewJobOffer({
           value: `${form.competenceYear1.value}`
         },
         { 
-          name: `${form.competence1.value}`,
-          value: `${form.competenceYear1.value}`
+          name: `${form.competence2.value}`,
+          value: `${form.competenceYear2.value}`
         },
         { 
-          name: `${form.competence1.value}`,
-          value: `${form.competenceYear1.value}`
+          name: `${form.competence3.value}`,
+          value: `${form.competenceYear3.value}`
         },
         { 
-          name: `${form.competence1.value}`,
-          value: `${form.competenceYear1.value}`
+          name: `${form.competence4.value}`,
+          value: `${form.competenceYear4.value}`
         },
         { 
-          name: `${form.competence1.value}`,
-          value: `${form.competenceYear1.value}`
+          name: `${form.competence5.value}`,
+          value: `${form.competenceYear5.value}`
         },
       ]
 
