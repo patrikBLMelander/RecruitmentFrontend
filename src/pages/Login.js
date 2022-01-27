@@ -46,6 +46,8 @@ function Login({
             
             setActiveCandidate({
                id:response.data.id,
+               firstName:response.data.firstName,
+               lastName:response.data.lastName,
                nickName:response.data.nickName,
                email:response.data.email,
                presentation:response.data.presentation,
