@@ -19,6 +19,7 @@ function RecruitmentProcessStep({
   activeJob,
   setActiveJob
 }) {
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -58,10 +59,9 @@ function RecruitmentProcessStep({
           <RemoveBtnDiv>
             <RemoveBtn
               id={id}
-              jobOfferings={jobOfferings}
-              setJobOfferings={setJobOfferings}
               candidates={candidates.length}
-              activeJobId={activeJobId}
+              activeJob={activeJob}
+              setActiveJob={setActiveJob}
               colorScheme={colorScheme}
             />
           </RemoveBtnDiv>

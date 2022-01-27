@@ -75,7 +75,7 @@ function JobOfferCard({
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
    ).then(resp => {
         setActiveJob(resp.data)
-        console.log(resp)
+
       });
 
       //navigate("/admin/recruitment-page");

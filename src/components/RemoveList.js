@@ -1,30 +1,44 @@
 import React, { useEffect, useState } from "react";
 import StyledButton from "./StyledButton";
+import Swal from "sweetalert2";
+import axios from "axios";
+import {
+  deleteRecruitmentStep,
+} from "../API/endpoints";
 
 function RemoveListBtn({
-  activeJobId,
+  activeJob,
   jobOfferings,
-  setJobOfferings,
+  setActiveJob,
   candidates,
   id,
   colorScheme,
 }) {
-  const removeList = (event) => {
-    let test;
-    jobOfferings.map((jobOfferingsInMap, index) => {
-      if (jobOfferingsInMap.id === activeJobId) {
-        jobOfferings[index].recruitmentSteps = [
-          ...jobOfferings[index].recruitmentSteps.filter(
-            (recruitmentStep) => recruitmentStep.id !== id
-          ),
-        ];
-        test = [...jobOfferings];
-      }
-      return null;
-    });
-    setJobOfferings(test);
-  };
 
+
+  const removeList = (event) => {
+    axios.delete(`${deleteRecruitmentStep}`,
+    {
+      data:
+      {
+        recruitmentId: id,
+        jobOfferId: activeJob.id
+      }
+
+    },
+    { headers: { Authorization: localStorage.getItem("jwtToken") } }
+   ).then(resp => {
+    console.log(resp);
+    activeJob.recruitmentList =[...activeJob.recruitmentList.filter(
+      (recruitmentStep) => recruitmentStep.id !== id
+    )] 
+    setActiveJob(...[activeJob])
+    //Försöker få denna att uppdatera sidan direkt
+  
+  }).catch(error => {
+    console.error(error)
+  })
+      }
   const [isBtnDisabled, setisBtnDisabled] = useState(true);
   useEffect(() => {
     if (candidates > 0) {
