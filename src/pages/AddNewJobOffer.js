@@ -9,16 +9,16 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import StyledButton from "../components/StyledButton";
 import JobOfferPreview from "../components/Modal/JobOfferPreview";
-
-let counter = 8;
-let newId = "jobOffering-" + counter;
+import Swal from "sweetalert2";
+import axios from "axios";
+import {
+  createNewJobOffer,
+} from "../API/endpoints";
 
 function AddNewJobOffer({
   activeCandidate,
   setActiveCandidate,
-  jobOfferings,
   activeJob,
-  setJobOfferings,
   setActiveJob,
   colorScheme,
 }) {
@@ -31,116 +31,73 @@ function AddNewJobOffer({
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-      counter = counter + 1;
-      newId = "jobOffering-" + counter;
 
-      const newJobOffering = [
-        ...jobOfferings,
-        {
-          id: newId,
-          title: form.titleInputGrid.value,
-          location: form.locationInputGrid.value,
-          publishDate: form.dateInputGrid.value,
-          applyDate: form.dateInputGrid.value,
-          preview: form.preview.value,
-          companyDescription: form.companyDescription.value,
-          aboutRole: form.aboutTheRole.value,
-          imageUrl: "https://picsum.photos/150/150?random=" + counter,
-          competencies: [
-            {
-              id: "competence-1",
-              name: form.competence1.value,
-              years: form.competenceYear1.value,
-            },
-            {
-              id: "competence-2",
-              name: form.competence2.value,
-              years: form.competenceYear2.value,
-            },
-            {
-              id: "competence-3",
-              name: form.competence3.value,
-              years: form.competenceYear3.value,
-            },
-            {
-              id: "competence-4",
-              name: form.competence4.value,
-              years: form.competenceYear4.value,
-            },
-            {
-              id: "competence-5",
-              name: form.competence5.value,
-              years: form.competenceYear5.value,
-            },
-          ],
-          recruitmentSteps: [
-            {
-              id: "recruitmentStep-1",
-              title: "Applied",
-              candidateIds: [],
-            },
-            {
-              id: "recruitmentStep-2",
-              title: "Interesting",
-              candidateIds: [],
-            },
-            {
-              id: "recruitmentStep-3",
-              title: "Interview",
-              candidateIds: [],
-            },
-            {
-              id: "recruitmentStep-4",
-              title: "Hire",
-              candidateIds: [],
-            },
-            {
-              id: "recruitmentStep-5",
-              title: "Dismiss",
-              candidateIds: [],
-            },
-          ],
+      const competenceListToSend = [
+        { 
+          name: `${form.competence1.value}`,
+          value: `${form.competenceYear1.value}`
         },
-      ];
-      setActiveJobOffer({
-        id: newId,
-        title: form.titleInputGrid.value,
-        location: form.locationInputGrid.value,
-        publishDate: form.dateInputGrid.value,
-        applyDate: form.dateInputGrid.value,
-        preview: form.preview.value,
-        companyDescription: form.companyDescription.value,
-        aboutRole: form.aboutTheRole.value,
-        imageUrl: "https://picsum.photos/150/150?random=" + counter,
-        competencies: [
-          {
-            id: "competence-1",
-            name: form.competence1.value,
-            years: form.competenceYear1.value,
-          },
-          {
-            id: "competence-2",
-            name: form.competence2.value,
-            years: form.competenceYear2.value,
-          },
-          {
-            id: "competence-3",
-            name: form.competence3.value,
-            years: form.competenceYear3.value,
-          },
-          {
-            id: "competence-4",
-            name: form.competence4.value,
-            years: form.competenceYear4.value,
-          },
-          {
-            id: "competence-5",
-            name: form.competence5.value,
-            years: form.competenceYear5.value,
-          },
-        ],
+        { 
+          name: `${form.competence1.value}`,
+          value: `${form.competenceYear1.value}`
+        },
+        { 
+          name: `${form.competence1.value}`,
+          value: `${form.competenceYear1.value}`
+        },
+        { 
+          name: `${form.competence1.value}`,
+          value: `${form.competenceYear1.value}`
+        },
+        { 
+          name: `${form.competence1.value}`,
+          value: `${form.competenceYear1.value}`
+        },
+      ]
+
+
+
+      axios.post(`${createNewJobOffer}`,
+        { 
+          title:`${form.titleInputGrid.value}`,
+          applyDate:`${form.dateInputGrid.value}`,
+          preview:`${form.preview.value}`,
+          companyDescription:`${form.companyDescription.value}`,
+          aboutRole:`${form.aboutTheRole.value}`,
+          competenceList:competenceListToSend,
+          location:`${form.locationInputGrid.value}`,
+        },
+        { headers: { Authorization: localStorage.getItem("jwtToken") } }
+     ).then(resp => {
+     
+        if(resp.status === 201){
+          Swal.fire({
+            icon: "success",
+            title: "Job Offer",
+            text: "This job offer is now availible for applying",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "OK",
+          });
+        }
+        
+      }).catch(error => {
+        console.log(error.response.status)
+        if(error.response.status === 400){
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Try again",
+          })
+        }else{
+          Swal("Något fick fel!", "Vänligen försök igen", "warning");
+        }
       });
-      setJobOfferings(newJobOffering);
+
+
     }
     setValidated(true);
   };
