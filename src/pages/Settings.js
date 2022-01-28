@@ -40,7 +40,7 @@ function Settings({
   const [validated, setValidated] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState(false);
   const [allCandidates, setAllCandidates] = useState([{}]);
-  console.log(activeCandidate)
+
 
   useEffect(() => {
     if(activeCandidate.nickNameChoice==="default"){

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
@@ -9,15 +9,17 @@ import StyledButton from "../components/StyledButton";
 import Swal from "sweetalert2";
 import Steal from "../testData/colorSchemas/steal";
 import DarkBlue from "../testData/colorSchemas/darkBlue";
-import Brown from "../testData/colorSchemas/lightPink";
-import DarkGreen from "../testData/colorSchemas/teal";
-import PinkPurple from "../testData/colorSchemas/purple";
+import LightPink from "../testData/colorSchemas/lightPink";
+import Teal from "../testData/colorSchemas/teal";
+import Purple from "../testData/colorSchemas/purple";
 import GreenNature from "../testData/colorSchemas/greenNature";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   updatePassword,
   deleteCandidate,
+  updateColor,
+  getAllCandidates,
 } from "../API/endpoints";
 
 function CandidateSettings({
@@ -28,10 +30,27 @@ function CandidateSettings({
   setActiveJob,
   setColorscheme,
   colorScheme,
-  activeCandidate
+  activeCandidate,
 }) {
   const [passwordValidation, setPasswordValidation] = useState(false);
   const Navigate = useNavigate();
+
+  useEffect(() => {
+    if(activeCandidate.colorChoice==="teal"){
+      handleColor4Change()
+    }else if(activeCandidate.colorChoice==="steal"){
+      handleColor1Change()
+    }else if(activeCandidate.colorChoice==="darkBlue"){
+      handleColor2Change()
+    }else if(activeCandidate.colorChoice==="greenNature"){
+      handleColor3Change()
+    }else if(activeCandidate.colorChoice==="lightPink"){
+      handleColor5Change()
+    }else if(activeCandidate.colorChoice==="purple"){
+      handleColor6Change()
+    }
+  }, []);
+
 
   //ADJUST COLOR
   const [radioButtonsColor, setRadioButtonsColor] = useState([
@@ -45,26 +64,111 @@ function CandidateSettings({
   function handleColor1Change() {
     setRadioButtonsColor([true, false, false, false, false, false]);
     setColorscheme(Steal);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "steal",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="steal"
+      setActiveCandidate(newActiveCandidate);
+    })
+    
   }
   function handleColor2Change() {
     setRadioButtonsColor([false, true, false, false, false, false]);
     setColorscheme(DarkBlue);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "darkBlue",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="darkBlue"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor3Change() {
     setRadioButtonsColor([false, false, true, false, false, false]);
     setColorscheme(GreenNature);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "greenNature",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="greenNature"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor4Change() {
     setRadioButtonsColor([false, false, false, true, false, false]);
-    setColorscheme(DarkGreen);
+    setColorscheme(Teal);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "teal",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="teal"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor5Change() {
     setRadioButtonsColor([false, false, false, false, true, false]);
-    setColorscheme(Brown);
+    setColorscheme(LightPink);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "lightPink",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="lightPink"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor6Change() {
     setRadioButtonsColor([false, false, false, false, false, true]);
-    setColorscheme(PinkPurple);
+    setColorscheme(Purple);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "purple",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="purple"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
 
   function RemoveMe() {
