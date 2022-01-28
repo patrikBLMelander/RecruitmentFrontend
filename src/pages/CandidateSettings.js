@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   updatePassword,
+  deleteCandidate,
 } from "../API/endpoints";
 
 function CandidateSettings({
@@ -76,8 +77,21 @@ function CandidateSettings({
         showCancelButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
-
-
+          axios
+          .delete(
+            `${deleteCandidate}`,
+            {
+              data: {
+                candidateId: `${activeCandidate.id}`,
+                toRemove: `${activeCandidate.id}`,
+              },
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwtToken"),
+              },
+            }
+          ).then((result) => {
             const firstNameToRemove = activeCandidate.firstName;
             const lastNameToRemove = activeCandidate.lastName;
             const NewCandidateState = candidateState;
@@ -99,7 +113,12 @@ function CandidateSettings({
                 }
             })
 
-          Navigate("/candidate/register");
+          Navigate("/");
+
+
+
+          })
+
         }
       });
 

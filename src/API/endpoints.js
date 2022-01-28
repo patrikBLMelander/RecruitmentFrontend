@@ -30,7 +30,7 @@ export const register = START_URL+BASE_API+PUBLIC+CREATE;
 // admin endpoints
 export const changNicknamePresentaion = START_URL+ADMIN+UPDATE+NICKNAME;
 export const createAdmin = START_URL+BASE_API+ADMIN+CREATE;
-export const getAllCandidates = START_URL+BASE_API+ADMIN+CANDIDATES;
+export const getAllCandidates = START_URL+BASE_API+PUBLIC+CANDIDATES;
 export const createNewJobOffer = START_URL+BASE_API+ADMIN+JOB_OFFER+CREATE;
 export const getJobOfferDetails = START_URL+BASE_API+ADMIN+JOB_OFFER;
 export const addRecruitmentStep = START_URL+BASE_API+ADMIN+RECRUITMENT+UPDATE;
@@ -38,6 +38,7 @@ export const deleteRecruitmentStep = START_URL+BASE_API+ADMIN+RECRUITMENT+DELETE
 export const moveRecruitmentStep = START_URL+BASE_API+ADMIN+JOB_OFFER+UPDATE;
 export const setRate = START_URL+BASE_API+ADMIN+UPDATE+RATE;
 export const moveCandidate = START_URL+BASE_API+ADMIN+RECRUITMENT+CANDIDATES;
+export const deleteAdmin = START_URL+BASE_API+ADMIN+DELETE;
 
 //candidate endpoints
 export const getCandidateInfo = START_URL+BASE_API+CANDIDATES
@@ -51,4 +52,5 @@ export const deleteCompetence = START_URL+BASE_API+CANDIDATES+COMPETENCE+DELETE;
 export const updatePersonality = START_URL+BASE_API+CANDIDATES+UPDATE+PERSONALITY;
 export const applyForJob = START_URL+BASE_API+CANDIDATES+JOB_OFFER;
 export const updatePassword = START_URL+BASE_API+CANDIDATES+UPDATE+PASSWORD;
-export const updateColor = START_URL+CANDIDATES+BASE_API+UPDATE+COLOR;
+export const updateColor = START_URL+BASE_API+CANDIDATES+UPDATE+COLOR;
+export const deleteCandidate = START_URL+BASE_API+CANDIDATES+DELETE;
