@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import jobOfferingsTestData from "./testData/jobOfferingsTestData";
 import Animals from "./testData/animals";
 import RecruitmentPage from "./pages/RecruitmentPage";
 import Home from "./pages/Home";
@@ -13,7 +12,7 @@ import CandidateSearch from "./pages/CandidateSearch";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import candidateTestData from "./testData/candidateTestData";
 import Main from "./pages/Main";
-import DarkGreen from "./testData/colorSchemas/darkGreen";
+import DarkGreen from "./testData/colorSchemas/teal";
 import CandidateSettings from "./pages/CandidateSettings";
 import axios from 'axios';
 import {getAllJobOffers} from "./API/endpoints";
@@ -192,12 +191,14 @@ useEffect(() => {
             element={
               <Login
                 colorScheme={colorScheme}
+                setColorscheme={setColorscheme}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
                 candidateState={candidateState}
                 setActiveCandidate={setActiveCandidate}
                 activeCandidate={activeCandidate}
+                setNickName={setNickName}
               />
             }
           />

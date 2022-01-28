@@ -1,4 +1,4 @@
-const PinkPurple ={ 
+const Purple ={ 
     id: 'color5',
     primary: '#6d6875',
     secondary: '#e5989b',
@@ -8,4 +8,4 @@ const PinkPurple ={
     text: '#574c45',
 };
 
-export default PinkPurple;
+export default Purple;

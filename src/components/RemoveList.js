@@ -29,10 +29,12 @@ function RemoveListBtn({
     { headers: { Authorization: localStorage.getItem("jwtToken") } }
    ).then(resp => {
     console.log(resp);
-    activeJob.recruitmentList =[...activeJob.recruitmentList.filter(
+    const newActiveJob = activeJob
+    newActiveJob.recruitmentList =[...activeJob.recruitmentList.filter(
       (recruitmentStep) => recruitmentStep.id !== id
     )] 
-    setActiveJob(...[activeJob])
+    console.log(newActiveJob)
+    setActiveJob(...[newActiveJob])
     //Försöker få denna att uppdatera sidan direkt
   
   }).catch(error => {

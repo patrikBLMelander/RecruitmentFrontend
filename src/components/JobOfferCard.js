@@ -90,10 +90,10 @@ function JobOfferCard({
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
    ).then(resp => {
         setActiveJob(resp.data)
+      }).then(
+        navigate("/admin/recruitment-page")
+      );
 
-      });
-
-      //navigate("/admin/recruitment-page");
 
    }
 

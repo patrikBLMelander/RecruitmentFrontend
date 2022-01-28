@@ -28,7 +28,7 @@ export const login = START_URL+"/login";
 export const register = START_URL+BASE_API+PUBLIC+CREATE;
 
 // admin endpoints
-export const changNicknamePresentaion = START_URL+ADMIN+UPDATE+NICKNAME;
+export const changNicknamePresentaion = START_URL+BASE_API+ADMIN+UPDATE+NICKNAME;
 export const createAdmin = START_URL+BASE_API+ADMIN+CREATE;
 export const getAllCandidates = START_URL+BASE_API+PUBLIC+CANDIDATES;
 export const createNewJobOffer = START_URL+BASE_API+ADMIN+JOB_OFFER+CREATE;

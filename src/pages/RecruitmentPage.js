@@ -162,12 +162,11 @@ function RecruitmentPage({
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {activeJob.recruitmentList.map(
+              {activeJob.recruitmentList?.map(
                     (recruitmentList, index) => (
                       <RecruitmentProcessSteps            
                         key={recruitmentList.id}
                         index={index}
-                        activeJobId={activeJob.id}
                         nickName={nickName}
                         colorScheme={colorScheme}
                         activeJob={activeJob}

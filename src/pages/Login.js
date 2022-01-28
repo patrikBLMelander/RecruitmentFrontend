@@ -10,11 +10,21 @@ import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
 import axios from 'axios';
 import {login, getCandidateInfo} from "../API/endpoints";
-import { formLabelClasses } from "@mui/material";
+import Animals from "../testData/animals";
+import Countries from "../testData/countries";
+import Cities from "../testData/capitals";
+import Steal from "../testData/colorSchemas/steal";
+import DarkBlue from "../testData/colorSchemas/darkBlue";
+import LightPink from "../testData/colorSchemas/lightPink";
+import Teal from "../testData/colorSchemas/teal";
+import Purple from "../testData/colorSchemas/purple";
+import GreenNature from "../testData/colorSchemas/greenNature";
 
 function Login({
   setActiveCandidate,
   colorScheme,
+  setNickName,
+  setColorscheme,
 }) {
   const [validated, setValidated] = useState(false);
   const Navigate = useNavigate();
@@ -45,28 +55,51 @@ function Login({
           {headers: { Authorization: localStorage.getItem("jwtToken") }}).then(response => {
             
             setActiveCandidate({
-               id:response.data.id,
-               firstName:response.data.firstName,
-               lastName:response.data.lastName,
-               nickName:response.data.nickName,
-               email:response.data.email,
-               presentation:response.data.presentation,
-               isAdmin:response.data.isAdmin,
-               colorChoice:response.data.colorChoice,
-               nickNameChoice:response.data.nickNameChoice,
-              roleList:response.data.roleList,
-              experienceList:response.data.experienceList,
-              educationList:response.data.educationList,
-              competenciesList:response.data.competenciesList,
-              personalityList:response.data.personalityList,
+                id:response.data.id,
+                firstName:response.data.firstName,
+                lastName:response.data.lastName,
+                nickName:response.data.nickName,
+                email:response.data.email,
+                presentation:response.data.presentation,
+                isAdmin:response.data.isAdmin,
+                colorChoice:response.data.colorChoice,
+                nickNameChoice:response.data.nickNameChoice,
+                roleList:response.data.roleList,
+                experienceList:response.data.experienceList,
+                educationList:response.data.educationList,
+                competenciesList:response.data.competenciesList,
+                personalityList:response.data.personalityList,
             })
+            if(response.data.colorChoice==="teal"){
+              setColorscheme(Teal)
+            }else if(response.data.colorChoice==="steal"){
+              setColorscheme(Steal)
+            }else if(response.data.colorChoice==="darkBlue"){
+              setColorscheme(DarkBlue)
+            }else if(response.data.colorChoice==="greenNature"){
+              setColorscheme(GreenNature)
+            }else if(response.data.colorChoice==="lightPink"){
+              setColorscheme(LightPink)
+            }else if(response.data.colorChoice==="purple"){
+              setColorscheme(Purple)
+            }
+
             localStorage.setItem("activeUser", response.data.email)
             localStorage.setItem("jwtToken", responseFromLogin.data.jwtToken)
             if(response.data.isAdmin===false){
 
               Navigate("/candidate/my-page")
             }else{
-             
+              if(response.data.nickNameChoice==="default"){
+                setNickName(Animals)
+              }else if(response.data.nickNameChoice==="country"){
+                setNickName(Countries)
+              }else{
+                setNickName(Cities)
+              }
+
+
+
               Navigate("/home")
             }
           })

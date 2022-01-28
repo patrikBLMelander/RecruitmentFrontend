@@ -13,9 +13,9 @@ import Countries from "../testData/countries";
 import Cities from "../testData/capitals";
 import Steal from "../testData/colorSchemas/steal";
 import DarkBlue from "../testData/colorSchemas/darkBlue";
-import Brown from "../testData/colorSchemas/lightPink";
-import DarkGreen from "../testData/colorSchemas/darkGreen";
-import PinkPurple from "../testData/colorSchemas/pinkPurple";
+import LightPink from "../testData/colorSchemas/lightPink";
+import Teal from "../testData/colorSchemas/teal";
+import Purple from "../testData/colorSchemas/purple";
 import GreenNature from "../testData/colorSchemas/greenNature";
 import axios from "axios";
 import {
@@ -23,6 +23,8 @@ import {
   updatePassword,
   getAllCandidates,
   deleteAdmin,
+  updateColor,
+  changNicknamePresentaion,
 } from "../API/endpoints";
 
 
@@ -38,8 +40,32 @@ function Settings({
   const [validated, setValidated] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState(false);
   const [allCandidates, setAllCandidates] = useState([{}]);
+  console.log(activeCandidate)
 
   useEffect(() => {
+    if(activeCandidate.nickNameChoice==="default"){
+      handleAnimalChange()
+    }
+    else if(activeCandidate.nickNameChoice==="country"){
+      handleCountryChange()
+    }
+    else if(activeCandidate.nickNameChoice==="city"){
+      handleCitiesChange()
+    }
+    if(activeCandidate.colorChoice==="teal"){
+      handleColor4Change()
+    }else if(activeCandidate.colorChoice==="steal"){
+      handleColor1Change()
+    }else if(activeCandidate.colorChoice==="darkBlue"){
+      handleColor2Change()
+    }else if(activeCandidate.colorChoice==="greenNature"){
+      handleColor3Change()
+    }else if(activeCandidate.colorChoice==="lightPink"){
+      handleColor5Change()
+    }else if(activeCandidate.colorChoice==="purple"){
+      handleColor6Change()
+    }
+
     axios.get(`${getAllCandidates}`, {
   
     }).then(resp => {
@@ -57,14 +83,58 @@ function Settings({
   function handleAnimalChange() {
     setRadioButtonsName([true, false, false]);
     setNickName(Animals);
+
+     axios
+     .put(
+       `${changNicknamePresentaion}`,
+       {
+          candidateId: `${activeCandidate.id}`,
+          nicknameChoice: "default",
+       },
+       { headers: { Authorization: localStorage.getItem("jwtToken") } }
+     )
+     .then((response) => {
+        const newActiveCandidate = activeCandidate;
+        newActiveCandidate.nickNameChoice="default"
+        setActiveCandidate(newActiveCandidate);
+     })
+
   }
   function handleCountryChange() {
     setRadioButtonsName([false, true, false]);
     setNickName(Countries);
+    axios
+    .put(
+      `${changNicknamePresentaion}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         nicknameChoice: "country",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.nickNameChoice="country"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleCitiesChange() {
     setRadioButtonsName([false, false, true]);
     setNickName(Cities);
+    axios
+    .put(
+      `${changNicknamePresentaion}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         nicknameChoice: "city",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.nickNameChoice="city"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   //ADJUST COLOR
   const [radioButtonsColor, setRadioButtonsColor] = useState([
@@ -78,26 +148,111 @@ function Settings({
   function handleColor1Change() {
     setRadioButtonsColor([true, false, false, false, false, false]);
     setColorscheme(Steal);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "steal",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="steal"
+      setActiveCandidate(newActiveCandidate);
+    })
+    
   }
   function handleColor2Change() {
     setRadioButtonsColor([false, true, false, false, false, false]);
     setColorscheme(DarkBlue);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "darkBlue",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="darkBlue"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor3Change() {
     setRadioButtonsColor([false, false, true, false, false, false]);
     setColorscheme(GreenNature);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "greenNature",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="greenNature"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor4Change() {
     setRadioButtonsColor([false, false, false, true, false, false]);
-    setColorscheme(DarkGreen);
+    setColorscheme(Teal);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "teal",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="teal"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor5Change() {
     setRadioButtonsColor([false, false, false, false, true, false]);
-    setColorscheme(Brown);
+    setColorscheme(LightPink);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "lightPink",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="lightPink"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   function handleColor6Change() {
     setRadioButtonsColor([false, false, false, false, false, true]);
-    setColorscheme(PinkPurple);
+    setColorscheme(Purple);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "purple",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="purple"
+      setActiveCandidate(newActiveCandidate);
+    })
   }
   //CREATE ADMIN
   const handleSubmit = (event) => {
@@ -385,7 +540,7 @@ function Settings({
                       checked={radioButtonsColor[3]}
                       onChange={handleColor4Change}
                     />
-                    Dark/Green
+                    Teal
                   </label>
                 </RadioCol>
                 <RadioCol>
@@ -396,7 +551,7 @@ function Settings({
                       checked={radioButtonsColor[4]}
                       onChange={handleColor5Change}
                     />
-                    Brown
+                    Light Pink
                   </label>
                 </RadioCol>
                 <RadioCol>
@@ -407,7 +562,7 @@ function Settings({
                       checked={radioButtonsColor[5]}
                       onChange={handleColor6Change}
                     />
-                    Pink
+                    Purple
                   </label>
                 </RadioCol>
               </form>
@@ -417,7 +572,6 @@ function Settings({
               <ul>
                 {allCandidates.map((candidate, index) => {
                   if (candidate.isAdmin) {
-                    console.log(candidate)
                     return (
                       <OneAdminDiv key={candidate.id}>
                         <li>
