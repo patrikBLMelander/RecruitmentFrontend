@@ -28,11 +28,9 @@ function RemoveListBtn({
     },
     { headers: { Authorization: localStorage.getItem("jwtToken") } }
    ).then(resp => {
-    console.log(resp);
+    console.log(resp.data);
     const newActiveJob = activeJob
-    newActiveJob.recruitmentList =[...activeJob.recruitmentList.filter(
-      (recruitmentStep) => recruitmentStep.id !== id
-    )] 
+    newActiveJob.recruitmentList.splice(activeJob.recruitmentList.indexOf(id))
     console.log(newActiveJob)
     setActiveJob(...[newActiveJob])
     //Försöker få denna att uppdatera sidan direkt
