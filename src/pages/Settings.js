@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
@@ -21,16 +21,15 @@ import axios from "axios";
 import {
   createAdmin,
   updatePassword,
+  getAllCandidates,
+  deleteAdmin,
 } from "../API/endpoints";
 
-let counter = 9;
 
 function Settings({
   activeCandidate,
   activeJob,
   setActiveCandidate,
-  candidateState,
-  setCandidateState,
   setActiveJob,
   setNickName,
   setColorscheme,
@@ -38,6 +37,16 @@ function Settings({
 }) {
   const [validated, setValidated] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState(false);
+  const [allCandidates, setAllCandidates] = useState([{}]);
+
+  useEffect(() => {
+    axios.get(`${getAllCandidates}`, {
+  
+    }).then(resp => {
+      setAllCandidates(resp.data)
+  }).catch(error => console.error(error));
+  }, []);
+
 
   //ADJUST NAME
   const [radioButtonsName, setRadioButtonsName] = useState([
@@ -109,6 +118,13 @@ function Settings({
      ).then(resp => {
      
         if(resp.status === 201){
+
+          axios.get(`${getAllCandidates}`, {
+  
+          }).then(resp => {
+            setAllCandidates(resp.data)
+        }).catch(error => console.error(error));
+
           Swal.fire({
             icon: "success",
             title: "Recruiter added",
@@ -120,6 +136,7 @@ function Settings({
             showDenyButton: false,
             showCancelButton: false,
           });
+          
         }
       }).catch(error => {
         console.log(error.response.status)
@@ -140,13 +157,14 @@ function Settings({
     }
     
   };
-
+  //REMOVE ADMIN
   function removeAdmin(indexToRemove) {
-    const firstNameToRemove = candidateState[indexToRemove].firstName;
-    const lastNameToRemove = candidateState[indexToRemove].lastName;
-    const NewCandidateState = candidateState;
+    const firstNameToRemove = allCandidates[indexToRemove].firstName;
+    const lastNameToRemove = allCandidates[indexToRemove].lastName;
+    const idToRemove = allCandidates[indexToRemove].id;
+    const NewCandidateState = allCandidates;
     NewCandidateState.splice(indexToRemove, 1);
-    setCandidateState([...NewCandidateState]);
+    setAllCandidates([...NewCandidateState]);
     Swal.fire({
       icon: "success",
       title: "Recruiter removed",
@@ -155,6 +173,22 @@ function Settings({
       showDenyButton: false,
       showCancelButton: false,
     });
+    axios
+    .delete(
+      `${deleteAdmin}`,
+      {
+        data: {
+          candidateId: `${idToRemove}`,
+          toRemove: `${idToRemove}`,
+        },
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwtToken"),
+        },
+      }
+    )
+
   }
 
   function changPassword(event) {
@@ -381,8 +415,9 @@ function Settings({
             <RemoveRecruiterDiv>
               <H5>Your Recruters</H5>
               <ul>
-                {candidateState.map((candidate, index) => {
-                  if (candidate.id.includes("admin")) {
+                {allCandidates.map((candidate, index) => {
+                  if (candidate.isAdmin) {
+                    console.log(candidate)
                     return (
                       <OneAdminDiv key={candidate.id}>
                         <li>
