@@ -7,6 +7,7 @@ import StyledButton from "../StyledButton";
 import axios from "axios";
 import {
   setRate,
+  getJobOfferDetails,
 } from "../../API/endpoints";
 
 Modal.setAppElement("#root");
@@ -16,66 +17,39 @@ function ApplicantCardModal({
   activeJob,
   nickName,
   colorScheme,
+  setActiveJob
 
 }) {
   const [rating, setRating] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    return()=>{//Testa att sätta rating med denna
-    }
-  })
-  
-  
+    activeJob.recruitmentList.map((recruitment) =>
+    recruitment.candidateList.map(candidateInMap => {
+      if(candidateInMap.id===candidate.id){
+        candidateInMap.rates.map(rate =>{
+          if(rate.jobOfferId===activeJob.id){
+            setRating(rate.value)
+            }
+        }
+      )}
+    }))
+    console.log(activeJob)
+  }, []);
+
   const handleRating = (rate) => {
     setRating(rate);
     axios.put(`${setRate}`,
     { 
       candidateId:`${candidate.id}`,
       jobOfferId:`${activeJob.id}`,
-      rate:rate/20,
+      rate:rate,
     },
     { headers: { Authorization: localStorage.getItem("jwtToken") } }
  ).then(resp => {
 
   console.log(resp.data)
  })
- 
-
-
-
-
-
-
-    // let newCandidateState = candidateState;
-
-    // candidateState.map((candidateInMap, candidateIndex) => {
-    //   if (candidateInMap.id === candidate.id) {
-    //     let foundRate = false;
-    //     candidateInMap.rate.map((rateInMap, rateIndex) => {
-    //       if (rateInMap.jobofferId === activeJob.id) {
-    //         newCandidateState[candidateIndex].rate[rateIndex] = {
-    //           id: rateInMap.id,
-    //           rate: rate / 20,
-    //           jobofferId: rateInMap.jobofferId,
-    //         };
-
-    //         foundRate = true;
-    //       }
-    //       return null;
-    //     });
-    //     if (!foundRate) {
-    //       counter += 1;
-    //       newId = "rateId" + counter;
-    //       newCandidateState[candidateIndex].rate = [
-    //         ...candidateInMap.rate,
-    //         { id: newId, rate: rate / 20, jobofferId: activeJob.id },
-    //       ];
-    //     }
-    //   }
-    //   return null;
-    // });
-    // setCandidateState(newCandidateState);
   };
 
   function openModal() {
