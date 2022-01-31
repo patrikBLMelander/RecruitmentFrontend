@@ -1,20 +1,41 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import JobOfferCard from "../components/JobOfferCard";
+import axios from "axios";
+import {
+  getMyProcesses,
+
+} from "../API/endpoints";
 
 function CandidateProcesses({
   jobOfferings,
   activeJob,
   setActiveJob,
-  adminLoggedIn,
-  candidateLoggedIn,
   setActiveCandidate,
   activeCandidate,
   colorScheme,
 }) {
+
+  const [myProcesses, setMyProcesses]=useState([{}])
+
+  useEffect(() => {
+    axios.post(`${getMyProcesses}`,
+    {
+      "email": `${activeCandidate.email}`,
+      "test": "test"
+    },
+    {headers: { Authorization: localStorage.getItem("jwtToken") }
+  }).then(function (response) {
+    setMyProcesses(response.data)
+  })
+      
+  }, []);
+
+
+
   return (
     <div>
       <Navbar
@@ -30,15 +51,14 @@ function CandidateProcesses({
           active processes
         </H3>
         <JobCardDiv>
-          {jobOfferings.map((jobOfferingsInMap, index) => {
+          {myProcesses?.map((jobOfferingsInMap, index) => {
             return (
               <JobOfferCard
-                colorScheme={colorScheme}
-                key={jobOfferingsInMap.id}
+                key={`jobofferCard`+jobOfferingsInMap.id}
                 index={index}
+                colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
-                adminLoggedIn={adminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
+                activeCandidate={activeCandidate}
               />
             );
           })}

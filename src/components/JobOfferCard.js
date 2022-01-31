@@ -14,7 +14,6 @@ import {
 function JobOfferCard({
   index,
   jobOfferings,
-  setJobOfferings,
   setActiveJob,
   activeCandidate,
   colorScheme,
