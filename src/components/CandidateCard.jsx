@@ -9,7 +9,6 @@ function CandidateCard({
   activeJob,
   nickName,
   colorScheme,
-  recruitmentList
 }) {
 
   return (

@@ -19,12 +19,15 @@ import {getAllJobOffers} from "./API/endpoints";
 
 function App() {
   const [jobOfferings, setJobOfferings] = useState([{}]);
-
   const [activeJob, setActiveJob] = useState({ title: "", id: "" });
   const [activeCandidate, setActiveCandidate] = useState({isAdmin:false, id:""});
   const [candidateState, setCandidateState] = useState(candidateTestData);
   const [nickName, setNickName] = useState(Animals);
   const [colorScheme, setColorscheme] = useState(DarkGreen);
+
+  window.onload = (event) => {
+    console.log('page is fully loaded');
+  };
 
 
 useEffect(() => {

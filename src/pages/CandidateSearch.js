@@ -126,9 +126,7 @@ function CandidateSearch({
                 <ApplicantCardModal
                   key={candidate.id}
                   candidate={candidate}
-                  candidateState={candidateState}
-                  setCandidateState={setCandidateState}
-                  activeJobId={activeJob.id}
+                  activeJob={activeJob}
                   nickName={nickName}
                   colorScheme={colorScheme}
                 />

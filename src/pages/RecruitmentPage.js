@@ -20,7 +20,6 @@ function RecruitmentPage({
   setActiveCandidate,
   nickName,
   colorScheme,
-  setJobOfferings
 }) {
 
   const onDragEnd = (result) => {

@@ -32,7 +32,7 @@ function CandidateMyPage({
   colorScheme,
   nickName,
 }) {
-  if (activeCandidate == "") {
+  if (activeCandidate === "") {
     axios
       .post(
         `${getCandidateInfo}`,

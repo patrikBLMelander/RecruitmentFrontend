@@ -32,8 +32,11 @@ function ApplicantCardModal({
               setRating(rate.value)
               }
           }
+          
         )}
+        return null;
       }))
+      return null;
     }
 
   }, []);

@@ -39,7 +39,6 @@ function RecruitmentProcessStep({
                       activeJob={activeJob}
                       nickName={nickName}
                       colorScheme={colorScheme}
-                      recruitmentList={recruitmentList}
                     />
                   );
                 })}

@@ -8,7 +8,6 @@ import {
 
 function RemoveListBtn({
   activeJob,
-  jobOfferings,
   setActiveJob,
   candidatesAmount,
   id,

@@ -17,8 +17,6 @@ let newId = "candidate-" + counter;
 
 
 function Registrer({
-  setActiveCandidate,
-  setCandidateLoggedIn,
   colorScheme,
 }) {
   const [validated, setValidated] = useState(false);
