@@ -57,6 +57,7 @@ function CandidateMyPage({
           competenciesList: response.data.competenciesList,
           personalityList: response.data.personalityList,
         });
+        localStorage.setItem("activeUser", JSON.stringify(response.data));
       })
       .catch((error) => {
         console.error(error.response);
@@ -222,6 +223,7 @@ function CandidateMyPage({
               competenciesList: response.data.competenciesList,
               personalityList: response.data.personalityList,
             });
+            localStorage.setItem("activeUser", JSON.stringify(response.data));
           });
       });
       setCompetenceValue("");
@@ -279,6 +281,7 @@ function CandidateMyPage({
             competenciesList: activeCandidate.competenciesList,
             personalityList: activeCandidate.personalityList,
           });
+          localStorage.setItem("activeUser", JSON.stringify(response.data));
         });
       Swal.fire({
         title: "Presentation Saved!",
@@ -344,6 +347,7 @@ function CandidateMyPage({
                 competenciesList: response.data.competenciesList,
                 personalityList: response.data.personalityList,
               });
+              localStorage.setItem("activeUser", JSON.stringify(response.data));
             });
         });
 
@@ -417,6 +421,7 @@ function CandidateMyPage({
                 competenciesList: response.data.competenciesList,
                 personalityList: response.data.personalityList,
               });
+              localStorage.setItem("activeUser", JSON.stringify(response.data));
             });
         });
 
@@ -481,6 +486,7 @@ function CandidateMyPage({
               competenciesList: response.data.competenciesList,
               personalityList: response.data.personalityList,
             });
+            localStorage.setItem("activeUser", JSON.stringify(response.data));
           });
       });
 

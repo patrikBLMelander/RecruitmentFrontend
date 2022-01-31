@@ -97,6 +97,7 @@ function Settings({
         const newActiveCandidate = activeCandidate;
         newActiveCandidate.nickNameChoice="default"
         setActiveCandidate(newActiveCandidate);
+        localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
      })
 
   }
@@ -116,6 +117,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.nickNameChoice="country"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleCitiesChange() {
@@ -134,6 +136,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.nickNameChoice="city"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   //ADJUST COLOR
@@ -161,6 +164,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="steal"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
     
   }
@@ -180,6 +184,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="darkBlue"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor3Change() {
@@ -198,6 +203,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="greenNature"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor4Change() {
@@ -216,6 +222,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="teal"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor5Change() {
@@ -234,6 +241,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="lightPink"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor6Change() {
@@ -252,6 +260,7 @@ function Settings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="purple"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   //CREATE ADMIN

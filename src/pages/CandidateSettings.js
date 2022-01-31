@@ -77,6 +77,7 @@ function CandidateSettings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="steal"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
     
   }
@@ -96,6 +97,7 @@ function CandidateSettings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="darkBlue"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor3Change() {
@@ -114,6 +116,7 @@ function CandidateSettings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="greenNature"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor4Change() {
@@ -132,6 +135,7 @@ function CandidateSettings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="teal"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor5Change() {
@@ -150,6 +154,7 @@ function CandidateSettings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="lightPink"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
   function handleColor6Change() {
@@ -168,6 +173,7 @@ function CandidateSettings({
       const newActiveCandidate = activeCandidate;
       newActiveCandidate.colorChoice="purple"
       setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
     })
   }
 

@@ -83,8 +83,8 @@ function Login({
             }else if(response.data.colorChoice==="purple"){
               setColorscheme(Purple)
             }
-
-            localStorage.setItem("activeUser", response.data.email)
+            console.log(response.data)
+            localStorage.setItem("activeUser", JSON.stringify(response.data));
             localStorage.setItem("jwtToken", responseFromLogin.data.jwtToken)
             if(response.data.isAdmin===false){
 

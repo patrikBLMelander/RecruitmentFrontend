@@ -72,6 +72,7 @@ function Resume({
                   competenciesList: response.data.competenciesList,
                   personalityList: response.data.personalityList,
                 });
+                localStorage.setItem("activeUser", JSON.stringify(response.data));
               });
           })
           .catch((error) => {
@@ -139,6 +140,7 @@ function Resume({
                 competenciesList: response.data.competenciesList,
                 personalityList: response.data.personalityList,
               });
+              localStorage.setItem("activeUser", JSON.stringify(response.data));
             });
         })
         .catch((error) => {
@@ -206,6 +208,7 @@ function Resume({
                   competenciesList: response.data.competenciesList,
                   personalityList: response.data.personalityList,
                 });
+                localStorage.setItem("activeUser", JSON.stringify(response.data));
               });
           })
           .catch((error) => {
