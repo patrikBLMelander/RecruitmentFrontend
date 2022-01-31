@@ -7,7 +7,6 @@ import StyledButton from "../StyledButton";
 import axios from "axios";
 import {
   setRate,
-  getJobOfferDetails,
 } from "../../API/endpoints";
 
 Modal.setAppElement("#root");
@@ -17,24 +16,26 @@ function ApplicantCardModal({
   activeJob,
   nickName,
   colorScheme,
-  setActiveJob
-
 }) {
   const [rating, setRating] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    activeJob.recruitmentList.map((recruitment) =>
-    recruitment.candidateList.map(candidateInMap => {
-      if(candidateInMap.id===candidate.id){
-        candidateInMap.rates.map(rate =>{
-          if(rate.jobOfferId===activeJob.id){
-            setRating(rate.value)
-            }
-        }
-      )}
-    }))
-    console.log(activeJob)
+    if(activeJob==null) {
+      setRating(0)
+    }else{
+      activeJob.recruitmentList.map((recruitment) =>
+      recruitment.candidateList.map(candidateInMap => {
+        if(candidateInMap.id===candidate.id){
+          candidateInMap.rates.map(rate =>{
+            if(rate.jobOfferId===activeJob.id){
+              setRating(rate.value)
+              }
+          }
+        )}
+      }))
+    }
+
   }, []);
 
   const handleRating = (rate) => {

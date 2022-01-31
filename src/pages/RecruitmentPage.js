@@ -135,8 +135,6 @@ function RecruitmentPage({
           },
           { headers: { Authorization: localStorage.getItem("jwtToken") } }
         ).then(resp => {
-
-          console.log(resp.data)
          })
         return null;
   };

@@ -19,6 +19,8 @@ function Resume({
   colorScheme,
   nickName,
 }) {
+
+  console.log(activeCandidate)
   function removeExperience(experienceInMap) {
     Swal.fire({
       title: "Remove Experience",
@@ -248,7 +250,7 @@ function Resume({
           </Skills>
         </LeftDiv>
         <RightDiv inputColor={colorScheme}>
-          <H3>{nickName[activeCandidate.nickName + 0]}</H3>
+          <H3>{activeCandidate.firstName} {activeCandidate.lastName}</H3>
           <Experience>
             <H5>Job Experience</H5>
             {activeCandidate.experienceList.map((experienceInMap) => {

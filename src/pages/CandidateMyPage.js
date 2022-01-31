@@ -23,17 +23,12 @@ import Slider from "@mui/material/Slider";
 import Modal from "react-modal";
 
 function CandidateMyPage({
-  jobOfferings,
-  adminLoggedIn,
-  candidateLoggedIn,
   activeJob,
   setActiveJob,
   activeCandidate,
   setActiveCandidate,
   setCandidateState,
   candidateState,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
   colorScheme,
   nickName,
 }) {
@@ -213,6 +208,8 @@ function CandidateMyPage({
           .then((response) => {
             setActiveCandidate({
               id: response.data.id,
+              firstName:response.data.firstName,
+              lastName:response.data.lastName,
               nickName: response.data.nickName,
               email: response.data.email,
               presentation: response.data.presentation,
@@ -268,6 +265,8 @@ function CandidateMyPage({
         .then((response) => {
           setActiveCandidate({
             id: activeCandidate.id,
+            firstName:response.data.firstName,
+            lastName:response.data.lastName,
             nickName: activeCandidate.nickName,
             email: activeCandidate.email,
             presentation: presentation,
@@ -331,6 +330,8 @@ function CandidateMyPage({
             .then((response) => {
               setActiveCandidate({
                 id: response.data.id,
+                firstName:response.data.firstName,
+                lastName:response.data.lastName,
                 nickName: response.data.nickName,
                 email: response.data.email,
                 presentation: response.data.presentation,
@@ -402,6 +403,8 @@ function CandidateMyPage({
             .then((response) => {
               setActiveCandidate({
                 id: response.data.id,
+                firstName:response.data.firstName,
+                lastName:response.data.lastName,
                 nickName: response.data.nickName,
                 email: response.data.email,
                 presentation: response.data.presentation,
@@ -464,6 +467,8 @@ function CandidateMyPage({
           .then((response) => {
             setActiveCandidate({
               id: response.data.id,
+              firstName:response.data.firstName,
+              lastName:response.data.lastName,
               nickName: response.data.nickName,
               email: response.data.email,
               presentation: response.data.presentation,
