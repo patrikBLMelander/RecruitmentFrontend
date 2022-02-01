@@ -6,11 +6,11 @@ import AddListBtn from "../components/AddListBtn";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   moveRecruitmentStep,
   moveCandidate,
-  getAllJobOffers,
 } from "../API/endpoints";
 
 function RecruitmentPage({
@@ -21,6 +21,19 @@ function RecruitmentPage({
   nickName,
   colorScheme,
 }) {
+  const Navigate = useNavigate();
+  useEffect(() => {
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var activeJob = JSON.parse(localStorage.getItem("activeJob"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn)
+      setActiveJob(activeJob)
+    }
+  }, []);
+
+
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;

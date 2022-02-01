@@ -89,6 +89,7 @@ function JobOfferCard({
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
    ).then(resp => {
         setActiveJob(resp.data)
+        localStorage.setItem("activeJob", JSON.stringify(resp.data));
       }).then(
         navigate("/admin/recruitment-page")
       );
