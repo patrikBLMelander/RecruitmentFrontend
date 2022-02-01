@@ -42,7 +42,6 @@ function RecruitmentProcessStep({
                     />
                   );
                 })}
-
                 {provided.placeholder}
               </CandidateCardList>
             )}
@@ -71,7 +70,7 @@ const Container = styled.div`
   border-radius: 20px;
   color: ${(props) => props.inputColor.text};
   box-shadow: 0px 8px 15px ${(props) => props.inputColor.secondary};
-  width: 220px;
+  min-width: 220px;
   display: flex;
   flex-direction: column;
 `;
