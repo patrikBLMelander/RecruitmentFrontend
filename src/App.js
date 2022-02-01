@@ -9,37 +9,34 @@ import CandidateProcesses from "./pages/CandidateProcesses";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CandidateSearch from "./pages/CandidateSearch";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import candidateTestData from "./testData/candidateTestData";
+import {Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
 import DarkGreen from "./testData/colorSchemas/teal";
 import CandidateSettings from "./pages/CandidateSettings";
 import axios from 'axios';
 import {getAllJobOffers} from "./API/endpoints";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const Navigate = useNavigate();
   const [jobOfferings, setJobOfferings] = useState([{}]);
   const [activeJob, setActiveJob] = useState({ title: "", id: "" });
   const [activeCandidate, setActiveCandidate] = useState({isAdmin:false, id:""});
-  const [candidateState, setCandidateState] = useState(candidateTestData);
   const [nickName, setNickName] = useState(Animals);
   const [colorScheme, setColorscheme] = useState(DarkGreen);
 
-  window.onload = (event) => {
-    console.log('page is fully loaded');
-  };
-
-
 useEffect(() => {
-  axios.get(`${getAllJobOffers}`, {
+    axios.get(`${getAllJobOffers}`, {
 
-  }).then(resp => {
-    setJobOfferings(resp.data)
-}).catch(error => console.error(error));
+    }).then(resp => {
+      setJobOfferings(resp.data)
+      localStorage.setItem("allJobOffers", JSON.stringify(resp.data));
+  }).catch(error => console.error(error));
 }, []);
 
+
   return (
-    <Router>
+
       <div>
         <Routes>
           <Route
@@ -57,8 +54,6 @@ useEffect(() => {
             element={
               <Register
                 colorScheme={colorScheme}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
               />
@@ -71,12 +66,11 @@ useEffect(() => {
                 nickName={nickName}
                 colorScheme={colorScheme}
                 setActiveJob={setActiveJob}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
+                setJobOfferings={setJobOfferings}
               />
             }
           />
@@ -89,7 +83,6 @@ useEffect(() => {
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 activeCandidate={activeCandidate}
-                setCandidateState={setCandidateState}
                 setActiveCandidate={setActiveCandidate}
               />
             }
@@ -102,7 +95,6 @@ useEffect(() => {
                 activeCandidate={activeCandidate}
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
-                setCandidateState={setCandidateState}
                 setActiveCandidate={setActiveCandidate}
                 setActiveJob={setActiveJob}
                 activeJob={activeJob}
@@ -120,8 +112,6 @@ useEffect(() => {
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
                 activeCandidate={activeCandidate}
-                candidateState={candidateState}
-                setCandidateState={setCandidateState}
                 setActiveCandidate={setActiveCandidate}
               />
             }
@@ -147,7 +137,6 @@ useEffect(() => {
                 colorScheme={colorScheme}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
-                candidateState={candidateState}
                 nickName={nickName}
                 setActiveCandidate={setActiveCandidate}
                 activeCandidate={activeCandidate}
@@ -161,8 +150,6 @@ useEffect(() => {
                 colorScheme={colorScheme}
                 setColorscheme={setColorscheme}
                 setNickName={setNickName}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
@@ -178,8 +165,6 @@ useEffect(() => {
                 colorScheme={colorScheme}
                 setColorscheme={setColorscheme}
                 setNickName={setNickName}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
@@ -198,7 +183,6 @@ useEffect(() => {
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
-                candidateState={candidateState}
                 setActiveCandidate={setActiveCandidate}
                 activeCandidate={activeCandidate}
                 setNickName={setNickName}
@@ -207,7 +191,6 @@ useEffect(() => {
           />
         </Routes>
       </div>
-    </Router>
   );
 }
 export default App;

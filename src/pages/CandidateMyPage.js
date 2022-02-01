@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   getCandidateInfo,
@@ -21,6 +21,7 @@ import Footer from "../components/Footer";
 import StyledButton from "../components/StyledButton";
 import Slider from "@mui/material/Slider";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 function CandidateMyPage({
   activeJob,
@@ -31,46 +32,28 @@ function CandidateMyPage({
   candidateState,
   colorScheme,
   nickName,
+  setJobOfferings,
 }) {
-  if (activeCandidate === "") {
-    axios
-      .post(
-        `${getCandidateInfo}`,
-        {
-          email: `${localStorage.getItem("activeUser")}`,
-          test: "test",
-        },
-        { headers: { Authorization: localStorage.getItem("jwtToken") } }
-      )
-      .then((response) => {
-        setActiveCandidate({
-          id: response.data.id,
-          nickName: response.data.nickName,
-          email: response.data.email,
-          presentation: response.data.presentation,
-          isAdmin: response.data.isAdmin,
-          colorChoice: response.data.colorChoice,
-          nickNameChoice: response.data.nickNameChoice,
-          roleList: response.data.roleList,
-          experienceList: response.data.experienceList,
-          educationList: response.data.educationList,
-          competenciesList: response.data.competenciesList,
-          personalityList: response.data.personalityList,
-        });
-        localStorage.setItem("activeUser", JSON.stringify(response.data));
-      })
-      .catch((error) => {
-        console.error(error.response);
-        Swal.fire({
-          icon: "error",
-          title: "Serverfel",
-          text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
-          showDenyButton: false,
-          showCancelButton: false,
-          confirmButtonText: "Try again",
-        });
-      });
-  }
+  const Navigate = useNavigate();
+  useEffect(() => { 
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var allJobOffers = JSON.parse(localStorage.getItem("allJobOffers"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+      setJobOfferings(allJobOffers);
+  
+      setPresentation(activeCandidate.presentation)
+  
+      setOpenness(candidateLoggedIn.personalityList[0].value);
+      setConscintiousness(candidateLoggedIn.personalityList[1].value);
+      setExtroversion(candidateLoggedIn.personalityList[2].value)
+      setAgreableness(candidateLoggedIn.personalityList[3].value);
+      setNeuroticism (candidateLoggedIn.personalityList[4].value)
+    }
+
+  }, []);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [presentationValidated, setPresentationValidated] = useState(false);
@@ -86,9 +69,7 @@ function CandidateMyPage({
   }
 
   //Overall
-  const [presentation, setPresentation] = useState(
-    activeCandidate.presentation
-  );
+  const [presentation, setPresentation] = useState("");
 
   const handlePresentationChange = (event) => {
     setPresentation(event.target.value);
@@ -131,21 +112,11 @@ function CandidateMyPage({
   };
 
   //Personality
-  const [openness, setOpenness] = useState(
-    activeCandidate.personalityList[0].value
-  );
-  const [conscientiousness, setConscintiousness] = useState(
-    activeCandidate.personalityList[1].value
-  );
-  const [extroversion, setExtroversion] = useState(
-    activeCandidate.personalityList[2].value
-  );
-  const [agreeableness, setAgreableness] = useState(
-    activeCandidate.personalityList[3].value
-  );
-  const [neuroticism, setNeuroticism] = useState(
-    activeCandidate.personalityList[4].value
-  );
+  const [openness, setOpenness] = useState(50);
+  const [conscientiousness, setConscintiousness] = useState(50);
+  const [extroversion, setExtroversion] = useState(50)
+  const [agreeableness, setAgreableness] = useState(50);
+  const [neuroticism, setNeuroticism] = useState(50);
   const handleOpennessChange = (event) => {
     setOpenness(event.target.value);
   };
@@ -195,7 +166,8 @@ function CandidateMyPage({
           { headers: { Authorization: localStorage.getItem("jwtToken") } }
         )
         .then((response) => {
-        const email = localStorage.getItem("activeUser");
+          const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+          const email = candidateLoggedIn.email;
 
         axios
           .post(
@@ -319,7 +291,8 @@ function CandidateMyPage({
           { headers: { Authorization: localStorage.getItem("jwtToken") } }
         )
         .then((response) => {
-          const email = localStorage.getItem("activeUser");
+          const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+          const email = candidateLoggedIn.email;
 
           axios
             .post(
@@ -393,7 +366,8 @@ function CandidateMyPage({
           { headers: { Authorization: localStorage.getItem("jwtToken") } }
         )
         .then((response) => {
-          const email = localStorage.getItem("activeUser");
+          const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+          const email = candidateLoggedIn.email;
 
           axios
             .post(
@@ -458,7 +432,8 @@ function CandidateMyPage({
         { headers: { Authorization: localStorage.getItem("jwtToken") } }
       )
       .then((response) => {
-        const email = localStorage.getItem("activeUser");
+        const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+        const email = candidateLoggedIn.email;
 
         axios
           .post(
