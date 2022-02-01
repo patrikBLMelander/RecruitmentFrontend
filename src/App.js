@@ -84,6 +84,7 @@ useEffect(() => {
                 activeJob={activeJob}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
+                setJobOfferings={setJobOfferings}
               />
             }
           />

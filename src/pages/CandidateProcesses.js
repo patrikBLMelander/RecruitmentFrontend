@@ -18,15 +18,19 @@ function CandidateProcesses({
   setActiveCandidate,
   activeCandidate,
   colorScheme,
+  setJobOfferings,
 }) {
   const Navigate = useNavigate();
   const [myProcesses, setMyProcesses]=useState([{}])
 
   useEffect(() => {
     var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var allJobOffers = JSON.parse(localStorage.getItem("allJobOffers"));
     if(candidateLoggedIn===null){
       Navigate("/")
     }else{
+      setActiveCandidate(candidateLoggedIn);
+      setJobOfferings(allJobOffers);
       axios.post(`${getMyProcesses}`,
       {
         "email": `${candidateLoggedIn.email}`,
