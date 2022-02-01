@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import StyledButton from "../components/StyledButton";
 import JobOfferPreview from "../components/Modal/JobOfferPreview";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   createNewJobOffer,
@@ -27,6 +28,19 @@ function AddNewJobOffer({
 }) {
   const [validated, setValidated] = useState(false);
   const [activeJobOffer, setActiveJobOffer] = useState("");
+  const Navigate = useNavigate();
+
+
+  useEffect(() => { 
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var allJobOffers = JSON.parse(localStorage.getItem("allJobOffers"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+    }
+
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
