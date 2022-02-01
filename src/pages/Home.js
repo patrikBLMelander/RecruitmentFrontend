@@ -69,10 +69,11 @@ function Home({
 export default Home;
 
 const Container = styled.div`
-    background-color: ${(props) => props.inputColor.primary};    
-    color: ${(props) => props.inputColor.text};
-    padding-bottom: 5%;
-    margin-left 160px
+  background-color: ${(props) => props.inputColor.primary};    
+  color: ${(props) => props.inputColor.text};
+  padding-bottom: 5%;
+  margin-left: 160px;
+  min-height: 90vh;
 `;
 
 const H3 = styled.h3`
@@ -94,7 +95,6 @@ const JobCardDiv = styled.div`
   @media (max-width: 900px) {
     flex: 1 1 calc(33% - 20px);
   }
-
   @media (max-width: 750px) {
     flex: 1 1 calc(50% - 20px);
   }
