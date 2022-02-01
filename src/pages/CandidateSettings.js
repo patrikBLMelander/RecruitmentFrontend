@@ -36,19 +36,30 @@ function CandidateSettings({
   const Navigate = useNavigate();
 
   useEffect(() => {
-    if(activeCandidate.colorChoice==="teal"){
-      handleColor4Change()
-    }else if(activeCandidate.colorChoice==="steal"){
-      handleColor1Change()
-    }else if(activeCandidate.colorChoice==="darkBlue"){
-      handleColor2Change()
-    }else if(activeCandidate.colorChoice==="greenNature"){
-      handleColor3Change()
-    }else if(activeCandidate.colorChoice==="lightPink"){
-      handleColor5Change()
-    }else if(activeCandidate.colorChoice==="purple"){
-      handleColor6Change()
+
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    if(activeCandidate.id===""){
+      if(candidateLoggedIn===null){
+        Navigate("/")
+      }else{
+        setActiveCandidate(candidateLoggedIn)
+      }
+    }else{
+      if(activeCandidate.colorChoice==="teal"){
+        handleColor4Change()
+      }else if(activeCandidate.colorChoice==="steal"){
+        handleColor1Change()
+      }else if(activeCandidate.colorChoice==="darkBlue"){
+        handleColor2Change()
+      }else if(activeCandidate.colorChoice==="greenNature"){
+        handleColor3Change()
+      }else if(activeCandidate.colorChoice==="lightPink"){
+        handleColor5Change()
+      }else if(activeCandidate.colorChoice==="purple"){
+        handleColor6Change()
+      }
     }
+
   }, []);
 
 
