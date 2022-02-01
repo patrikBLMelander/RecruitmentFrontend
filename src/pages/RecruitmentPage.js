@@ -154,7 +154,7 @@ function RecruitmentPage({
           },
           { headers: { Authorization: localStorage.getItem("jwtToken") } }
         ).then(resp => {
-         })
+          })
         return null;
   };
 
@@ -179,8 +179,9 @@ function RecruitmentPage({
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
+              <Column inputColor={colorScheme}>
               {activeJob.recruitmentList?.map(
-                    (recruitmentList, index) => (
+                  (recruitmentList, index) => (
                       <RecruitmentProcessSteps            
                         key={recruitmentList.id}
                         index={index}
@@ -189,18 +190,17 @@ function RecruitmentPage({
                         activeJob={activeJob}
                         setActiveJob={setActiveJob}
                         recruitmentList={recruitmentList}
-
                       />
-                    )
                   )
-                }
-
+                )
+              }
               {provided.placeholder}
               <AddListBtn
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
                 colorScheme={colorScheme}
               />
+              </Column>
             </Container>
           )}
         </Droppable>
@@ -215,9 +215,18 @@ export default RecruitmentPage;
 const Container = styled.div`
   background-color: ${(props) => props.inputColor.primary};
   display: flex;
-  position: fixed;
   z-index: 0;
-  width: 100%;
-  padding-bottom: 100%;
-  padding-left: 163px;
+  min-width: 100%;
+  min-height:90vh;
+  padding-left: 170px;
+`;
+const Column = styled.div`
+  background-color: ${(props) => props.inputColor.primary};
+  display: flex;
+  z-index: 0;
+  height: fit-content;
+  min-width: 100%;
+  max-width:100%;
+  overflow-x: scroll;
+  overflow-x: hidden;
 `;
