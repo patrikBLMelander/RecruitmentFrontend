@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import JobOfferCard from "../components/JobOfferCard";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 function Home({
   jobOfferings,
@@ -15,6 +16,18 @@ function Home({
   colorScheme,
 }) 
 {
+  const Navigate = useNavigate();
+  useEffect(() => {
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+    }
+  }, []);
+
+
+
   return (
     <div>
       <Navbar
