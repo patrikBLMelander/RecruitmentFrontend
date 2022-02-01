@@ -82,10 +82,10 @@ function JobOfferCard({
           }).then(function (response) {
             setMyProcesses(response.data)
           })
-         }).catch(err => {
-           console.error(err)
-         })
-          }
+            }).catch(err => {
+              console.error(err)
+              })
+            }
         })
 
       }else{
@@ -105,10 +105,10 @@ function JobOfferCard({
               jobOfferId:`${event.id}`,
             },
             { headers: { Authorization: localStorage.getItem("jwtToken") } }
-         ).then(resp => {
+            ).then(resp => {
             navigate("/candidate/my-page");
-         }).catch(error => {
-           if(error.response.status===400){
+            }).catch(error => {
+            if(error.response.status===400){
             Swal.fire({
               title: "Not Applied!",
               text: "You have already applied for this role.",
@@ -116,7 +116,7 @@ function JobOfferCard({
               showConfirmButton: false,
               timer: 3000,
             });
-           }else{
+            }else{
             Swal.fire({
               title: "Something whent wrong",
               text: "We seems to have problem with the connection to the server, please try again later",
@@ -124,29 +124,25 @@ function JobOfferCard({
               showConfirmButton: false,
               timer: 3000,
             });
-           }
-         })
+            }
+          })
           }
         });
       }
-
     }
     if (activeCandidate.isAdmin) {
-
       axios.post(`${getJobOfferDetails}`,
       { 
         jobOfferId:`${event.id}`,
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
-   ).then(resp => {
+      ).then(resp => {
         setActiveJob(resp.data)
         localStorage.setItem("activeJob", JSON.stringify(resp.data));
       }).then(
         navigate("/admin/recruitment-page")
       );
-
-
-   }
+  }
 
 
 
@@ -224,7 +220,7 @@ function JobOfferCard({
 export default JobOfferCard;
 
 const CardDiv = styled.div`
-    display flex;
+    display: flex;
     flex-direction: column;
     justify-content:center;
     border-radius: 45px;
@@ -250,7 +246,7 @@ const CardBody = styled.div`
 `;
 
 const CadnidateInfoDiv = styled.div`
-    display flex;
+    display: flex;
     justify-content: center;
     
 `;
