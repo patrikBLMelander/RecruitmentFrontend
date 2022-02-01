@@ -85,8 +85,7 @@ function AddNewJobOffer({
           location:`${form.locationInputGrid.value}`,
         },
         { headers: { Authorization: localStorage.getItem("jwtToken") } }
-     ).then(resp => {
-     
+        ).then(resp =>{
         if(resp.status === 201){
           Swal.fire({
             icon: "success",
@@ -98,14 +97,10 @@ function AddNewJobOffer({
           });
           
           axios.get(`${getAllJobOffers}`, {
-
           }).then(resp => {
             setJobOfferings(resp.data)
         }).catch(error => console.error(error));
-
-
-        }
-        
+        }      
       }).catch(error => {
         console.log(error.response.status)
         if(error.response.status === 400){
@@ -121,8 +116,6 @@ function AddNewJobOffer({
           Swal("Något fick fel!", "Vänligen försök igen", "warning");
         }
       });
-
-
     }
     setValidated(true);
   };
