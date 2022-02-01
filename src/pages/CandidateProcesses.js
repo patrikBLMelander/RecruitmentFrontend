@@ -9,6 +9,7 @@ import {
   getMyProcesses,
 
 } from "../API/endpoints";
+import { useNavigate } from "react-router-dom";
 
 function CandidateProcesses({
   jobOfferings,
@@ -18,19 +19,25 @@ function CandidateProcesses({
   activeCandidate,
   colorScheme,
 }) {
-
+  const Navigate = useNavigate();
   const [myProcesses, setMyProcesses]=useState([{}])
 
   useEffect(() => {
-    axios.post(`${getMyProcesses}`,
-    {
-      "email": `${activeCandidate.email}`,
-      "test": "test"
-    },
-    {headers: { Authorization: localStorage.getItem("jwtToken") }
-  }).then(function (response) {
-    setMyProcesses(response.data)
-  })
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      axios.post(`${getMyProcesses}`,
+      {
+        "email": `${candidateLoggedIn.email}`,
+        "test": "test"
+      },
+      {headers: { Authorization: localStorage.getItem("jwtToken") }
+    }).then(function (response) {
+      setMyProcesses(response.data)
+    })
+  }
+
       
   }, []);
 
