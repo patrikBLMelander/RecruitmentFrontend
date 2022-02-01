@@ -192,10 +192,6 @@ const Container = styled.div`
     height: 100%;
     width: 100%;
     z-index: 1,
-    top: 0;
-    left: 0;
-    overflow-x: hidden;
-    padding-top: 16px;
 `;
 
 const InnerContainer = styled.div`
