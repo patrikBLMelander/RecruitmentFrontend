@@ -11,7 +11,7 @@ import Register from "./pages/Register";
 import CandidateSearch from "./pages/CandidateSearch";
 import {Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
-import DarkGreen from "./testData/colorSchemas/teal";
+import Teal from "./testData/colorSchemas/teal";
 import CandidateSettings from "./pages/CandidateSettings";
 import axios from 'axios';
 import {getAllJobOffers} from "./API/endpoints";
@@ -23,7 +23,7 @@ function App() {
   const [activeJob, setActiveJob] = useState({ title: "", id: "" });
   const [activeCandidate, setActiveCandidate] = useState({isAdmin:false, id:""});
   const [nickName, setNickName] = useState(Animals);
-  const [colorScheme, setColorscheme] = useState(DarkGreen);
+  const [colorScheme, setColorscheme] = useState(Teal);
 
 useEffect(() => {
     axios.get(`${getAllJobOffers}`, {
@@ -46,6 +46,7 @@ useEffect(() => {
                 colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
                 activeCandidate={activeCandidate}
+                setJobOfferings={setJobOfferings}
               />
             }
           />
@@ -108,6 +109,7 @@ useEffect(() => {
               <RecruitmentPage
                 colorScheme={colorScheme}
                 nickName={nickName}
+                setNickName={setNickName}
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
                 activeJob={activeJob}
