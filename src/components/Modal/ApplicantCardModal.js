@@ -66,6 +66,7 @@ function ApplicantCardModal({
 
   function ContactCandidate(){
     console.log("Kontakta")
+    window.location.href = `mailto:${candidate.email}`;
   }
 
   return (
