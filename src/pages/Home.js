@@ -19,10 +19,14 @@ function Home({
   const Navigate = useNavigate();
   useEffect(() => {
     var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var activeJobInLocal = JSON.parse(localStorage.getItem("activeJob"));
     if(candidateLoggedIn===null){
       Navigate("/")
     }else{
       setActiveCandidate(candidateLoggedIn);
+      if(activeJob===null&&activeJobInLocal!=null){
+        setActiveJob(activeJobInLocal);
+      }
     }
   }, []);
 

@@ -8,6 +8,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import StyledButton from "../components/StyledButton";
 import ApplicantCardModal from "../components/Modal/ApplicantCardModal";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   getAllCandidates,
@@ -17,27 +18,30 @@ function CandidateSearch({
   activeJob,
   activeCandidate,
   setActiveCandidate,
-  setCandidateState,
-  candidateState,
   setActiveJob,
   nickName,
   colorScheme,
 }) {
+  const Navigate = useNavigate();
   const [validated, setValidated] = useState(false);
-  const [allCandidates, setAllCandidates] = useState([]);//Lös detta i backend i framtiden så man inte får en lista på alla kandidater
+  const [allCandidates, setAllCandidates] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
-    axios.get(`${getAllCandidates}`,
-    { headers: { Authorization: localStorage.getItem("jwtToken") } }
-      ).then(resp => {
-    setAllCandidates(resp.data)
-    })
-    
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+      axios.get(`${getAllCandidates}`,
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        ).then(resp => {
+      setAllCandidates(resp.data)
+      })
+  }    
   }, []);
-  console.log(allCandidates)
 
-  function searchForCompetence(event) {
+  function searchForCompetence(event) {//Lös detta i backend i framtiden så man inte får en lista på alla kandidater
     event.preventDefault();
     if (event.currentTarget.checkValidity() === false) {
       event.stopPropagation();
@@ -48,7 +52,6 @@ function CandidateSearch({
       const YearsToSearch = event.currentTarget.years.value;
       let newSearchResult = [];
       allCandidates.map((candidateInMap, index) => {
-        console.log(candidateInMap.competenciesList.length)
         if(candidateInMap.competenciesList.length>=1){
           candidateInMap.competenciesList.map((competenceInMap) => {
             if (
@@ -75,7 +78,7 @@ function CandidateSearch({
     }
     setValidated(true);
   }
-  console.log(searchResult)
+
 
   return (
     <div>

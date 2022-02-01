@@ -19,17 +19,21 @@ function RecruitmentPage({
   activeCandidate,
   setActiveCandidate,
   nickName,
+  setNickName,
   colorScheme,
 }) {
   const Navigate = useNavigate();
   useEffect(() => {
     var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
-    var activeJob = JSON.parse(localStorage.getItem("activeJob"));
+    var activeJobInLocal = JSON.parse(localStorage.getItem("activeJob"));
     if(candidateLoggedIn===null){
       Navigate("/")
     }else{
       setActiveCandidate(candidateLoggedIn)
-      setActiveJob(activeJob)
+      
+      if(activeJobInLocal!=null){
+        setActiveJob(activeJobInLocal);
+      }
     }
   }, []);
 
@@ -70,6 +74,7 @@ function RecruitmentPage({
             RecInfoToPutIn
           );
           setActiveJob(newActiveJob);
+          localStorage.setItem("activeJob", JSON.stringify(newActiveJob));
 
           axios
             .put(
@@ -108,6 +113,7 @@ function RecruitmentPage({
           RecToReorder.candidateList.splice(destination.index, 0, candidateToMove);
 
           setActiveJob(activeJob);
+          localStorage.setItem("activeJob", JSON.stringify(activeJob));
           return null;
         }
         //Flytta kort mellan listor
@@ -136,6 +142,7 @@ function RecruitmentPage({
         RecTo.candidateList.splice(destination.index, 0, candidateToMove);
 
         setActiveJob(activeJob);
+        localStorage.setItem("activeJob", JSON.stringify(activeJob));
         
         axios
         .put(
