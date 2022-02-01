@@ -20,7 +20,6 @@ function Resume({
   nickName,
 }) {
 
-  console.log(activeCandidate)
   function removeExperience(experienceInMap) {
     Swal.fire({
       title: "Remove Experience",
