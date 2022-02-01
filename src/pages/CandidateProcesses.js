@@ -68,6 +68,8 @@ function CandidateProcesses({
                 colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
                 activeCandidate={activeCandidate}
+                setActiveCandidate={setActiveCandidate}
+                remove={true}
               />
             );
           })}

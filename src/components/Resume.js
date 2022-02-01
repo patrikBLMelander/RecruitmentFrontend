@@ -46,7 +46,8 @@ function Resume({
             }
           )
           .then((response) => {
-            const email = localStorage.getItem("activeUser");
+            const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+            const email =candidateLoggedIn.email;
 
             axios
               .post(
@@ -114,7 +115,8 @@ function Resume({
           }
         )
         .then((response) => {
-          const email = localStorage.getItem("activeUser");
+          const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+          const email =candidateLoggedIn.email;
 
           axios
             .post(
@@ -182,7 +184,8 @@ function Resume({
             }
           )
           .then((response) => {
-            const email = localStorage.getItem("activeUser");
+            const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+            const email =candidateLoggedIn.email;
 
             axios
               .post(

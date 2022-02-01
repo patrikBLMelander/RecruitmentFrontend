@@ -9,6 +9,8 @@ import axios from "axios";
 import {
   getJobOfferDetails,
   applyForJob,
+  removeAppliedJob,
+  getCandidateInfo,
 } from "../API/endpoints";
 
 function JobOfferCard({
@@ -17,6 +19,8 @@ function JobOfferCard({
   setActiveJob,
   activeCandidate,
   colorScheme,
+  remove,
+  setActiveCandidate
 }) {
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -32,6 +36,9 @@ function JobOfferCard({
   if (activeCandidate.isAdmin) {
     btnText = "Candidates";
   }
+  if (remove){
+    btnText = "Remove";
+  }
 
   function setJobToWorkWith(event) {
     
@@ -39,46 +46,110 @@ function JobOfferCard({
       navigate("/candidate/register");
     }
     if (!activeCandidate.isAdmin) {
-      Swal.fire({
-        title: "Apply?",
-        text: "Do you want to apply for this role, dont forget to update your profile",
-        icon: "question",
-        showConfirmButton: true,
-        confirmButtonText: "Apply",
-        showCancelButton: true,
-        cancelButtonText: "Not now",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios.post(`${applyForJob}`,
-          { 
-            candidateId: activeCandidate.id,
-            jobOfferId:`${event.id}`,
-          },
-          { headers: { Authorization: localStorage.getItem("jwtToken") } }
-       ).then(resp => {
-          console.log(resp.data)
-          navigate("/candidate/my-page");
-       }).catch(error => {
-         if(error.response.status===400){
-          Swal.fire({
-            title: "Not Applied!",
-            text: "You have already applied for this role.",
-            icon: "warning",
-            showConfirmButton: false,
-            timer: 3000,
-          });
-         }else{
-          Swal.fire({
-            title: "Something whent wrong",
-            text: "We seems to have problem with the connection to the server, please try again later",
-            icon: "error",
-            showConfirmButton: false,
-            timer: 3000,
-          });
-         }
-       })
-        }
-      });
+
+      if(remove){
+        Swal.fire({
+          title: "Remove",
+          text: "Do you want to remove this apply?",
+          icon: "question",
+          showConfirmButton: true,
+          confirmButtonText: "Remove",
+          showCancelButton: true,
+          cancelButtonText: "Not now",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios
+          .put(
+            `${removeAppliedJob}`,
+            {
+              candidateId: activeCandidate.id,
+              jobOfferId:event.id,
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwtToken"),
+              },
+            }
+          )
+          .then(resp => {
+            const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+            const email =candidateLoggedIn.email;
+
+            axios
+              .post(
+                `${getCandidateInfo}`,
+                {
+                  email: `${email}`,
+                  test: "test",
+                },
+                { headers: { Authorization: localStorage.getItem("jwtToken") } }
+              )
+              .then((response) => {
+                setActiveCandidate({
+                  id: response.data.id,
+                  nickName: response.data.nickName,
+                  email: response.data.email,
+                  presentation: response.data.presentation,
+                  isAdmin: response.data.isAdmin,
+                  colorChoice: response.data.colorChoice,
+                  nickNameChoice: response.data.nickNameChoice,
+                  roleList: response.data.roleList,
+                  experienceList: response.data.experienceList,
+                  educationList: response.data.educationList,
+                  competenciesList: response.data.competenciesList,
+                  personalityList: response.data.personalityList,
+                });
+                localStorage.setItem("activeUser", JSON.stringify(response.data));
+              });
+         }).catch(err => {
+           console.error(err)
+         })
+          }
+        })
+
+      }else{
+        Swal.fire({
+          title: "Apply?",
+          text: "Do you want to apply for this role, dont forget to update your profile",
+          icon: "question",
+          showConfirmButton: true,
+          confirmButtonText: "Apply",
+          showCancelButton: true,
+          cancelButtonText: "Not now",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios.post(`${applyForJob}`,
+            { 
+              candidateId: activeCandidate.id,
+              jobOfferId:`${event.id}`,
+            },
+            { headers: { Authorization: localStorage.getItem("jwtToken") } }
+         ).then(resp => {
+            console.log(resp.data)
+            navigate("/candidate/my-page");
+         }).catch(error => {
+           if(error.response.status===400){
+            Swal.fire({
+              title: "Not Applied!",
+              text: "You have already applied for this role.",
+              icon: "warning",
+              showConfirmButton: false,
+              timer: 3000,
+            });
+           }else{
+            Swal.fire({
+              title: "Something whent wrong",
+              text: "We seems to have problem with the connection to the server, please try again later",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 3000,
+            });
+           }
+         })
+          }
+        });
+      }
+
     }
     if (activeCandidate.isAdmin) {
 

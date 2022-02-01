@@ -53,9 +53,9 @@ function Home({
                 index={index}
                 colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
-                setJobOfferings={setJobOfferings}
                 setActiveJob={setActiveJob}
                 activeCandidate={activeCandidate}
+                remove={false}
               />
             );
           })}

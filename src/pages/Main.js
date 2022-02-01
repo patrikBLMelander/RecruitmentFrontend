@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import {getAllJobOffers} from "../API/endpoints";
 
-function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings }) {
+function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings, setActiveCandidate }) {
   const Navigate = useNavigate();
   function login() {
     Navigate("/login");
@@ -72,6 +72,8 @@ function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings }) {
                 colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
                 activeCandidate={activeCandidate}
+                setActiveCandidate={setActiveCandidate}
+                remove={false}
               />
             );
           })}
