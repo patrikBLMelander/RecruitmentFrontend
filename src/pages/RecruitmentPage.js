@@ -6,30 +6,41 @@ import AddListBtn from "../components/AddListBtn";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  moveRecruitmentStep,
+  moveCandidate,
+} from "../API/endpoints";
 
 function RecruitmentPage({
-  jobOfferings,
-  setJobOfferings,
   activeJob,
   setActiveJob,
-  candidateState,
-  setCandidateState,
-  adminLoggedIn,
-  candidateLoggedIn,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
+  activeCandidate,
+  setActiveCandidate,
   nickName,
+  setNickName,
   colorScheme,
 }) {
-
+  const Navigate = useNavigate();
   useEffect(() => {
-    return()=>{//Lägg kod för att spara till databas
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var activeJobInLocal = JSON.parse(localStorage.getItem("activeJob"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn)
+      
+      if(activeJobInLocal!=null){
+        setActiveJob(activeJobInLocal);
+      }
     }
-  })
+  }, []);
+
+
+
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
-    jobOfferings.map((jobOfferingInMap, index) => {
-      if (jobOfferingInMap.id === activeJob.id) {
         //If you dop outside dropzone
         if (!destination) {
           return null;
@@ -45,10 +56,10 @@ function RecruitmentPage({
 
         //If you drag a list
         if (type === "column") {
-          const newJobOfferings = [].concat(jobOfferings);
+          const newActiveJob = activeJob;
 
           let RecInfoToPutIn;
-          newJobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+          newActiveJob.recruitmentList.map((recruitmentStep) => {
             if (recruitmentStep.id === draggableId) {
               RecInfoToPutIn = recruitmentStep;
               return RecInfoToPutIn;
@@ -56,26 +67,39 @@ function RecruitmentPage({
               return null;
             }
           });
-
-          newJobOfferings[index].recruitmentSteps.splice(source.index, 1);
-          newJobOfferings[index].recruitmentSteps.splice(
+          newActiveJob.recruitmentList.splice(source.index, 1);
+          newActiveJob.recruitmentList.splice(
             destination.index,
             0,
             RecInfoToPutIn
           );
+          setActiveJob(newActiveJob);
+          localStorage.setItem("activeJob", JSON.stringify(newActiveJob));
 
-          setJobOfferings([...newJobOfferings]);
+          axios
+            .put(
+              `${moveRecruitmentStep}`,
+              {
+                recruitmentId: `${draggableId}`,
+                jobOfferId: `${activeJob.id}`,
+                newIndex: destination.index
+              },
+              { headers: { Authorization: localStorage.getItem("jwtToken") } }
+            ).then(resp => {
+
+              console.log(resp.data)
+          
+            })
 
           return null;
         }
-
         const home = source.droppableId;
         const foreign = destination.droppableId;
 
         // Om man flyttar kort i samma lista
         if (home === foreign) {
           let RecToReorder;
-          jobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+          activeJob.recruitmentList.map((recruitmentStep) => {
             if (recruitmentStep.id === source.droppableId) {
               RecToReorder = recruitmentStep;
               return RecToReorder;
@@ -83,16 +107,18 @@ function RecruitmentPage({
               return null;
             }
           });
+          const candidateToMove = RecToReorder.candidateList[source.index]
 
-          RecToReorder.candidateIds.splice(source.index, 1);
-          RecToReorder.candidateIds.splice(destination.index, 0, draggableId);
+          RecToReorder.candidateList.splice(source.index, 1);
+          RecToReorder.candidateList.splice(destination.index, 0, candidateToMove);
 
-          setJobOfferings([...jobOfferings]);
+          setActiveJob(activeJob);
+          localStorage.setItem("activeJob", JSON.stringify(activeJob));
           return null;
         }
         //Flytta kort mellan listor
         let RecFrom;
-        jobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+        activeJob.recruitmentList.map((recruitmentStep) => {
           if (recruitmentStep.id === source.droppableId) {
             RecFrom = recruitmentStep;
             return RecFrom;
@@ -101,7 +127,7 @@ function RecruitmentPage({
           }
         });
         let RecTo;
-        jobOfferings[index].recruitmentSteps.map((recruitmentStep) => {
+        activeJob.recruitmentList.map((recruitmentStep) => {
           if (recruitmentStep.id === destination.droppableId) {
             RecTo = recruitmentStep;
             return RecTo;
@@ -110,27 +136,35 @@ function RecruitmentPage({
           }
         });
 
-        RecFrom.candidateIds.splice(source.index, 1);
-        RecTo.candidateIds.splice(destination.index, 0, draggableId);
+        const candidateToMove = RecFrom.candidateList[source.index]
 
-        setJobOfferings([...jobOfferings]);
+        RecFrom.candidateList.splice(source.index, 1);
+        RecTo.candidateList.splice(destination.index, 0, candidateToMove);
+
+        setActiveJob(activeJob);
+        localStorage.setItem("activeJob", JSON.stringify(activeJob));
+        
+        axios
+        .put(
+          `${moveCandidate}`,
+          {
+            candidateId: `${candidateToMove.id}`,
+            oldRecruitmentId: `${RecFrom.id}`,
+            newRecruitmentId: `${RecTo.id}`
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        ).then(resp => {
+         })
         return null;
-      }
-      return null;
-    });
-
-    return null;
   };
 
   return (
     <div>
       <Navbar
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
-        setActiveJob={setActiveJob}
         colorScheme={colorScheme}
+        setActiveJob={setActiveJob}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header activeJob={activeJob} colorScheme={colorScheme} />
       <DragDropContext onDragEnd={onDragEnd}>
@@ -145,35 +179,26 @@ function RecruitmentPage({
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {jobOfferings.map((jobOfferingsInMap, index) => {
-                if (jobOfferingsInMap.id === activeJob.id) {
-                  return jobOfferingsInMap.recruitmentSteps.map(
-                    (recruitmentStepsInMap, index) => (
-                      <RecruitmentProcessSteps
-                        title={recruitmentStepsInMap.title}
-                        id={recruitmentStepsInMap.id}
-                        candidates={recruitmentStepsInMap.candidateIds}
-                        key={recruitmentStepsInMap.id}
+              {activeJob.recruitmentList?.map(
+                    (recruitmentList, index) => (
+                      <RecruitmentProcessSteps            
+                        key={recruitmentList.id}
                         index={index}
-                        jobOfferings={jobOfferings}
-                        setJobOfferings={setJobOfferings}
-                        candidateState={candidateState}
-                        setCandidateState={setCandidateState}
-                        activeJobId={activeJob.id}
                         nickName={nickName}
                         colorScheme={colorScheme}
+                        activeJob={activeJob}
+                        setActiveJob={setActiveJob}
+                        recruitmentList={recruitmentList}
+
                       />
                     )
-                  );
+                  )
                 }
-                return null;
-              })}
 
               {provided.placeholder}
               <AddListBtn
-                jobOfferings={jobOfferings}
-                setJobOfferings={setJobOfferings}
-                activeJobId={activeJob.id}
+                activeJob={activeJob}
+                setActiveJob={setActiveJob}
                 colorScheme={colorScheme}
               />
             </Container>

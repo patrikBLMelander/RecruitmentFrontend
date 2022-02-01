@@ -8,39 +8,26 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
-import endpoints from "../API/endpoints";
-import requests from "../API/requests";
+import axios from 'axios';
+import {login, getCandidateInfo} from "../API/endpoints";
+import Animals from "../testData/animals";
+import Countries from "../testData/countries";
+import Cities from "../testData/capitals";
+import Steal from "../testData/colorSchemas/steal";
+import DarkBlue from "../testData/colorSchemas/darkBlue";
+import LightPink from "../testData/colorSchemas/lightPink";
+import Teal from "../testData/colorSchemas/teal";
+import Purple from "../testData/colorSchemas/purple";
+import GreenNature from "../testData/colorSchemas/greenNature";
 
 function Login({
-  candidateState,
   setActiveCandidate,
-  setCandidateLoggedIn,
-  setAdminLoggedIn,
-  candidateLoggedIn,
-  adminLoggedIn,
   colorScheme,
+  setNickName,
+  setColorscheme,
 }) {
   const [validated, setValidated] = useState(false);
   const Navigate = useNavigate();
-  let succeessfulLogin = false;
-
-  if (candidateLoggedIn === true || adminLoggedIn === true) {
-    Swal.fire({
-      icon: "info",
-      title: "Already logged in",
-      showDenyButton: false,
-      showCancelButton: true,
-      confirmButtonText: "Home",
-      cancelButtonText: "Log out",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Navigate("/home");
-      } else {
-        setCandidateLoggedIn(false);
-        setAdminLoggedIn(false);
-      }
-    });
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -48,58 +35,98 @@ function Login({
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-
-      //check CandidateLogin, this will be done properly in backend later
-      candidateState.map((candidateInMap) => {
-        if (
-          candidateInMap.email.toLowerCase() ===
-            form.emailInputGrid.value.toLowerCase() &&
-          form.passwordInputGrid.value === candidateInMap.password
-        ) {
-          if (candidateInMap.role === "candidate") {
+      axios.post(`${login}?username=`+form.emailInputGrid.value.toLowerCase()+`&password=`+form.passwordInputGrid.value)
+      .then((responseFromLogin) => {
+        if (responseFromLogin.status !== 200) {
+          Swal.fire({
+            icon: "error",
+            title: "Fel användarnamn eller lösenord",
+            text: "Vi hittade tyvärr inget matchande användarnamn eller lösenord",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Try again",
+          })
+        }else {
+          axios.post(`${getCandidateInfo}`,
+          {
+            "email": `${responseFromLogin.data.username}`,
+            "test": "test"
+          },
+          {headers: { Authorization: localStorage.getItem("jwtToken") }}).then(response => {
+            
             setActiveCandidate({
-              id: candidateInMap.id,
-              nickName: candidateInMap.nickName,
-              firstName: candidateInMap.firstName,
-              lastName: candidateInMap.lastName,
-              presentation: candidateInMap.presentation,
-              email: candidateInMap.email,
-              password: candidateInMap.password,
-              phone: candidateInMap.phone,
-              experience: candidateInMap.experience,
-              education: candidateInMap.education,
-              personality: candidateInMap.personality,
-              competencies: candidateInMap.competencies,
-            });
-            setCandidateLoggedIn(true);
-            setAdminLoggedIn(false);
-            setValidated(true);
-            Navigate("/home");
-          } else {
-            setCandidateLoggedIn(false);
-            setAdminLoggedIn(true);
-            setValidated(true);
-            Navigate("/home");
-          }
-          succeessfulLogin = true;
+                id:response.data.id,
+                firstName:response.data.firstName,
+                lastName:response.data.lastName,
+                nickName:response.data.nickName,
+                email:response.data.email,
+                presentation:response.data.presentation,
+                isAdmin:response.data.isAdmin,
+                colorChoice:response.data.colorChoice,
+                nickNameChoice:response.data.nickNameChoice,
+                roleList:response.data.roleList,
+                experienceList:response.data.experienceList,
+                educationList:response.data.educationList,
+                competenciesList:response.data.competenciesList,
+                personalityList:response.data.personalityList,
+            })
+            if(response.data.colorChoice==="teal"){
+              setColorscheme(Teal)
+            }else if(response.data.colorChoice==="steal"){
+              setColorscheme(Steal)
+            }else if(response.data.colorChoice==="darkBlue"){
+              setColorscheme(DarkBlue)
+            }else if(response.data.colorChoice==="greenNature"){
+              setColorscheme(GreenNature)
+            }else if(response.data.colorChoice==="lightPink"){
+              setColorscheme(LightPink)
+            }else if(response.data.colorChoice==="purple"){
+              setColorscheme(Purple)
+            }
+            localStorage.setItem("activeUser", JSON.stringify(response.data));
+            localStorage.setItem("jwtToken", responseFromLogin.data.jwtToken)
+            if(response.data.isAdmin===false){
+
+              Navigate("/candidate/my-page")
+            }else{
+              if(response.data.nickNameChoice==="default"){
+                setNickName(Animals)
+              }else if(response.data.nickNameChoice==="country"){
+                setNickName(Countries)
+              }else{
+                setNickName(Cities)
+              }
+
+
+
+              Navigate("/home")
+            }
+          })
         }
-        return null;
-      });
-      if (!succeessfulLogin) {
+    })
+    .catch((error) => {
+      if (error.response.status === 403) {
         Swal.fire({
           icon: "error",
-          title: "Could not log in...",
-          text: "Did not find a matching email and password",
+          title: "Fel användarnamn eller lösenord",
+          text: "Vi hittade tyvärr inget matchande användarnamn eller lösenord,",
           showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: "Register",
-          cancelButtonText: "Try again",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Navigate("/candidate/register");
-          }
-        });
+          showCancelButton: false,
+          confirmButtonText: "Try again",
+        })
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Serverfel",
+          text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Try again",
+        })
       }
+
+    });
+
     }
 
     setValidated(true);

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import jobOfferingsTestData from "./testData/jobOfferingsTestData";
+import React, { useState, useEffect } from "react";
 import Animals from "./testData/animals";
 import RecruitmentPage from "./pages/RecruitmentPage";
 import Home from "./pages/Home";
@@ -10,24 +9,34 @@ import CandidateProcesses from "./pages/CandidateProcesses";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CandidateSearch from "./pages/CandidateSearch";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import candidateTestData from "./testData/candidateTestData";
+import {Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
-import DarkGreen from "./testData/colorSchemas/darkGreen";
+import Teal from "./testData/colorSchemas/teal";
 import CandidateSettings from "./pages/CandidateSettings";
+import axios from 'axios';
+import {getAllJobOffers} from "./API/endpoints";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const [jobOfferings, setJobOfferings] = useState(jobOfferingsTestData);
+  const Navigate = useNavigate();
+  const [jobOfferings, setJobOfferings] = useState([{}]);
   const [activeJob, setActiveJob] = useState({ title: "", id: "" });
-  const [activeCandidate, setActiveCandidate] = useState("");
-  const [candidateState, setCandidateState] = useState(candidateTestData);
-  const [candidateLoggedIn, setCandidateLoggedIn] = useState(false);
-  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
+  const [activeCandidate, setActiveCandidate] = useState({isAdmin:false, id:""});
   const [nickName, setNickName] = useState(Animals);
-  const [colorScheme, setColorscheme] = useState(DarkGreen);
+  const [colorScheme, setColorscheme] = useState(Teal);
+
+useEffect(() => {
+    axios.get(`${getAllJobOffers}`, {
+
+    }).then(resp => {
+      setJobOfferings(resp.data)
+      localStorage.setItem("allJobOffers", JSON.stringify(resp.data));
+  }).catch(error => console.error(error));
+}, []);
+
 
   return (
-    <Router>
+
       <div>
         <Routes>
           <Route
@@ -35,9 +44,9 @@ function App() {
             element={
               <Main
                 colorScheme={colorScheme}
-                adminLoggedIn={adminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
                 jobOfferings={jobOfferings}
+                activeCandidate={activeCandidate}
+                setJobOfferings={setJobOfferings}
               />
             }
           />
@@ -46,14 +55,8 @@ function App() {
             element={
               <Register
                 colorScheme={colorScheme}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
               />
             }
           />
@@ -64,16 +67,11 @@ function App() {
                 nickName={nickName}
                 colorScheme={colorScheme}
                 setActiveJob={setActiveJob}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setJobOfferings={setJobOfferings}
               />
             }
           />
@@ -86,11 +84,8 @@ function App() {
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 activeCandidate={activeCandidate}
-                setCandidateState={setCandidateState}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
+                setJobOfferings={setJobOfferings}
               />
             }
           />
@@ -102,14 +97,9 @@ function App() {
                 activeCandidate={activeCandidate}
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
-                setCandidateState={setCandidateState}
                 setActiveCandidate={setActiveCandidate}
                 setActiveJob={setActiveJob}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
               />
             }
           />
@@ -119,17 +109,13 @@ function App() {
               <RecruitmentPage
                 colorScheme={colorScheme}
                 nickName={nickName}
+                setNickName={setNickName}
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
                 activeCandidate={activeCandidate}
-                candidateState={candidateState}
-                setCandidateState={setCandidateState}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -142,10 +128,8 @@ function App() {
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
               />
             }
           />
@@ -156,12 +140,9 @@ function App() {
                 colorScheme={colorScheme}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
-                candidateState={candidateState}
                 nickName={nickName}
+                setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
               />
             }
           />
@@ -172,15 +153,11 @@ function App() {
                 colorScheme={colorScheme}
                 setColorscheme={setColorscheme}
                 setNickName={setNickName}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
                 setActiveJob={setActiveJob}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
               />
             }
           />
@@ -191,16 +168,11 @@ function App() {
                 colorScheme={colorScheme}
                 setColorscheme={setColorscheme}
                 setNickName={setNickName}
-                setCandidateState={setCandidateState}
-                candidateState={candidateState}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
-                adminLoggedIn={adminLoggedIn}
                 setActiveJob={setActiveJob}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
                 activeCandidate={activeCandidate}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           />
@@ -210,21 +182,18 @@ function App() {
             element={
               <Login
                 colorScheme={colorScheme}
-                adminLoggedIn={adminLoggedIn}
-                setAdminLoggedIn={setAdminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
-                setCandidateLoggedIn={setCandidateLoggedIn}
+                setColorscheme={setColorscheme}
                 jobOfferings={jobOfferings}
                 activeJob={activeJob}
                 setActiveJob={setActiveJob}
-                candidateState={candidateState}
                 setActiveCandidate={setActiveCandidate}
+                activeCandidate={activeCandidate}
+                setNickName={setNickName}
               />
             }
           />
         </Routes>
       </div>
-    </Router>
   );
 }
 export default App;

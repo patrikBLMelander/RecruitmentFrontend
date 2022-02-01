@@ -6,27 +6,23 @@ import RemoveBtn from "./RemoveList";
 
 function RecruitmentProcessStep({
   index,
-  id,
-  title,
-  jobOfferings,
-  setJobOfferings,
-  activeJobId,
-  candidates,
-  candidateState,
-  setCandidateState,
-  nickName,
   colorScheme,
+  activeJob,
+  nickName,
+  setActiveJob,
+  recruitmentList
 }) {
+
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={recruitmentList.id} index={index}>
       {(provided) => (
         <Container
           inputColor={colorScheme}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Title {...provided.dragHandleProps}>{title}</Title>
-          <Droppable droppableId={id} type="task">
+          <Title {...provided.dragHandleProps}>{recruitmentList.title}</Title>
+          <Droppable droppableId={recruitmentList.id} type="task">
             {(provided, snapshot) => (
               <CandidateCardList
                 ref={provided.innerRef}
@@ -34,15 +30,13 @@ function RecruitmentProcessStep({
                 isDraggingOver={snapshot.isDraggingOver}
                 inputColor={colorScheme}
               >
-                {candidates.map((candidate, index) => {
+                {recruitmentList.candidateList.map((candidate, index) => {
                   return (
                     <CandidateCard
-                      candidateId={candidate}
+                      candidate={candidate}
                       index={index}
-                      key={candidate}
-                      candidateState={candidateState}
-                      setCandidateState={setCandidateState}
-                      activeJobId={activeJobId}
+                      key={candidate.id}
+                      activeJob={activeJob}
                       nickName={nickName}
                       colorScheme={colorScheme}
                     />
@@ -55,11 +49,10 @@ function RecruitmentProcessStep({
           </Droppable>
           <RemoveBtnDiv>
             <RemoveBtn
-              id={id}
-              jobOfferings={jobOfferings}
-              setJobOfferings={setJobOfferings}
-              candidates={candidates.length}
-              activeJobId={activeJobId}
+              id={recruitmentList.id}
+              candidatesAmount={recruitmentList.candidateList.length}
+              activeJob={activeJob}
+              setActiveJob={setActiveJob}
               colorScheme={colorScheme}
             />
           </RemoveBtnDiv>

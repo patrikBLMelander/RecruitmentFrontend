@@ -3,17 +3,24 @@ import styled from "styled-components";
 import { CloseO } from "@styled-icons/evil/CloseO";
 import Swal from "sweetalert2";
 import Slider from "@mui/material/Slider";
+import axios from "axios";
+import {
+  getCandidateInfo,
+  deleteExperience,
+  deleteEducation,
+  deleteCompetence,
+} from "../API/endpoints";
 
 function Resume({
   activeCandidate,
   setActiveCandidate,
   presentation,
-  candidateState,
-  setCandidateState,
   candidateView,
   colorScheme,
   nickName,
 }) {
+
+  console.log(activeCandidate)
   function removeExperience(experienceInMap) {
     Swal.fire({
       title: "Remove Experience",
@@ -23,25 +30,62 @@ function Resume({
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        let test = candidateState;
-        candidateState.map((candidateStateInMap, cIndex) => {
-          if (candidateState[cIndex].id === activeCandidate.id) {
-            candidateState[cIndex].experience.map((experienceToCheck) => {
-              if (experienceToCheck.id === experienceInMap.id) {
-                test[cIndex].experience = [
-                  ...candidateState[cIndex].experience.filter(
-                    (experience) => experience.id !== experienceInMap.id
-                  ),
-                ];
+        axios
+          .delete(
+            `${deleteExperience}`,
+            {
+              data: {
+                candidateId: `${activeCandidate.id}`,
+                toRemove: `${experienceInMap.id}`,
+              },
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwtToken"),
+              },
+            }
+          )
+          .then((response) => {
+            const email = localStorage.getItem("activeUser");
 
-                setCandidateState(test);
-                setActiveCandidate(test[cIndex]);
-              }
-              return null;
+            axios
+              .post(
+                `${getCandidateInfo}`,
+                {
+                  email: `${email}`,
+                  test: "test",
+                },
+                { headers: { Authorization: localStorage.getItem("jwtToken") } }
+              )
+              .then((response) => {
+                setActiveCandidate({
+                  id: response.data.id,
+                  nickName: response.data.nickName,
+                  email: response.data.email,
+                  presentation: response.data.presentation,
+                  isAdmin: response.data.isAdmin,
+                  colorChoice: response.data.colorChoice,
+                  nickNameChoice: response.data.nickNameChoice,
+                  roleList: response.data.roleList,
+                  experienceList: response.data.experienceList,
+                  educationList: response.data.educationList,
+                  competenciesList: response.data.competenciesList,
+                  personalityList: response.data.personalityList,
+                });
+                localStorage.setItem("activeUser", JSON.stringify(response.data));
+              });
+          })
+          .catch((error) => {
+            console.error(error.response);
+            Swal.fire({
+              icon: "error",
+              title: "Serverfel",
+              text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+              showDenyButton: false,
+              showCancelButton: false,
+              confirmButtonText: "Try again",
             });
-          }
-          return null;
-        });
+          });
       }
     });
   }
@@ -54,28 +98,65 @@ function Resume({
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        let test = candidateState;
-        candidateState.map((candidateStateInMap, cIndex) => {
-          if (candidateState[cIndex].id === activeCandidate.id) {
-            candidateState[cIndex].competencies.map((competenciesToCheck) => {
-              if (competenciesToCheck.id === competenceInMap.id) {
-                test[cIndex].competencies = [
-                  ...candidateState[cIndex].competencies.filter(
-                    (competencies) => competencies.id !== competenceInMap.id
-                  ),
-                ];
-
-                setCandidateState(test);
-                setActiveCandidate(test[cIndex]);
-              }
-              return null;
-            });
+        axios
+        .delete(
+          `${deleteCompetence}`,
+          {
+            data: {
+              candidateId: `${activeCandidate.id}`,
+              toRemove: `${competenceInMap.id}`,
+            },
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwtToken"),
+            },
           }
-          return null;
+        )
+        .then((response) => {
+          const email = localStorage.getItem("activeUser");
+
+          axios
+            .post(
+              `${getCandidateInfo}`,
+              {
+                email: `${email}`,
+                test: "test",
+              },
+              { headers: { Authorization: localStorage.getItem("jwtToken") } }
+            )
+            .then((response) => {
+              setActiveCandidate({
+                id: response.data.id,
+                nickName: response.data.nickName,
+                email: response.data.email,
+                presentation: response.data.presentation,
+                isAdmin: response.data.isAdmin,
+                colorChoice: response.data.colorChoice,
+                nickNameChoice: response.data.nickNameChoice,
+                roleList: response.data.roleList,
+                experienceList: response.data.experienceList,
+                educationList: response.data.educationList,
+                competenciesList: response.data.competenciesList,
+                personalityList: response.data.personalityList,
+              });
+              localStorage.setItem("activeUser", JSON.stringify(response.data));
+            });
+        })
+        .catch((error) => {
+          console.error(error.response);
+          Swal.fire({
+            icon: "error",
+            title: "Serverfel",
+            text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Try again",
+          });
         });
-      }
-    });
-  }
+    }
+  });
+}
   function removeEducation(educationInMap) {
     Swal.fire({
       title: "Remove Education",
@@ -85,25 +166,62 @@ function Resume({
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        let test = candidateState;
-        candidateState.map((candidateStateInMap, cIndex) => {
-          if (candidateState[cIndex].id === activeCandidate.id) {
-            candidateState[cIndex].education.map((educationToCheck) => {
-              if (educationToCheck.id === educationInMap.id) {
-                test[cIndex].education = [
-                  ...candidateState[cIndex].education.filter(
-                    (education) => education.id !== educationInMap.id
-                  ),
-                ];
+        axios
+          .delete(
+            `${deleteEducation}`,
+            {
+              data: {
+                candidateId: `${activeCandidate.id}`,
+                toRemove: `${educationInMap.id}`,
+              },
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwtToken"),
+              },
+            }
+          )
+          .then((response) => {
+            const email = localStorage.getItem("activeUser");
 
-                setCandidateState(test);
-                setActiveCandidate(test[cIndex]);
-              }
-              return null;
+            axios
+              .post(
+                `${getCandidateInfo}`,
+                {
+                  email: `${email}`,
+                  test: "test",
+                },
+                { headers: { Authorization: localStorage.getItem("jwtToken") } }
+              )
+              .then((response) => {
+                setActiveCandidate({
+                  id: response.data.id,
+                  nickName: response.data.nickName,
+                  email: response.data.email,
+                  presentation: response.data.presentation,
+                  isAdmin: response.data.isAdmin,
+                  colorChoice: response.data.colorChoice,
+                  nickNameChoice: response.data.nickNameChoice,
+                  roleList: response.data.roleList,
+                  experienceList: response.data.experienceList,
+                  educationList: response.data.educationList,
+                  competenciesList: response.data.competenciesList,
+                  personalityList: response.data.personalityList,
+                });
+                localStorage.setItem("activeUser", JSON.stringify(response.data));
+              });
+          })
+          .catch((error) => {
+            console.error(error.response);
+            Swal.fire({
+              icon: "error",
+              title: "Serverfel",
+              text: "Tyvärr verkar det inte gå att få kontakt med servern just nu, vänligen försök igen senare",
+              showDenyButton: false,
+              showCancelButton: false,
+              confirmButtonText: "Try again",
             });
-          }
-          return null;
-        });
+          });
       }
     });
   }
@@ -120,11 +238,11 @@ function Resume({
           </AboutMe>
           <Skills>
             <H5>Competencies</H5>
-            {activeCandidate.competencies.map((competenceInMap) => {
+            {activeCandidate.competenciesList.map((competenceInMap) => {
               return (
                 <CompetenceDiv key={competenceInMap.id}>
                   <P>
-                    {competenceInMap.name} - {competenceInMap.years} years
+                    {competenceInMap.name} - {competenceInMap.value} years
                   </P>
                   <StyledCloseBtn
                     onClick={() => removeCompetence(competenceInMap)}
@@ -135,15 +253,19 @@ function Resume({
           </Skills>
         </LeftDiv>
         <RightDiv inputColor={colorScheme}>
-          <H3>{nickName[activeCandidate.nickName + 0]}</H3>
+          <H3>{activeCandidate.firstName} {activeCandidate.lastName}</H3>
           <Experience>
             <H5>Job Experience</H5>
-            {activeCandidate.experience.map((experienceInMap) => {
+            {activeCandidate.experienceList.map((experienceInMap) => {
               return (
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
                     <H5>{experienceInMap.title}</H5>
-                    <H5>{experienceInMap.period}</H5>
+                    <H5>
+                      {experienceInMap.startDate +
+                        " to " +
+                        experienceInMap.endDate}
+                    </H5>
                     <StyledCloseBtn
                       onClick={() => removeExperience(experienceInMap)}
                     />
@@ -157,12 +279,16 @@ function Resume({
           </Experience>
           <Experience>
             <H5>Education</H5>
-            {activeCandidate.education.map((educationsInMap) => {
+            {activeCandidate.educationList.map((educationsInMap) => {
               return (
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
                     <H5>{educationsInMap.title}</H5>
-                    <H5>{educationsInMap.period}</H5>
+                    <H5>
+                      {educationsInMap.startDate +
+                        " to " +
+                        educationsInMap.endDate}
+                    </H5>
                     <StyledCloseBtn
                       onClick={() => removeEducation(educationsInMap)}
                     />
@@ -184,7 +310,7 @@ function Resume({
               <Slider
                 key={`openness`}
                 disabled
-                defaultValue={activeCandidate.personality[0].value}
+                defaultValue={activeCandidate.personalityList[0].value}
               />
             </TraitDiv>
             <TraitDiv>
@@ -194,7 +320,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`conscintiousness`}
-                defaultValue={activeCandidate.personality[1].value}
+                defaultValue={activeCandidate.personalityList[1].value}
                 disabled
               />
             </TraitDiv>
@@ -205,7 +331,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`extroversion`}
-                defaultValue={activeCandidate.personality[2].value}
+                defaultValue={activeCandidate.personalityList[2].value}
                 disabled
               />
             </TraitDiv>
@@ -216,7 +342,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`agreableness`}
-                defaultValue={activeCandidate.personality[3].value}
+                defaultValue={activeCandidate.personalityList[3].value}
                 disabled
               />
             </TraitDiv>
@@ -227,7 +353,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`neuroticism`}
-                defaultValue={activeCandidate.personality[4].value}
+                defaultValue={activeCandidate.personalityList[4].value}
                 disabled
               />
             </TraitDiv>
@@ -246,11 +372,11 @@ function Resume({
           </AboutMe>
           <Skills>
             <H5>Competencies</H5>
-            {activeCandidate.competencies.map((competenceInMap) => {
+            {activeCandidate.competenciesList.map((competenceInMap) => {
               return (
                 <CompetenceDiv key={competenceInMap.id}>
                   <P>
-                    {competenceInMap.name} - {competenceInMap.years} years
+                    {competenceInMap.name} - {competenceInMap.value} years
                   </P>
                 </CompetenceDiv>
               );
@@ -261,12 +387,16 @@ function Resume({
           <H3>{nickName[activeCandidate.nickName + 0]}</H3>
           <Experience inputColor={colorScheme}>
             <H5>Job Experience</H5>
-            {activeCandidate.experience.map((experienceInMap) => {
+            {activeCandidate.experienceList.map((experienceInMap) => {
               return (
                 <div key={experienceInMap.id}>
                   <TitleAndPeriod>
                     <H5>{experienceInMap.title}</H5>
-                    <H5>{experienceInMap.period}</H5>
+                    <H5>
+                      {experienceInMap.startDate +
+                        " to " +
+                        experienceInMap.endDate}
+                    </H5>
                   </TitleAndPeriod>
                   <JobDescription>
                     <P>{experienceInMap.description}</P>
@@ -277,12 +407,16 @@ function Resume({
           </Experience>
           <Experience inputColor={colorScheme}>
             <H5>Education</H5>
-            {activeCandidate.education.map((educationsInMap) => {
+            {activeCandidate.educationList.map((educationsInMap) => {
               return (
                 <div key={educationsInMap.id}>
                   <TitleAndPeriod>
                     <H5>{educationsInMap.title}</H5>
-                    <H5>{educationsInMap.period}</H5>
+                    <H5>
+                      {educationsInMap.startDate +
+                        " to " +
+                        educationsInMap.endDate}
+                    </H5>
                   </TitleAndPeriod>
                   <JobDescription>
                     <P>{educationsInMap.description}</P>
@@ -301,7 +435,7 @@ function Resume({
               <Slider
                 key={`openness`}
                 disabled
-                defaultValue={activeCandidate.personality[0].value}
+                defaultValue={activeCandidate.personalityList[0].value}
               />
             </TraitDiv>
             <TraitDiv>
@@ -311,7 +445,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`conscintiousness`}
-                defaultValue={activeCandidate.personality[1].value}
+                defaultValue={activeCandidate.personalityList[1].value}
                 disabled
               />
             </TraitDiv>
@@ -322,7 +456,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`extroversion`}
-                defaultValue={activeCandidate.personality[2].value}
+                defaultValue={activeCandidate.personalityList[2].value}
                 disabled
               />
             </TraitDiv>
@@ -333,7 +467,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`agreableness`}
-                defaultValue={activeCandidate.personality[3].value}
+                defaultValue={activeCandidate.personalityList[3].value}
                 disabled
               />
             </TraitDiv>
@@ -344,7 +478,7 @@ function Resume({
               </TraitText>
               <Slider
                 key={`neuroticism`}
-                defaultValue={activeCandidate.personality[4].value}
+                defaultValue={activeCandidate.personalityList[4].value}
                 disabled
               />
             </TraitDiv>

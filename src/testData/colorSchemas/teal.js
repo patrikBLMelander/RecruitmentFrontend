@@ -1,4 +1,4 @@
-const DarkGreen ={ 
+const Teal ={ 
     id: 'color1',
     primary: '#2F4454',
     secondary: '#376E6F',
@@ -8,4 +8,4 @@ const DarkGreen ={
     text: '#c0cad1',
 };
 
-export default DarkGreen;
+export default Teal;

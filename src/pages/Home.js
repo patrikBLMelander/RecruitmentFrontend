@@ -1,31 +1,44 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import JobOfferCard from "../components/JobOfferCard";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 function Home({
   jobOfferings,
   setJobOfferings,
   setActiveJob,
   activeJob,
-  adminLoggedIn,
-  candidateLoggedIn,
   activeCandidate,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
+  setActiveCandidate,
   colorScheme,
-}) {
+}) 
+{
+  const Navigate = useNavigate();
+  useEffect(() => {
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var activeJobInLocal = JSON.parse(localStorage.getItem("activeJob"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+      if(activeJob===null&&activeJobInLocal!=null){
+        setActiveJob(activeJobInLocal);
+      }
+    }
+  }, []);
+
+
+
   return (
     <div>
       <Navbar
         colorScheme={colorScheme}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
         setActiveJob={setActiveJob}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>
@@ -42,8 +55,6 @@ function Home({
                 jobOfferings={jobOfferings}
                 setJobOfferings={setJobOfferings}
                 setActiveJob={setActiveJob}
-                adminLoggedIn={adminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
                 activeCandidate={activeCandidate}
               />
             );

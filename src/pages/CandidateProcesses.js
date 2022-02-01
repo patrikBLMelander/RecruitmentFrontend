@@ -1,30 +1,57 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import JobOfferCard from "../components/JobOfferCard";
+import axios from "axios";
+import {
+  getMyProcesses,
+
+} from "../API/endpoints";
+import { useNavigate } from "react-router-dom";
 
 function CandidateProcesses({
   jobOfferings,
   activeJob,
   setActiveJob,
-  adminLoggedIn,
-  candidateLoggedIn,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
+  setActiveCandidate,
   activeCandidate,
   colorScheme,
+  setJobOfferings,
 }) {
+  const Navigate = useNavigate();
+  const [myProcesses, setMyProcesses]=useState([{}])
+
+  useEffect(() => {
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    var allJobOffers = JSON.parse(localStorage.getItem("allJobOffers"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+      setJobOfferings(allJobOffers);
+      axios.post(`${getMyProcesses}`,
+      {
+        "email": `${candidateLoggedIn.email}`,
+        "test": "test"
+      },
+      {headers: { Authorization: localStorage.getItem("jwtToken") }
+    }).then(function (response) {
+      setMyProcesses(response.data)
+    })
+  }    
+  }, []);
+
+
+
   return (
     <div>
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header activeJob={activeJob} colorScheme={colorScheme} />
       <Container inputColor={colorScheme}>
@@ -33,15 +60,14 @@ function CandidateProcesses({
           active processes
         </H3>
         <JobCardDiv>
-          {jobOfferings.map((jobOfferingsInMap, index) => {
+          {myProcesses?.map((jobOfferingsInMap, index) => {
             return (
               <JobOfferCard
-                colorScheme={colorScheme}
-                key={jobOfferingsInMap.id}
+                key={`jobofferCard`+jobOfferingsInMap.id}
                 index={index}
+                colorScheme={colorScheme}
                 jobOfferings={jobOfferings}
-                adminLoggedIn={adminLoggedIn}
-                candidateLoggedIn={candidateLoggedIn}
+                activeCandidate={activeCandidate}
               />
             );
           })}

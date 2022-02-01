@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import StyledButton from "./StyledButton";
+import axios from "axios";
+import {
+  addRecruitmentStep,
+
+} from "../API/endpoints";
 
 let counter = 5;
-let newId = "recruitmentStep-" + counter;
 
 function AddListBtn({
-  jobOfferings,
-  setJobOfferings,
-  activeJobId,
+  activeJob,
+  setActiveJob,
   colorScheme,
 }) {
   const [value, setvalue] = useState("");
@@ -18,21 +21,25 @@ function AddListBtn({
   };
 
   const addList = () => {
-    counter = counter + 1;
-    newId = "recruitmentStep-" + counter;
+    if(value === undefined){
+      //logik för tomt input
+    }
+      axios.post(`${addRecruitmentStep}`,
+      {
+        jobOfferId: activeJob.id,
+        title: value
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+     ).then(resp => {
+      console.log(resp);
+      setActiveJob(resp.data)
+    
+    }).catch(error => {
+      console.error(error)
+    })
 
-    let test;
-    jobOfferings.map((jobOfferingInMap, index) => {
-      if (jobOfferingInMap.id === activeJobId) {
-        jobOfferings[index].recruitmentSteps = [
-          ...jobOfferingInMap.recruitmentSteps,
-          { id: newId, title: value, candidateIds: [] },
-        ];
-        test = [...jobOfferings];
-      }
-      return null;
-    });
-    setJobOfferings(test);
+
+    
   };
 
   return (

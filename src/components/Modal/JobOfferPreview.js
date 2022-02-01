@@ -5,7 +5,6 @@ function JobOfferPreview({ jobOffer, colorScheme }) {
   let toRender;
 
   if (jobOffer === "") {
-    console.log("Renderar inget");
     toRender = <div></div>;
   } else {
     toRender = (
@@ -27,7 +26,7 @@ function JobOfferPreview({ jobOffer, colorScheme }) {
               } else {
                 return (
                   <Competence key={competenceInmap.id}>
-                    {competenceInmap.name} - {competenceInmap.years} years
+                    {competenceInmap.name} - {competenceInmap.value} years
                   </Competence>
                 );
               }

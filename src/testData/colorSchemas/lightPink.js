@@ -1,4 +1,4 @@
-const Brown = {
+const LightPink = {
   id: "color4",
   primary: "#dec3c3",
   secondary: "#e7d3d3",
@@ -8,4 +8,4 @@ const Brown = {
   text: "#917777",
 };
 
-export default Brown;
+export default LightPink;

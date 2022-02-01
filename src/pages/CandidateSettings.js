@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
@@ -9,33 +9,59 @@ import StyledButton from "../components/StyledButton";
 import Swal from "sweetalert2";
 import Steal from "../testData/colorSchemas/steal";
 import DarkBlue from "../testData/colorSchemas/darkBlue";
-import Brown from "../testData/colorSchemas/lightPink";
-import DarkGreen from "../testData/colorSchemas/darkGreen";
-import PinkPurple from "../testData/colorSchemas/pinkPurple";
+import LightPink from "../testData/colorSchemas/lightPink";
+import Teal from "../testData/colorSchemas/teal";
+import Purple from "../testData/colorSchemas/purple";
 import GreenNature from "../testData/colorSchemas/greenNature";
 import { useNavigate } from "react-router-dom";
-
-let counter = 9;
-let newId = "candidate-" + counter;
-let emailTaken = false;
+import axios from "axios";
+import {
+  updatePassword,
+  deleteCandidate,
+  updateColor,
+  getAllCandidates,
+} from "../API/endpoints";
 
 function CandidateSettings({
-  jobOfferings,
+  setActiveCandidate,
   activeJob,
-  adminLoggedIn,
-  candidateLoggedIn,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
   candidateState,
   setCandidateState,
   setActiveJob,
-  setNickName,
   setColorscheme,
   colorScheme,
-  activeCandidate
+  activeCandidate,
 }) {
-  const [validated, setValidated] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState(false);
   const Navigate = useNavigate();
+
+  useEffect(() => {
+
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    if(activeCandidate.id===""){
+      if(candidateLoggedIn===null){
+        Navigate("/")
+      }else{
+        setActiveCandidate(candidateLoggedIn)
+      }
+    }else{
+      if(activeCandidate.colorChoice==="teal"){
+        handleColor4Change()
+      }else if(activeCandidate.colorChoice==="steal"){
+        handleColor1Change()
+      }else if(activeCandidate.colorChoice==="darkBlue"){
+        handleColor2Change()
+      }else if(activeCandidate.colorChoice==="greenNature"){
+        handleColor3Change()
+      }else if(activeCandidate.colorChoice==="lightPink"){
+        handleColor5Change()
+      }else if(activeCandidate.colorChoice==="purple"){
+        handleColor6Change()
+      }
+    }
+
+  }, []);
+
 
   //ADJUST COLOR
   const [radioButtonsColor, setRadioButtonsColor] = useState([
@@ -49,26 +75,117 @@ function CandidateSettings({
   function handleColor1Change() {
     setRadioButtonsColor([true, false, false, false, false, false]);
     setColorscheme(Steal);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "steal",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="steal"
+      setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+    })
+    
   }
   function handleColor2Change() {
     setRadioButtonsColor([false, true, false, false, false, false]);
     setColorscheme(DarkBlue);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "darkBlue",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="darkBlue"
+      setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+    })
   }
   function handleColor3Change() {
     setRadioButtonsColor([false, false, true, false, false, false]);
     setColorscheme(GreenNature);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "greenNature",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="greenNature"
+      setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+    })
   }
   function handleColor4Change() {
     setRadioButtonsColor([false, false, false, true, false, false]);
-    setColorscheme(DarkGreen);
+    setColorscheme(Teal);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "teal",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="teal"
+      setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+    })
   }
   function handleColor5Change() {
     setRadioButtonsColor([false, false, false, false, true, false]);
-    setColorscheme(Brown);
+    setColorscheme(LightPink);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "lightPink",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="lightPink"
+      setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+    })
   }
   function handleColor6Change() {
     setRadioButtonsColor([false, false, false, false, false, true]);
-    setColorscheme(PinkPurple);
+    setColorscheme(Purple);
+    axios
+    .put(
+      `${updateColor}`,
+      {
+         candidateId: `${activeCandidate.id}`,
+         colorChoice: "purple",
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+    )
+    .then((response) => {
+      const newActiveCandidate = activeCandidate;
+      newActiveCandidate.colorChoice="purple"
+      setActiveCandidate(newActiveCandidate);
+      localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+    })
   }
 
   function RemoveMe() {
@@ -81,8 +198,21 @@ function CandidateSettings({
         showCancelButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
-
-
+          axios
+          .delete(
+            `${deleteCandidate}`,
+            {
+              data: {
+                candidateId: `${activeCandidate.id}`,
+                toRemove: `${activeCandidate.id}`,
+              },
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwtToken"),
+              },
+            }
+          ).then((result) => {
             const firstNameToRemove = activeCandidate.firstName;
             const lastNameToRemove = activeCandidate.lastName;
             const NewCandidateState = candidateState;
@@ -104,34 +234,82 @@ function CandidateSettings({
                 }
             })
 
+          Navigate("/");
 
 
 
+          })
 
-
-
-
-
-
-
-          Navigate("/candidate/register");
         }
       });
 
   }
 
-  function changPassword() {}
+  function changPassword(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+
+
+      setPasswordValidation(true)
+      event.stopPropagation();
+     } else {
+      axios
+      .put(
+        `${updatePassword}`,
+        {
+          userId: `${activeCandidate.id}`,
+          newPassword: `${form.newPassword.value}`,
+          oldPassword:`${form.oldPassword.value}`
+        },
+        { headers: { Authorization: localStorage.getItem("jwtToken") } }
+      ).then(response =>{
+        if(response.status===202){
+          Swal.fire({
+            icon: "success",
+            title: "Lösenord ändrat!",
+            text:  "Ditt lösenord är nu ändrat.",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+
+        }
+        console.log(response);
+      }).catch(error =>{
+        if(error.response.status===400){
+          Swal.fire({
+            icon: "error",
+            title: "Old Password and user password dont match",
+            text:  "",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong, please try again later",
+            text:  "",
+            showConfirmButton: true,
+            showDenyButton: false,
+            showCancelButton: false,
+          });
+
+        }
+
+      })
+
+     }
+  }
 
   return (
     <div>
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        jobOfferings={jobOfferings}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>
@@ -140,7 +318,7 @@ function CandidateSettings({
           <LeftDiv>
             <ChangePasswordDiv>
               <H5>Change Password</H5>
-              <Form noValidate validated={validated} onSubmit={changPassword}>
+              <Form noValidate validated={passwordValidation} onSubmit={changPassword}>
                 <ChangePasswordRow>
                   <ChangePasswordCol>
                     <FloatingLabel controlId="oldPassword" label="Old Password">
@@ -154,7 +332,7 @@ function CandidateSettings({
                     <FloatingLabel controlId="newPassword" label="New Password">
                       <Form.Control required type="password" placeholder='""' />
                       <Form.Control.Feedback type="invalid">
-                        Everyone have a last name, right?
+                      You need a new password to change password!
                       </Form.Control.Feedback>
                     </FloatingLabel>
                   </ChangePasswordCol>
@@ -165,7 +343,7 @@ function CandidateSettings({
                     >
                       <Form.Control required type="password" placeholder='""' />
                       <Form.Control.Feedback type="invalid">
-                        Everyone have a last name, right?
+                        You need to validate the new password
                       </Form.Control.Feedback>
                     </FloatingLabel>
                   </ChangePasswordCol>

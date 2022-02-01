@@ -8,16 +8,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
+import axios from 'axios';
+import {register} from "../API/endpoints";
 
-let counter = 9;
-let newId = "candidate-" + counter;
-let emailTaken = false;
 
 function Registrer({
-  candidateState,
-  setCandidateState,
-  setActiveCandidate,
-  setCandidateLoggedIn,
   colorScheme,
 }) {
   const [validated, setValidated] = useState(false);
@@ -32,81 +27,53 @@ function Registrer({
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
-    } else {
-      candidateState.map((candidateInMap) => {
-        if (
-          candidateInMap.email.toLowerCase() ===
-            form.emailInputGrid.value.toLowerCase() ||
-          form.emailInputGrid.value.toLowerCase() === "adminmail@gmail.com"
-        ) {
-          emailTaken = true;
-        }
-        return null;
-      });
-      if (emailTaken) {
-        Swal.fire({
-          icon: "error",
-          title: "Email alredy registred",
-          text: "This email is already registred in our database, try to login or register whith an other email",
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: "Login",
-          cancelButtonText: "Try again",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Navigate("/login");
-          }
-        });
-        event.stopPropagation();
-        emailTaken = false;
-      } else {
-        counter = counter + 1;
-        newId = "candidate-" + counter;
-        const nickNameNumber = Math.floor(Math.random() * 120);
-
-        const newCandidateState = [
-          ...candidateState,
-          {
-            id: newId,
-            nickName: nickNameNumber,
-            firstName: form.firstNameInputGrid.value,
-            lastName: form.lastNameInputGrid.value,
-            presentation: "",
-            email: form.emailInputGrid.value,
-            password: form.passwordInputGrid.value,
-            phone: form.phoneInputGrid.value,
-            experience: [],
-            education: [],
-            competencies: [],
-            personality: [
-              { id: "personality-1", name: "Openness", value: 50 },
-              { id: "personality-2", name: "Conscintiousness", value: 50 },
-              { id: "personality-3", name: "Extroversion", value: 50 },
-              { id: "personality-4", name: "Agreableness", value: 50 },
-              { id: "personality-5", name: "Neuroticism", value: 50 },
-            ],
-            rate: [],
-            role: "candidate",
-          },
-        ];
-
-        setCandidateState(newCandidateState);
-        setActiveCandidate({
-          id: newId,
-          nickName: nickNameNumber,
-          firstName: form.firstNameInputGrid.value,
-          LastName: form.lastNameInputGrid.value,
-          presentation: "",
-          email: form.emailInputGrid.value,
-          password: form.passwordInputGrid.value,
-          phone: form.phoneInputGrid.value,
-          experience: [],
-          rate: [],
-        });
-        setCandidateLoggedIn(true);
-
-        Navigate("/home");
+     } else {
+      const nickNameNumber = Math.floor(Math.random() * 120);
+      const toSend = {
+        nickName: nickNameNumber, 
+        firstName: form.firstNameInputGrid.value, 
+        lastName: form.lastNameInputGrid.value,
+        phone: form.phoneInputGrid.value, 
+        email: form.emailInputGrid.value, 
+        password: form.passwordInputGrid.value
       }
+
+      axios.post(`${register}`,
+        toSend
+     ).then(resp => {
+     
+        if(resp.status === 201){
+          Swal.fire({
+            icon: "success",
+            title: "Created account",
+            text: "You are one step closer to your next job, login and fill your resume to increase your chanses",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Login",
+          });
+          Navigate("/login");
+        }
+        
+      }).catch(error => {
+        console.log(error.response.status)
+        if(error.response.status === 400){
+          Swal.fire({
+            icon: "error",
+            title: "Email alredy registred",
+            text: "This email is already registred in our database, try to login or register whith an other email",
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: "Login",
+            cancelButtonText: "Try again",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Navigate("/login");
+            }
+          });
+        }else{
+          Swal("Något fick fel!", "Vänligen försök igen", "warning");
+        }
+      });
     }
     setValidated(true);
   };

@@ -5,15 +5,14 @@ import ApplicantCardModal from "./Modal/ApplicantCardModal";
 
 function CandidateCard({
   index,
-  candidateId,
-  candidateState,
-  setCandidateState,
-  activeJobId,
+  candidate,
+  activeJob,
   nickName,
   colorScheme,
 }) {
+
   return (
-    <Draggable draggableId={candidateId} index={index}>
+    <Draggable draggableId={candidate.id} index={index}>
       {(provided, snapshot) => (
         <Container
           inputColor={colorScheme}
@@ -22,23 +21,14 @@ function CandidateCard({
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          {candidateState.map((candidate) => {
-            if (candidate.id === candidateId) {
-              return (
                 <ApplicantCardModal
                   key={candidate.id}
                   candidate={candidate}
-                  candidateState={candidateState}
-                  setCandidateState={setCandidateState}
-                  activeJobId={activeJobId}
+                  activeJob={activeJob}
                   nickName={nickName}
                   colorScheme={colorScheme}
                 />
-              );
-            } else {
-              return null;
-            }
-          })}
+          
         </Container>
       )}
     </Draggable>

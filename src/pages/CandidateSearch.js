@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
@@ -8,25 +8,40 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import StyledButton from "../components/StyledButton";
 import ApplicantCardModal from "../components/Modal/ApplicantCardModal";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  getAllCandidates,
+} from "../API/endpoints";
 
 function CandidateSearch({
   activeJob,
-  adminLoggedIn,
-  candidateLoggedIn,
-  setCandidateState,
-  setAdminLoggedIn,
-  setCandidateLoggedIn,
-  candidateState,
+  activeCandidate,
+  setActiveCandidate,
   setActiveJob,
   nickName,
   colorScheme,
-  jobOfferings,
 }) {
+  const Navigate = useNavigate();
   const [validated, setValidated] = useState(false);
-
+  const [allCandidates, setAllCandidates] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
 
-  function searchForCompetence(event) {
+  useEffect(() => {
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+      axios.get(`${getAllCandidates}`,
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        ).then(resp => {
+      setAllCandidates(resp.data)
+      })
+  }    
+  }, []);
+
+  function searchForCompetence(event) {//Lös detta i backend i framtiden så man inte får en lista på alla kandidater
     event.preventDefault();
     if (event.currentTarget.checkValidity() === false) {
       event.stopPropagation();
@@ -36,18 +51,19 @@ function CandidateSearch({
       const CompetenceToSearch = event.currentTarget.competence.value;
       const YearsToSearch = event.currentTarget.years.value;
       let newSearchResult = [];
-
-      candidateState.map((candidateInMap, index) => {
-        candidateInMap.competencies.map((competenceInMap) => {
-          if (
-            competenceInMap.name.includes(CompetenceToSearch) &&
-            competenceInMap.years >= YearsToSearch
-          ) {
-            newSearchResult = [...newSearchResult, candidateState[index]];
-            setSearchResult(newSearchResult);
-            noMatch=false
-          }
-        });
+      allCandidates.map((candidateInMap, index) => {
+        if(candidateInMap.competenciesList.length>=1){
+          candidateInMap.competenciesList.map((competenceInMap) => {
+            if (
+              competenceInMap.name.toLowerCase().includes(CompetenceToSearch.toLowerCase()) &&
+              competenceInMap.value >= YearsToSearch
+            ) {
+              newSearchResult = [...newSearchResult, allCandidates[index]];
+              setSearchResult(newSearchResult);
+              noMatch=false
+            }
+          });
+        }else{console.log("no experience")}
       });
       if(noMatch) {
         Swal.fire({
@@ -63,16 +79,14 @@ function CandidateSearch({
     setValidated(true);
   }
 
+
   return (
     <div>
       <Navbar
         colorScheme={colorScheme}
         setActiveJob={setActiveJob}
-        setAdminLoggedIn={setAdminLoggedIn}
-        setCandidateLoggedIn={setCandidateLoggedIn}
-        jobOfferings={jobOfferings}
-        adminLoggedIn={adminLoggedIn}
-        candidateLoggedIn={candidateLoggedIn}
+        setActiveCandidate={setActiveCandidate}
+        activeCandidate={activeCandidate}
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>
@@ -115,9 +129,7 @@ function CandidateSearch({
                 <ApplicantCardModal
                   key={candidate.id}
                   candidate={candidate}
-                  candidateState={candidateState}
-                  setCandidateState={setCandidateState}
-                  activeJobId={activeJob.id}
+                  activeJob={activeJob}
                   nickName={nickName}
                   colorScheme={colorScheme}
                 />

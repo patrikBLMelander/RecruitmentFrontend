@@ -5,28 +5,21 @@ import Swal from "sweetalert2";
 import Modal from "react-modal";
 import JobOfferPreview from "./Modal/JobOfferPreview";
 import StyledButton from "./StyledButton";
+import axios from "axios";
+import {
+  getJobOfferDetails,
+  applyForJob,
+} from "../API/endpoints";
 
 function JobOfferCard({
   index,
   jobOfferings,
-  setJobOfferings,
   setActiveJob,
-  adminLoggedIn,
-  candidateLoggedIn,
   activeCandidate,
   colorScheme,
 }) {
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
-
-  function totalCandidates(jobOffer) {
-    let totalCandidates = 0;
-    jobOffer.recruitmentSteps.map((recruitmentStepInMap) => {
-      totalCandidates += recruitmentStepInMap.candidateIds.length;
-      return null;
-    });
-    return totalCandidates;
-  }
 
   function openModal() {
     setIsOpen(true);
@@ -36,64 +29,79 @@ function JobOfferCard({
   }
 
   let btnText = "Apply";
-  if (adminLoggedIn === true) {
+  if (activeCandidate.isAdmin) {
     btnText = "Candidates";
   }
 
   function setJobToWorkWith(event) {
-    if (candidateLoggedIn === false) {
+    
+    if (activeCandidate === "") {
       navigate("/candidate/register");
     }
-    if (candidateLoggedIn === true) {
-      let alreadyApplied = false;
-
-      jobOfferings[index].recruitmentSteps.map((recruitmentStepsInMap) => {
-        recruitmentStepsInMap.candidateIds.map((candidateIdsInMap) => {
-          if (activeCandidate.id === candidateIdsInMap) {
-            alreadyApplied = true;
-            Swal.fire({
-              title: "Not Applied!",
-              text: "You have already applied for this role.",
-              icon: "warning",
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          }
-          return null;
-        });
-        return null;
+    if (!activeCandidate.isAdmin) {
+      Swal.fire({
+        title: "Apply?",
+        text: "Do you want to apply for this role, dont forget to update your profile",
+        icon: "question",
+        showConfirmButton: true,
+        confirmButtonText: "Apply",
+        showCancelButton: true,
+        cancelButtonText: "Not now",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(`${applyForJob}`,
+          { 
+            candidateId: activeCandidate.id,
+            jobOfferId:`${event.id}`,
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+       ).then(resp => {
+          console.log(resp.data)
+          navigate("/candidate/my-page");
+       }).catch(error => {
+         if(error.response.status===400){
+          Swal.fire({
+            title: "Not Applied!",
+            text: "You have already applied for this role.",
+            icon: "warning",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+         }else{
+          Swal.fire({
+            title: "Something whent wrong",
+            text: "We seems to have problem with the connection to the server, please try again later",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+         }
+       })
+        }
       });
-      if (!alreadyApplied) {
-        Swal.fire({
-          title: "Apply?",
-          text: "Do you want to apply for this role",
-          icon: "question",
-          showConfirmButton: true,
-          confirmButtonText: "Apply",
-          showCancelButton: true,
-          cancelButtonText: "Not now",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            let newJobOffering = jobOfferings;
-            newJobOffering[index].recruitmentSteps[0].candidateIds = [
-              ...jobOfferings[index].recruitmentSteps[0].candidateIds,
-              activeCandidate.id,
-            ];
+    }
+    if (activeCandidate.isAdmin) {
 
-            setJobOfferings(newJobOffering);
-            navigate("/candidate/my-page");
-          }
-        });
-      }
-    }
-    if (adminLoggedIn === true) {
-      setActiveJob({
-        title: event.title,
-        id: event.id,
-      });
-      navigate("/admin/recruitment-page");
-    }
+      axios.post(`${getJobOfferDetails}`,
+      { 
+        jobOfferId:`${event.id}`,
+      },
+      { headers: { Authorization: localStorage.getItem("jwtToken") } }
+   ).then(resp => {
+        setActiveJob(resp.data)
+        localStorage.setItem("activeJob", JSON.stringify(resp.data));
+      }).then(
+        navigate("/admin/recruitment-page")
+      );
+
+
+   }
+
+
+
   }
+  
+  
   return (
     <CardDiv key={index} inputColor={colorScheme}>
       <Image src={jobOfferings[index].imageUrl} onClick={openModal} />
@@ -114,11 +122,11 @@ function JobOfferCard({
           />
         </BtnContainer>
         <CadnidateInfoDiv>
-          <PNew show={adminLoggedIn} inputColor={colorScheme}>
-            New: {jobOfferings[index].recruitmentSteps[0].candidateIds.length}
+          <PNew show={activeCandidate.isAdmin} inputColor={colorScheme}>
+            New: {jobOfferings[index].newCandidates}
           </PNew>
-          <PTotal show={adminLoggedIn} inputColor={colorScheme}>
-            Total: {totalCandidates(jobOfferings[index])}
+          <PTotal show={activeCandidate.isAdmin} inputColor={colorScheme}>
+            Total: {jobOfferings[index].totalCandidates}
           </PTotal>
         </CadnidateInfoDiv>
       </CardBody>
@@ -139,6 +147,7 @@ function JobOfferCard({
         contentLabel="JobOffer modal"
       >
         <JobOfferPreview
+          key={`JobOfferPreview`+jobOfferings[index].id}
           jobOffer={jobOfferings[index]}
           colorScheme={colorScheme}
         />
