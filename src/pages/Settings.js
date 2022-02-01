@@ -678,7 +678,7 @@ const Container = styled.div`
     background-color: ${(props) => props.inputColor.primary};
     color: ${(props) => props.inputColor.text};
     padding-bottom: 5%;
-    margin-left 160px;
+    margin-left: 160px;
 `;
 
 const AdjustCandidateNameDiv = styled.div`
