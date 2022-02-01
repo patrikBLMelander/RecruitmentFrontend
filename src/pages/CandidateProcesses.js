@@ -1,14 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import JobOfferCard from "../components/JobOfferCard";
 import axios from "axios";
-import {
-  getMyProcesses,
-
-} from "../API/endpoints";
+import { getMyProcesses } from "../API/endpoints";
 import { useNavigate } from "react-router-dom";
 
 function CandidateProcesses({
@@ -21,29 +18,30 @@ function CandidateProcesses({
   setJobOfferings,
 }) {
   const Navigate = useNavigate();
-  const [myProcesses, setMyProcesses]=useState([{}])
+  const [myProcesses, setMyProcesses] = useState([{}]);
 
   useEffect(() => {
     var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
     var allJobOffers = JSON.parse(localStorage.getItem("allJobOffers"));
-    if(candidateLoggedIn===null){
-      Navigate("/")
-    }else{
+    if (candidateLoggedIn === null) {
+      Navigate("/");
+    } else {
       setActiveCandidate(candidateLoggedIn);
       setJobOfferings(allJobOffers);
-      axios.post(`${getMyProcesses}`,
-      {
-        "email": `${candidateLoggedIn.email}`,
-        "test": "test"
-      },
-      {headers: { Authorization: localStorage.getItem("jwtToken") }
-    }).then(function (response) {
-      setMyProcesses(response.data)
-    })
-  }    
+      axios
+        .post(
+          `${getMyProcesses}`,
+          {
+            email: `${candidateLoggedIn.email}`,
+            test: "test",
+          },
+          { headers: { Authorization: localStorage.getItem("jwtToken") } }
+        )
+        .then(function (response) {
+          setMyProcesses(response.data);
+        });
+    }
   }, []);
-
-
 
   return (
     <div>
@@ -63,7 +61,7 @@ function CandidateProcesses({
           {myProcesses?.map((jobOfferingsInMap, index) => {
             return (
               <JobOfferCard
-                key={`jobofferCard`+jobOfferingsInMap.id}
+                key={`jobofferCard` + jobOfferingsInMap.id}
                 index={index}
                 colorScheme={colorScheme}
                 jobOffering={jobOfferingsInMap}
@@ -84,10 +82,11 @@ function CandidateProcesses({
 export default CandidateProcesses;
 
 const Container = styled.div`
-    background-color: ${(props) => props.inputColor.primary};    
-    color: ${(props) => props.inputColor.text};
-    padding-bottom: 5%;
-    margin-left 160px
+  background-color: ${(props) => props.inputColor.primary};
+  color: ${(props) => props.inputColor.text};
+  padding-bottom: 5%;
+  margin-left: 160px;
+  min-height: 90vh;
 `;
 const JobCardDiv = styled.div`
   margin: 20px auto;
