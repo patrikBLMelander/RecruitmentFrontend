@@ -52,7 +52,7 @@ function Home({
                 key={index}
                 index={index}
                 colorScheme={colorScheme}
-                jobOfferings={jobOfferings}
+                jobOffering={jobOfferingsInMap}
                 setActiveJob={setActiveJob}
                 activeCandidate={activeCandidate}
                 remove={false}

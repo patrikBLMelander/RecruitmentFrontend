@@ -47,7 +47,6 @@ function Login({
             confirmButtonText: "Try again",
           })
         }else {
-          console.log(responseFromLogin)
           axios.post(`${getCandidateInfo}`,
           {
             "email": `${responseFromLogin.data.username}`,

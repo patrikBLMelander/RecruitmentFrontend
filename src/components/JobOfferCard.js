@@ -10,21 +10,20 @@ import {
   getJobOfferDetails,
   applyForJob,
   removeAppliedJob,
-  getCandidateInfo,
+  getMyProcesses,
 } from "../API/endpoints";
 
 function JobOfferCard({
   index,
-  jobOfferings,
+  jobOffering,
   setActiveJob,
   activeCandidate,
   colorScheme,
   remove,
-  setActiveCandidate
+  setMyProcesses
 }) {
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
-
   function openModal() {
     setIsOpen(true);
   }
@@ -46,7 +45,6 @@ function JobOfferCard({
       navigate("/candidate/register");
     }
     if (!activeCandidate.isAdmin) {
-
       if(remove){
         Swal.fire({
           title: "Remove",
@@ -75,32 +73,15 @@ function JobOfferCard({
             const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
             const email =candidateLoggedIn.email;
 
-            axios
-              .post(
-                `${getCandidateInfo}`,
-                {
-                  email: `${email}`,
-                  test: "test",
-                },
-                { headers: { Authorization: localStorage.getItem("jwtToken") } }
-              )
-              .then((response) => {
-                setActiveCandidate({
-                  id: response.data.id,
-                  nickName: response.data.nickName,
-                  email: response.data.email,
-                  presentation: response.data.presentation,
-                  isAdmin: response.data.isAdmin,
-                  colorChoice: response.data.colorChoice,
-                  nickNameChoice: response.data.nickNameChoice,
-                  roleList: response.data.roleList,
-                  experienceList: response.data.experienceList,
-                  educationList: response.data.educationList,
-                  competenciesList: response.data.competenciesList,
-                  personalityList: response.data.personalityList,
-                });
-                localStorage.setItem("activeUser", JSON.stringify(response.data));
-              });
+            axios.post(`${getMyProcesses}`,
+            {
+              "email": `${candidateLoggedIn.email}`,
+              "test": "test"
+            },
+            {headers: { Authorization: localStorage.getItem("jwtToken") }
+          }).then(function (response) {
+            setMyProcesses(response.data)
+          })
          }).catch(err => {
            console.error(err)
          })
@@ -125,7 +106,6 @@ function JobOfferCard({
             },
             { headers: { Authorization: localStorage.getItem("jwtToken") } }
          ).then(resp => {
-            console.log(resp.data)
             navigate("/candidate/my-page");
          }).catch(error => {
            if(error.response.status===400){
@@ -175,17 +155,17 @@ function JobOfferCard({
   
   return (
     <CardDiv key={index} inputColor={colorScheme}>
-      <Image src={jobOfferings[index].imageUrl} onClick={openModal} />
+      <Image src={jobOffering.imageUrl} onClick={openModal} />
       <CardBody inputColor={colorScheme}>
         <StyledH4 inputColor={colorScheme}>
-          {jobOfferings[index].title}
+          {jobOffering.title}
         </StyledH4>
         <PExpire inputColor={colorScheme}>
-          Expire: {jobOfferings[index].applyDate}
+          Expire: {jobOffering.applyDate}
         </PExpire>
         <BtnContainer>
           <StyledButton
-            onClick={() => setJobToWorkWith(jobOfferings[index])}
+            onClick={() => setJobToWorkWith(jobOffering)}
             variant="primary"
             input={btnText}
             colorScheme={colorScheme}
@@ -194,10 +174,10 @@ function JobOfferCard({
         </BtnContainer>
         <CadnidateInfoDiv>
           <PNew show={activeCandidate.isAdmin} inputColor={colorScheme}>
-            New: {jobOfferings[index].newCandidates}
+            New: {jobOffering.newCandidates}
           </PNew>
           <PTotal show={activeCandidate.isAdmin} inputColor={colorScheme}>
-            Total: {jobOfferings[index].totalCandidates}
+            Total: {jobOffering.totalCandidates}
           </PTotal>
         </CadnidateInfoDiv>
       </CardBody>
@@ -218,13 +198,13 @@ function JobOfferCard({
         contentLabel="JobOffer modal"
       >
         <JobOfferPreview
-          key={`JobOfferPreview`+jobOfferings[index].id}
-          jobOffer={jobOfferings[index]}
+          key={`JobOfferPreview`+jobOffering.id}
+          jobOffer={jobOffering}
           colorScheme={colorScheme}
         />
         <BtnModalContainer>
           <StyledButton
-            onClick={() => setJobToWorkWith(jobOfferings[index])}
+            onClick={() => setJobToWorkWith(jobOffering)}
             variant="primary"
             input={btnText}
             colorScheme={colorScheme}

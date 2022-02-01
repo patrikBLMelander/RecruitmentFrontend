@@ -66,10 +66,11 @@ function CandidateProcesses({
                 key={`jobofferCard`+jobOfferingsInMap.id}
                 index={index}
                 colorScheme={colorScheme}
-                jobOfferings={jobOfferings}
+                jobOffering={jobOfferingsInMap}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
                 remove={true}
+                setMyProcesses={setMyProcesses}
               />
             );
           })}

@@ -70,7 +70,7 @@ function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings, setA
                 key={`jobofferCard`+jobOfferingsInMap.id}
                 index={index}
                 colorScheme={colorScheme}
-                jobOfferings={jobOfferings}
+                jobOffering={jobOfferingsInMap}
                 activeCandidate={activeCandidate}
                 setActiveCandidate={setActiveCandidate}
                 remove={false}
