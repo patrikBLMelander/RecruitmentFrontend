@@ -47,12 +47,13 @@ function Login({
             confirmButtonText: "Try again",
           })
         }else {
+          console.log(responseFromLogin)
           axios.post(`${getCandidateInfo}`,
           {
             "email": `${responseFromLogin.data.username}`,
             "test": "test"
           },
-          {headers: { Authorization: localStorage.getItem("jwtToken") }}).then(response => {
+          {headers: { Authorization: responseFromLogin.data.jwtToken}}).then(response => {
             
             setActiveCandidate({
                 id:response.data.id,

@@ -4,6 +4,8 @@ import JobOfferCard from "../components/JobOfferCard";
 import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import {getAllJobOffers} from "../API/endpoints";
 
 function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings }) {
   const Navigate = useNavigate();
@@ -19,6 +21,12 @@ function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings }) {
     if(allJobOffers!=null){
       setJobOfferings(allJobOffers)
     }
+    axios.get(`${getAllJobOffers}`, {
+
+    }).then(resp => {
+      setJobOfferings(resp.data)
+      localStorage.setItem("allJobOffers", JSON.stringify(resp.data));
+  }).catch(error => console.error(error));
   }, []);
 
 
