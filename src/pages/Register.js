@@ -10,10 +10,6 @@ import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
 import axios from 'axios';
 import {register} from "../API/endpoints";
-import {RegisterCandidateRequest} from "../API/requests";
-
-let counter = 9;
-let newId = "candidate-" + counter;
 
 
 function Registrer({
