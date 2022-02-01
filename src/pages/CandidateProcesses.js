@@ -40,9 +40,7 @@ function CandidateProcesses({
     }).then(function (response) {
       setMyProcesses(response.data)
     })
-  }
-
-      
+  }    
   }, []);
 
 
