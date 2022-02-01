@@ -17,6 +17,7 @@ import LightPink from "../testData/colorSchemas/lightPink";
 import Teal from "../testData/colorSchemas/teal";
 import Purple from "../testData/colorSchemas/purple";
 import GreenNature from "../testData/colorSchemas/greenNature";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   createAdmin,
@@ -40,9 +41,16 @@ function Settings({
   const [validated, setValidated] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState(false);
   const [allCandidates, setAllCandidates] = useState([{}]);
-
+  const Navigate = useNavigate();
 
   useEffect(() => {
+
+    var candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
+    if(candidateLoggedIn===null){
+      Navigate("/")
+    }else{
+      setActiveCandidate(candidateLoggedIn);
+    }
     if(activeCandidate.nickNameChoice==="default"){
       handleAnimalChange()
     }
