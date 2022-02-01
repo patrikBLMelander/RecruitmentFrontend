@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import JobOfferCard from "../components/JobOfferCard";
 import StyledButton from "../components/StyledButton";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-function Main({jobOfferings, activeCandidate, colorScheme }) {
+function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings }) {
   const Navigate = useNavigate();
   function login() {
     Navigate("/login");
@@ -13,6 +13,13 @@ function Main({jobOfferings, activeCandidate, colorScheme }) {
   function register() {
     Navigate("/candidate/register");
   }
+
+  useEffect(() => {
+    var allJobOffers = JSON.parse(localStorage.getItem("allJobOffers"));
+    if(allJobOffers!=null){
+      setJobOfferings(allJobOffers)
+    }
+  }, []);
 
 
 
