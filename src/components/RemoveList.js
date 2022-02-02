@@ -15,7 +15,7 @@ function RemoveListBtn({
 
 
   const removeList = (event) => {
-    axios.put(`${deleteRecruitmentStep}`,
+    axios.post(`${deleteRecruitmentStep}`,
     {
       recruitmentId: id,
       jobOfferId: activeJob.id
@@ -23,12 +23,9 @@ function RemoveListBtn({
     { headers: { Authorization: localStorage.getItem("jwtToken") } }
       ).then(resp => {
       console.log(resp.data);
-      const newActiveJob = activeJob
-      newActiveJob.recruitmentList.splice(activeJob.recruitmentList.indexOf(id))
-      console.log(newActiveJob)
-      setActiveJob(newActiveJob)
-      localStorage.setItem("activeJob", JSON.stringify(newActiveJob));
-      window.location.reload();
+      setActiveJob(resp.data)
+      localStorage.setItem("activeJob", JSON.stringify(resp.data));
+      //window.location.reload();
       //Försöker få denna att uppdatera sidan direkt på ett bättre sätt
     }).catch(error => {
       console.error(error)

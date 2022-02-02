@@ -73,11 +73,11 @@ function RecruitmentPage({
             0,
             RecInfoToPutIn
           );
-          setActiveJob(newActiveJob);
-          localStorage.setItem("activeJob", JSON.stringify(newActiveJob));
+          // setActiveJob(newActiveJob);
+          // localStorage.setItem("activeJob", JSON.stringify(newActiveJob));
 
           axios
-            .put(
+            .post(
               `${moveRecruitmentStep}`,
               {
                 recruitmentId: `${draggableId}`,
@@ -88,6 +88,8 @@ function RecruitmentPage({
             ).then(resp => {
 
               console.log(resp.data)
+              setActiveJob(resp.data);
+              localStorage.setItem("activeJob", JSON.stringify(resp.data));
           
             })
 
