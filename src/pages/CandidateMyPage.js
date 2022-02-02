@@ -889,14 +889,6 @@ const CompetenceDiv = styled.div`
   justify-content: center;
 `;
 
-const SeperatorDiv = styled.div`
-  justify-content: center;
-  margin-top: 5%;
-  margin-right: 4%;
-  margin-bottom: 5%;
-  border-style: solid;
-  border-color: #b5bcc7;
-`;
 const H4 = styled.h4`
   font-family: "Roboto", sans-serif;
   margin-top: 7%;
