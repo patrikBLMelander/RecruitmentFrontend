@@ -21,7 +21,7 @@ function ApplicantCardModal({
   const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if(activeJob==null) {
+    if(activeJob.id=="") {
       setRating(0)
     }else{
       activeJob.recruitmentList.map((recruitment) =>
@@ -50,10 +50,9 @@ function ApplicantCardModal({
       rate:rate,
     },
     { headers: { Authorization: localStorage.getItem("jwtToken") } }
- ).then(resp => {
-
-  console.log(resp.data)
- })
+    ).then(resp => {
+      console.log(resp.data)
+    })
   };
 
   function openModal() {
