@@ -74,8 +74,9 @@ function Settings({
       handleColor6Change()
     }
 
-    axios.get(`${getAllCandidates}`, {
-  
+    axios.get(`${getAllCandidates}`, 
+    { 
+      headers: { Authorization: localStorage.getItem("jwtToken") } 
     }).then(resp => {
       setAllCandidates(resp.data)
   }).catch(error => console.error(error));

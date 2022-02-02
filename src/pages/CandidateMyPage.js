@@ -838,7 +838,7 @@ const Container = styled.div`
     color: ${(props) => props.inputColor.text};
     height: 100%;
     width: 100%;
-    z-index: 1,
+    z-index: 1;
     overflow-x: hidden;
     padding-top: 16px;
     margin-left: 160px;
