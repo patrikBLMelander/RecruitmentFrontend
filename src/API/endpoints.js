@@ -1,25 +1,25 @@
- //const START_URL = "https://exjobbrecruitment.herokuapp.com";
- const START_URL = "http://localhost:7000";
+const START_URL = "https://exjobbrecruitment.herokuapp.com";
+//const START_URL = "http://localhost:7000";
 
 //export Constants API
- const BASE_API = "/recruitment/v1";
- const PUBLIC = "/public";
- const CANDIDATES = "/candidates";
- const ADMIN = "/admin";
- const CREATE = "/create";
- const UPDATE = "/update";
- const EXPERIENCE = "/experience";
- const EDUCATION = "/education";
- const COMPETENCE = "/competence";
- const PRESENTATION = "/presentation";
- const JOB_OFFER = "/job_offer";
- const PERSONALITY = "/personality";
- const PASSWORD = "/password";
- const RATE = "/rate";
- const COLOR = "/color";
- const NICKNAME = "/nickname";
- const DELETE = "/delete";
- const RECRUITMENT = "/recruitment";
+const BASE_API = "/recruitment/v1";
+const PUBLIC = "/public";
+const CANDIDATES = "/candidates";
+const ADMIN = "/admin";
+const CREATE = "/create";
+const UPDATE = "/update";
+const EXPERIENCE = "/experience";
+const EDUCATION = "/education";
+const COMPETENCE = "/competence";
+const PRESENTATION = "/presentation";
+const JOB_OFFER = "/job_offer";
+const PERSONALITY = "/personality";
+const PASSWORD = "/password";
+const RATE = "/rate";
+const COLOR = "/color";
+const NICKNAME = "/nickname";
+const DELETE = "/delete";
+const RECRUITMENT = "/recruitment";
 
 
 //public endpoints
