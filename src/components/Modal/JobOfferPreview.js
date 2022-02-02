@@ -20,16 +20,13 @@ function JobOfferPreview({ jobOffer, colorScheme }) {
 
           <Competencies>
             <H5>Requested Competencies</H5>
-            {jobOffer.competencies.map((competenceInmap) => {
-              if (jobOffer.competencies[0] === "") {
-                return <p>no competencies specified</p>;
-              } else {
-                return (
-                  <Competence key={competenceInmap.id}>
-                    {competenceInmap.name} - {competenceInmap.value} years
-                  </Competence>
-                );
-              }
+            {jobOffer.competenceList.map((competenceInmap) => {
+              return (
+                <Competence key={competenceInmap.id}>
+                  {competenceInmap.name} - {competenceInmap.value} years
+                </Competence>
+              );
+              
             })}
           </Competencies>
         </LeftDiv>

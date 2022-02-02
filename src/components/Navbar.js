@@ -67,6 +67,9 @@ function Navbar({
             <StyledLogOutCircleBtn inputColor={colorScheme} />
           </h1>
         </a>
+        <WelcomeText inputColor={colorScheme}>
+          {activeCandidate.firstName} {activeCandidate.lastName}
+        </WelcomeText>
       </Container>
     );
   } else {
@@ -100,6 +103,9 @@ function Navbar({
             <StyledLogOutCircleBtn inputColor={colorScheme} />
           </h1>
         </a>
+        <WelcomeText inputColor={colorScheme}>
+          {activeCandidate.firstName} {activeCandidate.lastName}
+        </WelcomeText>
       </Container>
     );
   }
@@ -175,3 +181,10 @@ const StyledAddressCardBtn = styled(AddressCard)`
   width: 40;
   color: ${(props) => props.inputColor.text};
 `;
+const WelcomeText = styled.h6`
+  color: ${(props) => props.inputColor.secondary};
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  margin-left: 7.5vh;
+  margin-top: 2vh;
+`
