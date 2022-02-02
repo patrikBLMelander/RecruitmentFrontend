@@ -253,7 +253,20 @@ function CandidateMyPage({
             competenciesList: activeCandidate.competenciesList,
             personalityList: activeCandidate.personalityList,
           });
-          localStorage.setItem("activeUser", JSON.stringify(response.data));
+          localStorage.setItem("activeUser", JSON.stringify({id: activeCandidate.id,
+            firstName:response.data.firstName,
+            lastName:response.data.lastName,
+            nickName: activeCandidate.nickName,
+            email: activeCandidate.email,
+            presentation: presentation,
+            isAdmin: activeCandidate.isAdmin,
+            colorChoice: activeCandidate.colorChoice,
+            nickNameChoice: activeCandidate.nickNameChoice,
+            roleList: activeCandidate.roleList,
+            experienceList: activeCandidate.experienceList,
+            educationList: activeCandidate.educationList,
+            competenciesList: activeCandidate.competenciesList,
+            personalityList: activeCandidate.personalityList,}));
         });
       Swal.fire({
         title: "Presentation Saved!",
@@ -485,6 +498,11 @@ function CandidateMyPage({
       <Header activeJob={activeJob} colorScheme={colorScheme} />
 
       <Container inputColor={colorScheme}>
+      <StyledButton
+            onClick={openModal}
+            input={"My Resume"}
+            colorScheme={colorScheme}
+          />
         <InnerContainer>
           {/* FORM TO PERSONAL DESCRIPTION*/}
           <Form
@@ -773,13 +791,6 @@ function CandidateMyPage({
               </BtnCol>
             </CompetenceDiv>
           </Form>
-
-          <SeperatorDiv />
-          <StyledButton
-            onClick={openModal}
-            input={"My Resume"}
-            colorScheme={colorScheme}
-          />
         </InnerContainer>
         <Modal
           isOpen={modalIsOpen}
