@@ -26,7 +26,6 @@ function AddNewJobOffer({
 }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [activeJobOffer, setActiveJobOffer] = useState("");
   const Navigate = useNavigate();
   const [preview, setPreview]= useState("");
 
