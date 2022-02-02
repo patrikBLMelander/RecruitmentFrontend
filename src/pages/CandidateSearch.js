@@ -90,10 +90,9 @@ function CandidateSearch({
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>
-        <H3>Candidate Search</H3>
+        
           <SearchDiv>
-            <H5>Search for Candidate</H5>
-
+          <H3>Candidate Search</H3>
             <Form
               noValidate
               validated={validated}
@@ -106,20 +105,22 @@ function CandidateSearch({
                     This field can not be empty
                   </Form.Control.Feedback>
                 </FloatingLabel>
+                </InputDiv>
+                <InputDiv>
                 <FloatingLabel controlId="years" label="Years">
                   <Form.Control required type="number" placeholder='"Java"' />
                   <Form.Control.Feedback type="invalid">
                     This field can not be empty
                   </Form.Control.Feedback>
                 </FloatingLabel>
-              </InputDiv>
-              <StyledBtnDiv>
+                </InputDiv>
+              <InputDiv>
               <StyledButton
                 type="submit"
                 input="Search"
                 colorScheme={colorScheme}
               />
-              </StyledBtnDiv>
+              </InputDiv>
             </Form>
           </SearchDiv>
           <ListOfResultDiv>
@@ -147,13 +148,12 @@ export default CandidateSearch;
 
 
 const Container = styled.div`
-    position: fixed;
-    height: 100%;
-    width: 100%;
+    min-width: 90vh;
+    min-height: 90vh;
     background-color: ${(props) => props.inputColor.primary};
     color: ${(props) => props.inputColor.text};
     padding-bottom: 5%;
-    margin-left 160px;
+    margin-left: 160px;
     padding-left: 10px;
     
 `;
@@ -164,7 +164,20 @@ const SearchDiv = styled.div`
 `;
 
 const InputDiv = styled.div`
-  display: flex;
+  display: block;
+  width: 30vh;
+  padding: 8px 16px;
+  line-height: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  transition: border .3s ease;
+`;
+const StyledBtnDiv = styled.div`
+  margin-top: 10px;
 `;
 
 const ListOfResultDiv = styled.div`
@@ -174,15 +187,7 @@ const ListOfResultDiv = styled.div`
 
 const H3 = styled.h3`
   display: flex;
-  margin-left: 50px;
-  margin-right: 400px;
-  font-family: "Trebuchet MS", sans-serif;
-`;
-
-const H5 = styled.h5`
-  display: flex;
-  margin-left: 50px;
-  margin-right: 400px;
+  margin-left: 10px;
   font-family: "Trebuchet MS", sans-serif;
 `;
 
@@ -193,12 +198,11 @@ const SearchedCandidateDiv = styled.div`
   border-radius: 2px;
   padding: 8px;
   margin: 8px 8px 8px 8px;
+  cursor: pointer;
   color: ${(props) => props.inputColor.text};
   background-color: ${(props) =>
     props.isDragging ? props.inputColor.fourth : props.inputColor.secondary};
 `
 
-const StyledBtnDiv = styled.div`
- margin-top: 10px;
-`;
+
 

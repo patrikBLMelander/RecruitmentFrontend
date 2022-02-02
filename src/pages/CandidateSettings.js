@@ -79,8 +79,8 @@ function CandidateSettings({
     .put(
       `${updateColor}`,
       {
-         candidateId: `${activeCandidate.id}`,
-         colorChoice: "steal",
+        candidateId: `${activeCandidate.id}`,
+        colorChoice: "steal",
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
     )
@@ -99,8 +99,8 @@ function CandidateSettings({
     .put(
       `${updateColor}`,
       {
-         candidateId: `${activeCandidate.id}`,
-         colorChoice: "darkBlue",
+        candidateId: `${activeCandidate.id}`,
+        colorChoice: "darkBlue",
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
     )
@@ -137,8 +137,8 @@ function CandidateSettings({
     .put(
       `${updateColor}`,
       {
-         candidateId: `${activeCandidate.id}`,
-         colorChoice: "teal",
+        candidateId: `${activeCandidate.id}`,
+        colorChoice: "teal",
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
     )
@@ -156,8 +156,8 @@ function CandidateSettings({
     .put(
       `${updateColor}`,
       {
-         candidateId: `${activeCandidate.id}`,
-         colorChoice: "lightPink",
+        candidateId: `${activeCandidate.id}`,
+        colorChoice: "lightPink",
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
     )
@@ -175,8 +175,8 @@ function CandidateSettings({
     .put(
       `${updateColor}`,
       {
-         candidateId: `${activeCandidate.id}`,
-         colorChoice: "purple",
+        candidateId: `${activeCandidate.id}`,
+        colorChoice: "purple",
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
     )
@@ -253,7 +253,7 @@ function CandidateSettings({
 
       setPasswordValidation(true)
       event.stopPropagation();
-     } else {
+      } else {
       axios
       .put(
         `${updatePassword}`,
@@ -295,12 +295,9 @@ function CandidateSettings({
             showDenyButton: false,
             showCancelButton: false,
           });
-
         }
-
       })
-
-     }
+    }
   }
 
   return (
@@ -450,7 +447,7 @@ position: fixed;
     color: ${(props) => props.inputColor.text};
     height: 100%;
     padding-bottom: 5%;
-    margin-left 160px;
+    margin-left: 160px;
 `;
 
 const RadioCol = styled.div`

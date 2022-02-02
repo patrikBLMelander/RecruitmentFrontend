@@ -229,7 +229,7 @@ const CardDiv = styled.div`
     min-height: 300px;
     max-width: 300px;
     min-height: 300px;
-    margin: 8px 8px 8px 8px
+    margin: 16px 16px 16px 16px
 `;
 
 const Image = styled.img`

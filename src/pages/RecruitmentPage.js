@@ -231,4 +231,5 @@ const Column = styled.div`
   max-width:100%;
   overflow-x: scroll;
   overflow-x: hidden;
+  padding-bottom: 70px;
 `;

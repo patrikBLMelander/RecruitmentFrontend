@@ -100,4 +100,6 @@ const StyledImg = styled.img`
   border-radius: 100%;
   text-align: center;
   margin: 15px;
+  max-width: 90%;
+  max-height: 90%;
 `;

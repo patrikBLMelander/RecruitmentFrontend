@@ -42,9 +42,6 @@ function Home({
       />
       <Header colorScheme={colorScheme} activeJob={activeJob} />
       <Container inputColor={colorScheme}>
-        <H3>
-          Welcome {activeCandidate.firstName} {activeCandidate.lastName}
-        </H3>
         <JobCardDiv>
           {jobOfferings.map((jobOfferingsInMap, index) => {
             return (
@@ -71,19 +68,15 @@ export default Home;
 const Container = styled.div`
   background-color: ${(props) => props.inputColor.primary};    
   color: ${(props) => props.inputColor.text};
-  padding-bottom: 5%;
+  padding-bottom: 10%;
   margin-left: 160px;
+  margin-top: 0px;
   min-height: 90vh;
-`;
-
-const H3 = styled.h3`
-  display: flex;
-  margin-left: 50px;
-  margin-right: 400px;
   font-family: "Trebuchet MS", sans-serif;
 `;
+
 const JobCardDiv = styled.div`
-  margin: 20px auto;
+  margin: 0px auto 0px auto;
   width: 80%;
   min-height: 100px;
   display: flex;

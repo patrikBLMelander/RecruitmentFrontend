@@ -178,7 +178,7 @@ const Container = styled.div`
     color: ${(props) => props.inputColor.text};
     height: 100%;
     width: 100%;
-    z-index: 1,
+    z-index: 1;
     top: 0;
     left: 0;
     overflow-x: hidden;

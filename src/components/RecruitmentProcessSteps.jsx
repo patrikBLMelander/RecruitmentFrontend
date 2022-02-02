@@ -73,6 +73,7 @@ const Container = styled.div`
   min-width: 220px;
   display: flex;
   flex-direction: column;
+  padding-bottom: 10;
 `;
 const Title = styled.h3`
   padding: 8px;
