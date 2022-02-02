@@ -30,13 +30,11 @@ function Resume({
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(
+          .post(
             `${deleteExperience}`,
             {
-              data: {
-                candidateId: `${activeCandidate.id}`,
-                toRemove: `${experienceInMap.id}`,
-              },
+              candidateId: `${activeCandidate.id}`,
+              toRemove: `${experienceInMap.id}`,
             },
             {
               headers: {
@@ -99,13 +97,11 @@ function Resume({
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-        .delete(
+        .post(
           `${deleteCompetence}`,
           {
-            data: {
-              candidateId: `${activeCandidate.id}`,
-              toRemove: `${competenceInMap.id}`,
-            },
+            candidateId: `${activeCandidate.id}`,
+            toRemove: `${competenceInMap.id}`,
           },
           {
             headers: {
@@ -114,9 +110,9 @@ function Resume({
           }
         )
         .then((response) => {
+          console.log(response)
           const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
           const email =candidateLoggedIn.email;
-
           axios
             .post(
               `${getCandidateInfo}`,
@@ -168,13 +164,11 @@ function Resume({
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(
+          .post(
             `${deleteEducation}`,
             {
-              data: {
-                candidateId: `${activeCandidate.id}`,
-                toRemove: `${educationInMap.id}`,
-              },
+              candidateId: `${activeCandidate.id}`,
+              toRemove: `${educationInMap.id}`,
             },
             {
               headers: {
