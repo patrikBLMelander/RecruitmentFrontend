@@ -25,8 +25,6 @@ function RemoveListBtn({
       console.log(resp.data);
       setActiveJob(resp.data)
       localStorage.setItem("activeJob", JSON.stringify(resp.data));
-      //window.location.reload();
-      //Försöker få denna att uppdatera sidan direkt på ett bättre sätt
     }).catch(error => {
       console.error(error)
     })

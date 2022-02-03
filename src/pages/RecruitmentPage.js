@@ -86,13 +86,9 @@ function RecruitmentPage({
               },
               { headers: { Authorization: localStorage.getItem("jwtToken") } }
             ).then(resp => {
-
               console.log(resp.data)
-              setActiveJob(resp.data);
-              localStorage.setItem("activeJob", JSON.stringify(resp.data));
           
             })
-
           return null;
         }
         const home = source.droppableId;
