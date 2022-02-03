@@ -359,7 +359,7 @@ function CandidateSettings({
                     checked={radioButtonsColor[4]}
                     onChange={handleColor5Change}
                   />
-                  Brown
+                  LightPink
                 </label>
               </RadioCol>
               <RadioCol>
