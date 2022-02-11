@@ -47,13 +47,15 @@ function JobOfferPreview({ jobOffer, colorScheme }) {
 export default JobOfferPreview;
 
 const Container = styled.div`
-  color: ${(props) => props.inputColor.text};
+  //color: ${(props) => props.inputColor.text};
+  color: white;
   font-family: "Roboto", sans-serif;
   text-align: center;
-  background-color: ${(props) => props.inputColor.primary};
+  //background-color: ${(props) => props.inputColor.primary};
+  background-color: black;
   width: 100%;
   display: flex;
-  border-style: double;
+  //border-style: double;
   border-color: ${(props) => props.inputColor.text};
 `;
 const LeftDiv = styled.div`

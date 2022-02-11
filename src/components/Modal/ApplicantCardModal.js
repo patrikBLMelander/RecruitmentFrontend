@@ -84,13 +84,14 @@ function ApplicantCardModal({
         onRequestClose={closeModal}
         style={{
           content: {
-            backgroundColor: colorScheme.primary,
+            backgroundColor: 'black',
             position: "absolute",
-            width: "55%",
+            width: "70%",
             height: "80%",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
+            opacity: "0.7",
           },
         }}
         contentLabel="CV modal"

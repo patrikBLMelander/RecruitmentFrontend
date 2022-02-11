@@ -489,14 +489,16 @@ function Resume({
 export default Resume;
 
 const OuterContainer = styled.div`
-  color: ${(props) => props.inputColor.text};
+  //color: ${(props) => props.inputColor.text};
+  color: white;
   font-family: "Roboto", sans-serif;
   text-align: center;
-  background-color: ${(props) => props.inputColor.primary};
+  //background-color: ${(props) => props.inputColor.primary};
+  background-color: black;
   width: 100%;
   display: flex;
-  border-style: double;
-  border-color: ${(props) => props.inputColor.text};
+  //border-style: double;
+  //border-color: ${(props) => props.inputColor.text};
 `;
 const LeftDiv = styled.div`
   width: 25%;
@@ -513,6 +515,8 @@ const StyledImg = styled.img`
   border-radius: 100%;
   text-align: center;
   margin: 15px;
+  max-width: 90%;
+  max-height: 90%;
 `;
 const AboutMe = styled.div`
   border-top: solid;
@@ -522,6 +526,7 @@ const AboutMe = styled.div`
 const Skills = styled.div``;
 const Experience = styled.div`
   border-bottom: solid;
+  border-color: ${(props) => props.inputColor.secondary};
 `;
 const TitleAndPeriod = styled.div`
   display: flex;

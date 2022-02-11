@@ -42,13 +42,10 @@ function Main({jobOfferings, activeCandidate, colorScheme, setJobOfferings, setA
           <StyledImg src="https://picsum.photos/id/192/200" />
         </OuterCircleDiv>
         <TextUnderPictures>
-          <StyleH3>The Melander Company</StyleH3>
+          <StyleH3>Melander Recruit</StyleH3>
           <StyledP>
-            Lorem ipsum dolor sit amet, aperiam reprehendunt sit et, veniam
-            blandit apeirian id duo. Sea ex purto disputando. Melius utamur
-            intellegebat mel ex, vidisse laoreet disputationi ei qui. Graeci
-            omnesque detraxit vel ad, pri cibo libris ea. Te inani persius duo,
-            vim eu verear signiferumque, vel denique nominavi consequat et.
+            Hos Melander Recruit är du anonym fram till första intervjun, vi gör allt för att matcha rätt kompetens med rätt tjänst.
+            Hos oss spelar ålder, namn eller kön ingen roll, vi fokuserar på dina erfarenheter och dina kompetenser!
           </StyledP>
           <BtnContainer>
             <StyledButton
@@ -156,4 +153,5 @@ const StyledP = styled.p`
   margin-top: 15px;
   margin-left: 34%;
   margin-right: 34%;
+  font-size: 19px;
 `;
