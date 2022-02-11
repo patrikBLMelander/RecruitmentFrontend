@@ -370,7 +370,7 @@ function CandidateSettings({
                     checked={radioButtonsColor[5]}
                     onChange={handleColor6Change}
                   />
-                  Pink
+                  Purple
                 </label>
               </RadioCol>
             </form>
