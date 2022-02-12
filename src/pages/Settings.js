@@ -7,7 +7,6 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import StyledButton from "../components/StyledButton";
 import Swal from "sweetalert2";
-import { CloseO } from "@styled-icons/evil/CloseO";
 import Animals from "../testData/animals";
 import Countries from "../testData/countries";
 import Cities from "../testData/capitals";
