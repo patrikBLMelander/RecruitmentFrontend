@@ -51,7 +51,7 @@ function ApplicantCardModal({
     },
     { headers: { Authorization: localStorage.getItem("jwtToken") } }
     ).then(resp => {
-      console.log(resp.data)
+      
     })
   };
 

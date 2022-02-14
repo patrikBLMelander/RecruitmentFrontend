@@ -282,7 +282,6 @@ function Settings({
         email: form.adminMail.value,
         password: form.adminDefaultPassword.value,
       };
-      console.log(toSend)
       axios
         .post(`${createAdmin}`, 
           toSend,  
@@ -319,7 +318,6 @@ function Settings({
           }
         })
         .catch((error) => {
-          console.log(error.response.status);
           if (error.response.status === 400) {
             Swal.fire({
               icon: "error",
@@ -374,7 +372,6 @@ function Settings({
         );
       }
     }).then(response => {
-      console.log(response)
     }).catch(err => {
       console.error(err)
     })
@@ -408,7 +405,6 @@ function Settings({
               showCancelButton: false,
             });
           }
-          console.log(response);
         })
         .catch((error) => {
           if (error.response.status === 400) {

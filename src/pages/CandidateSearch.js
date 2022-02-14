@@ -59,11 +59,11 @@ function CandidateSearch({
               competenceInMap.value >= YearsToSearch
             ) {
               newSearchResult = [...newSearchResult, allCandidates[index]];
-              setSearchResult(newSearchResult);
+              setSearchResult([...new Set(newSearchResult)]);
               noMatch=false
             }
           });
-        }else{console.log("no experience")}
+        }else{}
       });
       if(noMatch) {
         Swal.fire({

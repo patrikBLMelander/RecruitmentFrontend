@@ -18,7 +18,7 @@ function StyledButton({
 
   if (onClick === undefined) {
     onClick = function test() {
-      console.log("test");
+      console.log("");
     };
   }
 

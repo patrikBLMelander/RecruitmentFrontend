@@ -110,7 +110,6 @@ function Resume({
           }
         )
         .then((response) => {
-          console.log(response)
           const candidateLoggedIn = JSON.parse(localStorage.getItem("activeUser"));
           const email =candidateLoggedIn.email;
           axios
@@ -228,7 +227,7 @@ function Resume({
       <OuterContainer key={activeCandidate.id} inputColor={colorScheme}>
         <LeftDiv inputColor={colorScheme}>
           <StyledImg src="https://picsum.photos/150?grayscale"></StyledImg>
-          <AboutMe>
+          <AboutMe inputColor={colorScheme}>
             <H5>About me</H5>
             <P>{presentation}</P>
           </AboutMe>
@@ -250,7 +249,7 @@ function Resume({
         </LeftDiv>
         <RightDiv inputColor={colorScheme}>
           <H3>{activeCandidate.firstName} {activeCandidate.lastName}</H3>
-          <Experience>
+          <Experience inputColor={colorScheme}>
             <H5>Job Experience</H5>
             {activeCandidate.experienceList.map((experienceInMap) => {
               return (
@@ -273,7 +272,7 @@ function Resume({
               );
             })}
           </Experience>
-          <Experience>
+          <Experience inputColor={colorScheme}>
             <H5>Education</H5>
             {activeCandidate.educationList.map((educationsInMap) => {
               return (
@@ -362,11 +361,11 @@ function Resume({
       <OuterContainer key={activeCandidate.id} inputColor={colorScheme}>
         <LeftDiv inputColor={colorScheme}>
           <StyledImg src="https://picsum.photos/150?grayscale"></StyledImg>
-          <AboutMe>
+          <AboutMe inputColor={colorScheme}>
             <H5>About me</H5>
             <P>{presentation}</P>
           </AboutMe>
-          <Skills>
+          <Skills inputColor={colorScheme}>
             <H5>Competencies</H5>
             {activeCandidate.competenciesList.map((competenceInMap) => {
               return (
@@ -521,6 +520,7 @@ const StyledImg = styled.img`
 const AboutMe = styled.div`
   border-top: solid;
   border-bottom: solid;
+  border-color: ${(props) => props.inputColor.secondary};
 `;
 
 const Skills = styled.div``;

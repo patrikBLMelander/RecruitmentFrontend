@@ -30,8 +30,8 @@ function AddListBtn({
         title: value
       },
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
-     ).then(resp => {
-      console.log(resp);
+      ).then(resp => {
+      
       setActiveJob(resp.data)
     
     }).catch(error => {
