@@ -57,7 +57,7 @@ function JobOfferCard({
         }).then((result) => {
           if (result.isConfirmed) {
             axios
-          .put(
+          .post(
             `${removeAppliedJob}`,
             {
               candidateId: activeCandidate.id,
