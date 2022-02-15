@@ -41,7 +41,7 @@ function RecruitmentPage({
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
-        //If you dop outside dropzone
+        //If you drop outside dropzone
         if (!destination) {
           return null;
         }
