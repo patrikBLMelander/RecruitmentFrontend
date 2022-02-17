@@ -196,6 +196,8 @@ function CandidateMyPage({
               personalityList: response.data.personalityList,
             });
             localStorage.setItem("activeUser", JSON.stringify(response.data));
+          }).catch(error => {
+            console.error(error)
           });
       });
       setCompetenceValue("");
@@ -267,6 +269,8 @@ function CandidateMyPage({
             educationList: activeCandidate.educationList,
             competenciesList: activeCandidate.competenciesList,
             personalityList: activeCandidate.personalityList,}));
+        }).catch(error => {
+          console.error(error)
         });
       Swal.fire({
         title: "Presentation Saved!",
@@ -334,6 +338,8 @@ function CandidateMyPage({
                 personalityList: response.data.personalityList,
               });
               localStorage.setItem("activeUser", JSON.stringify(response.data));
+            }).catch(error => {
+              console.error(error)
             });
         });
 
@@ -409,6 +415,8 @@ function CandidateMyPage({
                 personalityList: response.data.personalityList,
               });
               localStorage.setItem("activeUser", JSON.stringify(response.data));
+            }).catch(error => {
+              console.error(error)
             });
         });
 
@@ -475,6 +483,8 @@ function CandidateMyPage({
               personalityList: response.data.personalityList,
             });
             localStorage.setItem("activeUser", JSON.stringify(response.data));
+          }).catch(error => {
+            console.error(error)
           });
       });
 
@@ -804,6 +814,7 @@ function CandidateMyPage({
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
+              opacity: "0.8",
             },
           }}
           contentLabel="CV modal"

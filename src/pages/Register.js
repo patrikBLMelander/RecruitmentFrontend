@@ -27,7 +27,7 @@ function Registrer({
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
-     } else {
+      } else {
       const nickNameNumber = Math.floor(Math.random() * 120);
       const toSend = {
         nickName: nickNameNumber, 
@@ -40,8 +40,7 @@ function Registrer({
 
       axios.post(`${register}`,
         toSend
-     ).then(resp => {
-     
+      ).then(resp => {
         if(resp.status === 201){
           Swal.fire({
             icon: "success",

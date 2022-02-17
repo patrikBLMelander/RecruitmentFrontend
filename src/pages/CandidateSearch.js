@@ -37,6 +37,8 @@ function CandidateSearch({
       { headers: { Authorization: localStorage.getItem("jwtToken") } }
         ).then(resp => {
       setAllCandidates(resp.data)
+      }).catch(error => {
+        console.error(error)
       })
   }    
   }, []);

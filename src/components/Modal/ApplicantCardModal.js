@@ -50,8 +50,8 @@ function ApplicantCardModal({
       rate:rate,
     },
     { headers: { Authorization: localStorage.getItem("jwtToken") } }
-    ).then(resp => {
-      
+    ).catch(error => {
+      console.error(error)
     })
   };
 

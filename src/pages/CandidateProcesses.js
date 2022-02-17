@@ -39,6 +39,8 @@ function CandidateProcesses({
         )
         .then(function (response) {
           setMyProcesses(response.data);
+        }).catch(error => {
+          console.error(error)
         });
     }
   }, []);

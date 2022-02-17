@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import StyledButton from "./StyledButton";
+import Swal from "sweetalert2";
 import axios from "axios";
 import {
   addRecruitmentStep,
@@ -21,9 +22,15 @@ function AddListBtn({
   };
 
   const addList = () => {
-    if(value === undefined){
-      //logik för tomt input
-    }
+    if(value === undefined || value === "") {
+      Swal.fire({
+        title: "Emty field",
+        text: "You can not add a list without Title",
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }else{
       axios.post(`${addRecruitmentStep}`,
       {
         jobOfferId: activeJob.id,
@@ -37,8 +44,8 @@ function AddListBtn({
     }).catch(error => {
       console.error(error)
     })
-
-
+    }
+    setvalue("")
     
   };
 

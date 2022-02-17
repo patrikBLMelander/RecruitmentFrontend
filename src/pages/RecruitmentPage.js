@@ -85,8 +85,8 @@ function RecruitmentPage({
                 newIndex: destination.index
               },
               { headers: { Authorization: localStorage.getItem("jwtToken") } }
-            ).then(resp => {
-          
+            ).catch(error => {
+              console.error(error)
             })
           return null;
         }
@@ -150,8 +150,9 @@ function RecruitmentPage({
             newRecruitmentId: `${RecTo.id}`
           },
           { headers: { Authorization: localStorage.getItem("jwtToken") } }
-        ).then(resp => {
-          })
+        ).catch(error => {
+          console.error(error)
+        })
         return null;
   };
 

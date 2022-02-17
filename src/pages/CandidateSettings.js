@@ -85,6 +85,8 @@ function CandidateSettings({
         newActiveCandidate.colorChoice = "steal";
         setActiveCandidate(newActiveCandidate);
         localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+      }).catch(error => {
+        console.error(error)
       });
   }
   function handleColor2Change() {
@@ -104,6 +106,8 @@ function CandidateSettings({
         newActiveCandidate.colorChoice = "darkBlue";
         setActiveCandidate(newActiveCandidate);
         localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+      }).catch(error => {
+        console.error(error)
       });
   }
   function handleColor3Change() {
@@ -123,6 +127,8 @@ function CandidateSettings({
         newActiveCandidate.colorChoice = "greenNature";
         setActiveCandidate(newActiveCandidate);
         localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+      }).catch(error => {
+        console.error(error)
       });
   }
   function handleColor4Change() {
@@ -142,6 +148,8 @@ function CandidateSettings({
         newActiveCandidate.colorChoice = "teal";
         setActiveCandidate(newActiveCandidate);
         localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+      }).catch(error => {
+        console.error(error)
       });
   }
   function handleColor5Change() {
@@ -161,6 +169,8 @@ function CandidateSettings({
         newActiveCandidate.colorChoice = "lightPink";
         setActiveCandidate(newActiveCandidate);
         localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+      }).catch(error => {
+        console.error(error)
       });
   }
   function handleColor6Change() {
@@ -180,6 +190,8 @@ function CandidateSettings({
         newActiveCandidate.colorChoice = "purple";
         setActiveCandidate(newActiveCandidate);
         localStorage.setItem("activeUser", JSON.stringify(newActiveCandidate));
+      }).catch(error => {
+        console.error(error)
       });
   }
 
@@ -233,6 +245,8 @@ function CandidateSettings({
             });
 
             Navigate("/");
+          }).catch(error => {
+            console.error(error)
           });
       }
     });
