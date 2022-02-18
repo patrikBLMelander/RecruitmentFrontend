@@ -73,7 +73,7 @@ function RecruitmentPage({
             0,
             RecInfoToPutIn
           );
-          // setActiveJob(newActiveJob);
+          setActiveJob(newActiveJob);
           // localStorage.setItem("activeJob", JSON.stringify(newActiveJob));
 
           axios
